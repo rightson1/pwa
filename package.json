@@ -9,11 +9,32 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@emotion/react": "^11.10.5",
+        "@emotion/styled": "^11.10.5",
+        "@fullcalendar/react": "^6.0.0",
+        "@mui/icons-material": "^5.11.0",
+        "@mui/material": "^5.11.0",
+        "@mui/x-data-grid": "^5.17.16",
+        "@nivo/bar": "^0.80.0",
+        "@nivo/core": "^0.80.0",
+        "@nivo/geo": "^0.80.0",
+        "@nivo/line": "^0.80.0",
+        "@nivo/pie": "^0.80.0",
+        "@testing-library/jest-dom": "^5.16.5",
+        "@testing-library/user-event": "^14.4.3",
         "autoprefixer": "^10.4.9",
+        "axios": "^1.2.1",
+        "firebase": "^9.15.0",
+        "formik": "^2.2.9",
+        "framer-motion": "^7.10.2",
+        "fullcalendar": "^6.0.0",
         "next": "^12.3.0",
         "postcss": "^8.4.16",
         "react": "^18.2.0",
-        "react-dom": "^18.2.0"
+        "react-datepicker": "^4.8.0",
+        "react-dom": "^18.2.0",
+        "react-icons": "^4.7.1",
+        "yup": "^0.32.11"
     },
     "devDependencies": {
         "eslint": "8.23.1",
