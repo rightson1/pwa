@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 // import axios from "axios";
 import HomeNav from "../components/HomeNav";
 import { useGlobalProvider } from "../context/themeContext";
-const Us = () => {
+const Home = () => {
   const router = useRouter()
   const [loading, setLoading] = React.useState(false)
   const [admin, setAdmin] = React.useState(true)
@@ -119,18 +119,17 @@ const Us = () => {
   //   }
 
   // }
-  const { colors } = useGlobalProvider();
-  console.log(colors)
+
   return <div className="w-screen h-screen overflow-hidden bg-[rgb(150,150,150)] -md md:p-8 ">
     <div className="w-full h-full bg-[rgb(200,200,200)] rounded p-4 overflow-y-auto overflow-x-hidden md:p-8">
       <HomeNav />
-      <div className="flex  flex-col relative py-8">
+      <div className="flex  flex-col relative py-8 text-black">
 
         <div className="flex ">
           <div className="flex-1 flex px-7 flex-col gap-4">
             <div className="flex h-[80px]  gap-2">
               <div className="h-full w-[20px] bg-black"></div>
-              <div className="flex flex-col">
+              <div className="flex flex-col text-black">
                 <h1 className="text-xl font-bold"> THE </h1>
                 <h1 className="text-xl font-bold"> MKU</h1>
                 <p className="text-[15px] font-thin">Packlands law school</p>
@@ -207,4 +206,10 @@ const Us = () => {
   </div>;
 };
 
-export default Us;
+Home.getLayout = (page) => {
+  return <>
+    {page}
+  </>
+}
+Home.admin = false
+export default Home;
