@@ -806,3 +806,59 @@ export const candidates = [
         position: "Tressure"
     }
 ]
+export const positions = [
+    {
+        id: "63a24f3c8e3c83313ce8df02",
+        adminName: "Dollie Burns",
+        desc: "Anim non proident adipisicing do. In dolore ex cillum deserunt consectetur sint anim cupidatat exercitation ut.",
+        position: "Ass.Chailady"
+    },
+    {
+        id: "63a24f3cddbbd49492abec30",
+        adminName: "Bianca Vaughn",
+        desc: "Sit pariatur nulla labore labore occaecat exercitation elit ex. Laborum fugiat cupidatat non sunt aliquip culpa sit.",
+        position: "Secretary"
+    },
+    {
+        id: "63a24f3ce1d4cce1a194b7d1",
+        adminName: "Knapp Terrell",
+        desc: "Non culpa tempor id occaecat cupidatat commodo ex elit. In in tempor ea id occaecat.",
+        position: "Secretary"
+    },
+    {
+        id: "63a24f3ccce3bcf0941d15e8",
+        adminName: "Deana Suarez",
+        desc: "Veniam ad deserunt ex pariatur aute duis est do voluptate pariatur nulla aliquip. Nisi velit nulla duis id ut id in aute.",
+        position: "Secretary"
+    },
+    {
+        id: "63a24f3cbe7aac13b37ebb06",
+        adminName: "Marsh David",
+        desc: "Aliquip enim proident culpa voluptate elit et magna in quis eu. Dolore qui et exercitation sunt occaecat.",
+        position: "Chairperson"
+    },
+    {
+        id: "63a24f3c2f1423cf8168eeb3",
+        adminName: "Victoria Alvarado",
+        desc: "Do voluptate sint laboris Lorem Lorem ex. Aliquip exercitation duis culpa elit aliquip culpa.",
+        position: "Chairperson"
+    },
+    {
+        id: "63a24f3c6aafbe0d80b16cae",
+        adminName: "Schwartz Caldwell",
+        desc: "Exercitation occaecat esse aliquip nisi culpa eiusmod aute consequat ex occaecat sunt. Excepteur sunt anim mollit commodo aute laboris proident do velit.",
+        position: "Tressure"
+    },
+    {
+        id: "63a24f3c6a3d884fe0676079",
+        adminName: "Decker Joseph",
+        desc: "Nisi sunt proident anim incididunt officia amet dolor nulla nisi officia tempor et. Consequat sit dolore cupidatat aute eu elit mollit duis cillum laboris sunt nisi velit.",
+        position: "Ass.Chailady"
+    },
+    {
+        id: "63a24f3c69374a34870f3fcf",
+        adminName: "Jackson Carr",
+        desc: "Anim adipisicing laborum deserunt non amet labore labore adipisicing laboris occaecat laboris. Consectetur Lorem sunt elit Lorem ea dolore amet.",
+        position: "Ass.Chailady"
+    }
+]
