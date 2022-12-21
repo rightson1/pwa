@@ -13,7 +13,6 @@ const clientSideEmotionCache = createEmotionCache();
 
 export default function MyApp(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-  console.log(Component.admin)
   if (Component.getLayout) {
     return Component.getLayout(<CacheProvider value={emotionCache}>
       <ThemeProvider>

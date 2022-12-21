@@ -260,6 +260,7 @@ const navItems = [
     },
     {
         text: 'Events',
+        link: 'events',
         icon: <CalendarTodayOutlinedIcon />
 
     },
