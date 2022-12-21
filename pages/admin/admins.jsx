@@ -91,7 +91,7 @@ const Contacts = () => {
             md: '20px'
 
         }}  >
-            <Header title="ADMINSTORS" subtitle="List Of Adminstrators" />
+            <Header title="ADMINISTORS" subtitle="List Of Adminstrators" />
             <Box
                 m="40px 0 0 0"
                 height="75vh"

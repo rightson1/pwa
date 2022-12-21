@@ -6,7 +6,7 @@ import Header from "../../components/Title"
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useGlobalProvider } from "../../context/themeContext"
 import { candidates } from "../../src/data";
-const Contacts = () => {
+const Candidates = () => {
     const { colors } = useGlobalProvider()
     const columns = [
         { field: "id", headerName: "ADM NO.", flex: 0.5 },
@@ -123,4 +123,4 @@ const Contacts = () => {
     );
 };
 
-export default Contacts;
+export default Candidates;

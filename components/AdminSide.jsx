@@ -176,7 +176,9 @@ const AdminSide = () => {
 
                             return (<ListItem disablePadding sx={{ display: 'block' }} onClick={() => {
                                 router.push(`/admin/${link}`)
-                                isMobile && setOpen(false)
+                                isMobile && setTimeout(() => {
+                                    setOpen(false)
+                                }, 1000)
                             }} key={index}>
                                 <ListItemButton
 

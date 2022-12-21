@@ -5,7 +5,6 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { useGlobalProvider } from "../../context/themeContext";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import EditorToolbar from "../../components/Editor";
 import Header from "../../components/Title"
 const QuillNoSSRWrapper = dynamic(import('react-quill'), {
     ssr: false,
