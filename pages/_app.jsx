@@ -7,6 +7,7 @@ import createEmotionCache from '../src/createEmotionCashe';
 import AdminNav from '../components/AdminNav';
 import AdminSide from '../components/AdminSide';
 import '../styles/globals.css'
+import 'react-quill/dist/quill.snow.css'
 import { Box } from '@mui/system';
 import { ThemeProvider } from '../context/themeContext';
 const clientSideEmotionCache = createEmotionCache();

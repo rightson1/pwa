@@ -68,7 +68,7 @@ const Contacts = () => {
             <Header title="VOTERS" subtitle="List Of Contact Voters" />
             <Box
                 m="40px 0 0 0"
-                height="100vh"
+                height="75vh"
                 sx={{
                     "& .MuiDataGrid-root": {
                         border: "none",
@@ -79,6 +79,7 @@ const Contacts = () => {
                     },
                     "& .name-column--cell": {
                         color: colors.greenAccent[300],
+
                     },
                     "& .MuiDataGrid-columnHeaders": {
                         backgroundColor: colors.blueAccent[700],

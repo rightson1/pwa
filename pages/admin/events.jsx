@@ -173,11 +173,11 @@ const Events = () => {
                     selectable={true}
                     selectMirror={true}
                     dayMaxEvents={true}
-
+                    weekends
                     select={handleDateClick}
                     eventClick={handleEventClick}
                     eventsSet={(events) => setCurrentEvents(events)}
-
+                    longPressDelay={1}
                     initialEvents={[
                         {
                             id: "12315",
