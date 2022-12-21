@@ -34,7 +34,7 @@ const AdminNav = () => {
                 }}>
                     <Flex>
 
-                        {isMobile && !open && (
+                        {isMobile && (
                             <IconButton
                                 onClick={() => setOpen(!open)}
                                 size="large"
