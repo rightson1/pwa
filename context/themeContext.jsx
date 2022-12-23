@@ -21,9 +21,11 @@ export const ThemeProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
     const mode = state.theme;
     const colors = tokens(mode);
+    const [events, setEvents] = useState([])
     const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
     const [open, setOpen] = useState(false);
     const isMobile = useMediaQuery("(max-width: 600px)")
+    console.log(events)
     return (
         <ThemeContext.Provider
             value={{
@@ -34,7 +36,9 @@ export const ThemeProvider = ({ children }) => {
                 open,
                 setOpen,
                 mode,
-                isMobile
+                isMobile,
+                events,
+                setEvents
 
             }}
         >

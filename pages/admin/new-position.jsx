@@ -22,7 +22,7 @@ const Form = () => {
         console.log(values)
     }
     return <Box m="20px">
-        <Header title="CREATE USER" subtitle="Create a new User Profile" />
+        <Header title="NEW ELECROL POSITION" subtitle="Create a new electrol position" />
 
         <Box my={2}></Box>
         <Formik
@@ -132,10 +132,6 @@ const Form = () => {
 const initialValues = {
     position: "",
     shortDesc: "",
-    shortDesc: "",
-    contact: "",
-    address1: "",
-    address2: "",
 };
 const userSchema = yup.object().shape({
     position: yup.string().required("Electrol Position Name is required"),
@@ -172,7 +168,7 @@ const modules = {
         ['clean'],
     ],
     clipboard: {
-        // toggle to add extra line breaks when pasting HTML:
+
         matchVisual: false,
     },
 }

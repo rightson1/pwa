@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../../components/Title";
 import FullCalendar from '@fullcalendar/react' // must go before plugins
 import dayGridPlugin from '@fullcalendar/daygrid' // a plugin!
@@ -21,7 +21,8 @@ import {
 const Events = () => {
     const [currentEvents, setCurrentEvents] = React.useState([])
 
-    const { colors } = useGlobalProvider();
+
+    const { colors, setEvents } = useGlobalProvider();
     const handleDateClick = (selected) => {
         const title = prompt("Enter Event Title");
         const calendarApi = selected.view.calendar;
@@ -36,6 +37,10 @@ const Events = () => {
             })
         }
     }
+    useEffect(() => {
+        setEvents(currentEvents)
+    }, [currentEvents])
+
     const handleEventClick = (selected) => {
         if (window.confirm(`Are you sure you want to delete ${selected.event.title}`)) {
             selected.event.remove();
@@ -50,8 +55,8 @@ const Events = () => {
         <Flex sx={{
             mt: "4rem",
             flexDirection: {
-                xs: "column-reverse",
-                sm: "column-reverse",
+                xs: "column",
+                sm: "column",
                 md: "row",
             },
             alignItems: {

@@ -7,7 +7,6 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Title"
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
-import TextareaAutosize from '@mui/base/TextareaAutosize';
 const Form = () => {
     const [age, setAge] = React.useState('');
     const handleChange = (event) => {
@@ -21,7 +20,7 @@ const Form = () => {
         console.log(values)
     }
     return <Box m="20px">
-        <Header title="FREQUENTLY ASKED QUESTIONS" subtitle="Enter question and answer to help voters" />
+        <Header title="NOTIFICATIONS PAGE" subtitle="Enter new notification to be displayed to all voters" />
 
         <Box my={2}></Box>
         <Formik
@@ -52,7 +51,7 @@ const Form = () => {
                             fullWidth
                             variant="filled"
                             type="text"
-                            label="Enter question"
+                            label="Enter Notification Title"
                             onBlur={handleBlur}
                             onChange={handleChange}
                             value={values.position}
@@ -76,7 +75,7 @@ const Form = () => {
                         <textarea style={{
                             backgroundColor: colors.primary[400],
                             gridColumn: 'span 4',
-                        }} className="p-2  outline-none border-b-[1px] border-white" placeholder="Enter answer" />
+                        }} className="p-2  outline-none border-b-[1px] border-white" placeholder="Enter notification descrition" />
 
 
                     </Box>
@@ -85,7 +84,7 @@ const Form = () => {
                             color: colors.grey[100],
                             backgroundColor: colors.primary[400] + " !important",
                         }} variant="contained">
-                            Select
+                            Send
                         </Button>
                     </Box>
                 </form>

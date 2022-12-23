@@ -862,3 +862,46 @@ export const positions = [
         position: "Ass.Chailady"
     }
 ]
+
+export const pie = [{
+    id: "righson",
+    label: "rightson",
+    value: 239,
+    color: "hsl(104, 70%, 50%)",
+},
+{
+    id: "enoch",
+    label: "Enoch",
+    value: 170,
+    color: "hsl(162, 70%, 50%)",
+},
+{
+    id: "faith",
+    label: "Faith",
+    value: 322,
+    color: "hsl(291, 70%, 50%)",
+},
+{
+    id: "carol",
+    label: "Carol",
+    value: 503,
+    color: "hsl(229, 70%, 50%)",
+},
+{
+    id: "zeddy",
+    label: "Zeddy",
+    value: 584,
+    color: "hsl(344, 70%, 50%)",
+},
+];
+export const mockBarData = [{
+    position: "ChairPerson",
+    "Rightson": 137,
+    "RightsonColor": "hsl(229, 70%, 50%)",
+    Enoch: 96,
+    EnochColor: "hsl(296, 70%, 50%)",
+    Faith: 72,
+    FaithColor: "hsl(97, 70%, 50%)",
+    Zeddy: 140,
+    ZeddyColor: "hsl(340, 70%, 50%)",
+}]

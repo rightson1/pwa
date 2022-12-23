@@ -10,6 +10,7 @@ import '../styles/globals.css'
 import 'react-quill/dist/quill.snow.css'
 import { Box } from '@mui/system';
 import { ThemeProvider } from '../context/themeContext';
+import { AnimatePresence } from 'framer-motion';
 const clientSideEmotionCache = createEmotionCache();
 
 export default function MyApp(props) {
@@ -28,17 +29,19 @@ export default function MyApp(props) {
       <CacheProvider value={emotionCache}>
         <ThemeProvider>
           <CssBaseline />
-          <div className='app'>
-            <AdminSide />
-            <main className="content" style={{
-              width: "100%",
-            }}>
-              <AdminNav />
-              <Component {...pageProps} />
-            </main>
+          <AnimatePresence>
+            <div className='app'>
+              <AdminSide />
+              <main className="content" style={{
+                width: "100%",
+              }}>
+                <AdminNav />
+                <Component {...pageProps} />
+              </main>
 
 
-          </div>;
+            </div>;
+          </AnimatePresence>
 
         </ThemeProvider>
       </CacheProvider>

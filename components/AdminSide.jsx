@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { styled, useTheme } from '@mui/material/styles';
+import Button from "@mui/material/Button";
 import { useGlobalProvider } from "../context/themeContext";
 import Box from '@mui/material/Box';
-import Button from "@mui/material";
 import MuiDrawer from '@mui/material/Drawer'
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
@@ -27,16 +27,14 @@ import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutl
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import { Avatar, Tooltip, useMediaQuery } from '@mui/material';
-import profile from '../public/avatar.png'
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import HowToVoteIcon from '@mui/icons-material/HowToVote';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
-import ChevronLeft from "@mui/icons-material/ChevronLeft";
 import MessageOutlined from "@mui/icons-material/MessageOutlined";
 import AddIcon from '@mui/icons-material/Add';
-import ChevronRight from "@mui/icons-material/ChevronRightOutlined";
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import { useRouter } from "next/router";
+import { motion } from "framer-motion";
 const drawerWidth = 240;
 
 
@@ -48,7 +46,8 @@ const AdminSide = () => {
     const { colors, mode, dispatch, actionTypes, open, setOpen, isMobile } = useGlobalProvider();
     const theme = useTheme();
     const [selected, setSelected] = React.useState()
-    const [active, setActive] = React.useState(false)
+    const [active, setActive] = React.useState(false);
+    const close = useRef()
     const [openDrawer, setOpenDrawer] = React.useState(false);
     const router = useRouter()
     React.useEffect(() => {
@@ -69,7 +68,11 @@ const AdminSide = () => {
     };
 
 
-
+    useEffect(() => {
+        if (isMobile) {
+            close.current?.click()
+        }
+    }, [router.pathname])
 
     return <Box sx={{
         display: "flex",
@@ -78,7 +81,11 @@ const AdminSide = () => {
 
         {
             openDrawer && (
-                <Drawer
+                <FramerDrawer
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+
+                    exit={{ scale: 0, opacity: 0 }}
                     variant="permanent" open={open}
 
                     sx={{
@@ -110,20 +117,25 @@ const AdminSide = () => {
                             </ListItemButton>
                         </ListItem>
                     }
-                    {open &&
-                        (<>
+
+                    <motion.div
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                        exit={{ scale: 0, opacity: 0 }}
+
+                    >
 
 
+                        {open && (<>  <Box display="flex" justifyContent="space-between" alignItems="center" p="1rem">
 
-                            <Box display="flex" justifyContent="space-between" alignItems="center" p="1rem">
-
-                                <Typography>
-                                    ADMINS
-                                </Typography>
-                                <IconButton onClick={handleDrawerClose}>
-                                    {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                                </IconButton>
-                            </Box>
+                            <Typography>
+                                ADMINS
+                            </Typography>
+                            <IconButton onClick={handleDrawerClose} >
+                                {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+                            </IconButton>
+                        </Box>
                             <Box gap={1} display="flex" p="1rem" flexDirection="column" alignItems="center">
                                 <Avatar src='/avatar.png' sx={{
                                     width: '90px',
@@ -136,11 +148,12 @@ const AdminSide = () => {
                                     VP FANCE ADMIN
                                 </Typography>
 
-                            </Box>
+                            </Box></>)}
 
-                        </>)
 
-                    }
+                    </motion.div>
+
+
                     <List>
                         {navItems.map(({ text, icon, link }, index) => {
                             if (!icon) {
@@ -176,9 +189,7 @@ const AdminSide = () => {
 
                             return (<ListItem disablePadding sx={{ display: 'block' }} onClick={() => {
                                 router.push(`/admin/${link}`)
-                                isMobile && setTimeout(() => {
-                                    setOpen(false)
-                                }, 1000)
+
                             }} key={index}>
                                 <ListItemButton
 
@@ -209,7 +220,7 @@ const AdminSide = () => {
 
 
 
-                </Drawer>
+                </FramerDrawer>
             )
         }
 
@@ -255,7 +266,7 @@ const navItems = [
     , {
 
         text: 'FAQ',
-        link: 'faq',
+        link: 'faqs',
         icon: <HelpOutlineOutlinedIcon />,
     },
     {
@@ -283,17 +294,17 @@ const navItems = [
     },
     {
         text: "New Candidate",
-        link: "new-candidate",
+        link: "candidate",
         icon: <AddIcon />,
     },
     {
         text: "New FAQ",
-        link: "new-faq",
+        link: "faq",
         icon: <HelpOutlineOutlinedIcon />,
     },
     {
         text: 'New Notification',
-        link: "new-notification",
+        link: "notification",
         icon: <NotificationsNoneIcon />
 
     },
@@ -304,12 +315,12 @@ const navItems = [
 
     }, {
         text: 'Results Bar Chart',
-        link: 'bar-chart',
+        link: 'bar',
         icon: <BarChartOutlinedIcon />
 
     }, {
         text: 'Results Pie Chart',
-        link: 'pie-chart',
+        link: 'pie',
         icon: <PieChartOutlineOutlinedIcon />
 
 
@@ -361,5 +372,5 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
         }),
     }),
 );
-
+const FramerDrawer = motion(Drawer);
 export default AdminSide;
