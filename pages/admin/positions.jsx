@@ -1,11 +1,9 @@
 import React from "react";
 import { Box, Typography, useTheme } from "@mui/material";
 import Header from "../../components/Title";
-import { useGlobalProvider } from "../../context/themeContext";
 import { positions } from "../../src/data";
 import PositionCard from "../../components/PositionCard";
 const Positions = () => {
-    const { colors, isMobile } = useGlobalProvider()
     return <Box m={{
         xs: '20px 5px',
         sm: '20px 10px ',

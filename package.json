@@ -33,6 +33,7 @@
         "fullcalendar": "^6.0.0",
         "install": "^0.13.0",
         "next": "^12.3.0",
+        "next-pwa": "^5.6.0",
         "postcss": "^8.4.16",
         "prosemirror-keymap": "^1.2.0",
         "react": "^18.2.0",
