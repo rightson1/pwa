@@ -10,17 +10,7 @@ import Typography from '@mui/material/Typography';
 import { useGlobalProvider } from "../../context/themeContext";
 import Header from "../../components/Title";
 import Flex from "../../components/Flex";
-import dayjs from 'dayjs';
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-
-const Settings = () => {
+const Help = () => {
     const { colors } = useGlobalProvider();
     const [activeStep, setActiveStep] = React.useState(0);
 
@@ -35,12 +25,6 @@ const Settings = () => {
     const handleReset = () => {
         setActiveStep(0);
     };
-    const [value, setValue] = React.useState(dayjs('2014-08-18T21:11:54'));
-
-    const handleChange = (newValue) => {
-        setValue(newValue);
-    };
-
     return <Box m="20px">
         <Header title="SETTINGS PAGE" subtitle="Configure Settings" />
         <Box mt={2}>
@@ -113,16 +97,7 @@ const Settings = () => {
 
         </Box>
         <Typography variant="h6" sx={{ color: colors.greenAccent[500] }}>Election Date Settings</Typography>
-        {/* <LocalizationProvider>
-            <Stack spacing={3}>
-                <DateTimePicker
-                    label="Date&Time picker"
-                    value={value}
-                    onChange={handleChange}
-                    renderInput={(params) => <TextField {...params} />}
-                />
-            </Stack>
-        </LocalizationProvider> */}
+
     </Box>;
 };
 
@@ -147,7 +122,13 @@ const steps = [
               they're running and how to resolve approval issues.`,
     },
 ];
+Help.getLayout = (page) => {
+    return <>
+        {page}
+    </>
+}
+Help.voter = true
 
 
 
-export default Settings;
+export default Help;

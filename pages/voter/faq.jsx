@@ -10,5 +10,12 @@ const Faq = () => {
         <FAQ />
     </Box>;
 };
+FAQ.getLayout = (page) => {
+    return <>
+        {page}
+    </>
+}
+FAQ.voter = true
 
-export default Faq;
+export default FAQ;
+

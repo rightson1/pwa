@@ -14,6 +14,7 @@ import {
     useTheme,
     useMediaQuery,
 } from "@mui/material";
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import Flex from "./Flex"
 const PositionCard = ({ id, adminName, desc, position }) => {
     const { colors, mode, dispatch, actionTypes, isMobile, open, setOpen } = useGlobalProvider();
@@ -65,12 +66,20 @@ const PositionCard = ({ id, adminName, desc, position }) => {
                         variant="primary"
                         size="small"
                         onClick={() => setIsExpanded(!isExpanded)}
+
                     >See More</Button>
                     <Button
                         variant="primary"
                         size="small"
                         onClick={() => setIsExpanded(!isExpanded)}
-                    >View Position</Button>
+                        sx={{
+                            bgcolor: colors.greenAccent[800] + " !important",
+                            "&:hover": {
+                                bgcolor: colors.grey[400] + " !important",
+
+                            }
+                        }}
+                    >View Position <ArrowRightIcon /></Button>
                 </Flex>
                 <Collapse
                     in={isExpanded}

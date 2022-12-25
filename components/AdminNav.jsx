@@ -24,7 +24,7 @@ const AdminNav = () => {
     const handleClick = (event) => setAnchorEl(event.currentTarget);
     const handleClose = () => setAnchorEl(null);
     const theme = useTheme()
-    console.log(isLarge)
+
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -45,7 +45,10 @@ const AdminNav = () => {
                                 edge="start"
                                 color="inherit"
                                 aria-label="menu"
-                                sx={{ mr: 2 }}
+                                sx={{
+                                    mr: 2,
+                                    color: colors.grey[100]
+                                }}
 
                             >
                                 <MenuIcon />

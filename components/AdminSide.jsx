@@ -50,11 +50,6 @@ const AdminSide = () => {
     };
 
 
-    useEffect(() => {
-        if (isMobile) {
-            close.current?.click()
-        }
-    }, [router.pathname])
 
     const openedMixin = (theme) => ({
         width: drawerWidth,

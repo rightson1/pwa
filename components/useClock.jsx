@@ -9,7 +9,7 @@ const useFetch = (url) => {
     let interval;
 
     const startTimer = () => {
-        const countDownDate = new Date("Dec 25,2022 ").getTime();
+        const countDownDate = new Date("Jan 1,2023").getTime();
 
         interval = setInterval(() => {
             const now = new Date().getTime();

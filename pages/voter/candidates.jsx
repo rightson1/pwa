@@ -1,9 +1,8 @@
 import { Box } from "@mui/material";
 import Header from "../../components/Title"
-import { useGlobalProvider } from "../../context/themeContext"
 import Grid from "../../components/Candidates";
 const Candidates = () => {
-    const { colors } = useGlobalProvider()
+
     return (
         <Box m={{
             xs: '20px 5px',
@@ -16,12 +15,14 @@ const Candidates = () => {
         </Box>
     );
 };
-Grid.getLayout = (page) => {
+Candidates.getLayout = (page) => {
     return <>
         {page}
     </>
 }
-Grid.voter = true
+Candidates.voter = true
+
+
 
 
 export default Candidates;

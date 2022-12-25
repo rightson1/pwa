@@ -12,9 +12,11 @@ import { tokens, themeSettings } from "./theme";
 import { createTheme } from "@mui/material/styles";
 import { ThemeProvider as Theme } from "@mui/material/styles";
 import { CssBaseline, useMediaQuery } from "@mui/material";
+import { useRouter } from "next/router";
 
 const ThemeContext = createContext();
 export const ThemeProvider = ({ children }) => {
+    const router = useRouter()
     const initialState = {
         theme: "dark",
 
@@ -35,8 +37,18 @@ export const ThemeProvider = ({ children }) => {
             setOpen(true)
 
         }
-        console.log(isLarge)
+
     }, [isLarge, isMobile])
+    useEffect(() => {
+        if (isMobile) {
+            setOpen(false)
+            return;
+        } else if (isLarge) {
+            setOpen(true)
+
+        }
+
+    }, [router.pathname])
     return (
         <ThemeContext.Provider
             value={{

@@ -14,27 +14,18 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
-import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
+import QuizIcon from '@mui/icons-material/Quiz';
 import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import { Avatar, Tooltip, useMediaQuery } from '@mui/material';
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import HowToVoteIcon from '@mui/icons-material/HowToVote';
-import HowToRegIcon from '@mui/icons-material/HowToReg';
 import MessageOutlined from "@mui/icons-material/MessageOutlined";
-import AddIcon from '@mui/icons-material/Add';
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { useRouter } from "next/router";
 import { motion } from "framer-motion";
 const drawerWidth = 240;
-
-
-
-
 
 const AdminSide = () => {
 
@@ -55,7 +46,7 @@ const AdminSide = () => {
         overflowX: 'hidden',
         width: isLarge ? `calc(${theme.spacing(7)} + 1px)` : 0,
         [theme.breakpoints.up('md')]: {
-            width: !isLarge ? `calc(${theme.spacing(8)} + 1px)` : '0',
+            width: isLarge ? `calc(${theme.spacing(8)} + 1px)` : '0',
         },
     });
 
@@ -89,11 +80,7 @@ const AdminSide = () => {
     };
 
 
-    useEffect(() => {
-        if (isMobile) {
-            close.current?.click()
-        }
-    }, [router.pathname])
+
 
     return <Box sx={{
         display: "flex",
@@ -160,10 +147,10 @@ const AdminSide = () => {
                             height: "90px"
                         }} />
                         <Typography variant='h3' fontWeight="bold">
-                            ED ROH
+                            RIGHTSON
                         </Typography>
                         <Typography variant='h6' fontWeight="bold" mt="-10px" color={colors.greenAccent[400]}>
-                            VP FANCE ADMIN
+                            VOTER
                         </Typography>
 
                     </Box></>)}
@@ -206,7 +193,7 @@ const AdminSide = () => {
                     const lcText = text.toLowerCase();
 
                     return (<ListItem disablePadding sx={{ display: 'block' }} onClick={() => {
-                        router.push(`/admin/${link}`)
+                        router.push(`/voter/${link}`)
 
                     }} key={index}>
                         <ListItemButton
@@ -254,17 +241,7 @@ const navItems = [
 
     {
         text: "Data",
-    },
 
-    {
-        text: "Admins",
-        link: 'admins',
-        icon: <AdminPanelSettingsIcon />,
-    },
-    {
-        text: "Voters",
-        link: 'voters',
-        icon: <HowToRegIcon />,
     },
     {
         text: "candidates",
@@ -283,8 +260,8 @@ const navItems = [
     , {
 
         text: 'FAQ',
-        link: 'faqs',
-        icon: <HelpOutlineOutlinedIcon />,
+        link: 'faq',
+        icon: <QuizIcon />,
     },
     {
         text: 'Messages',
@@ -298,50 +275,20 @@ const navItems = [
 
     },
     {
-        text: "Settings",
-        link: 'settings',
-        icon: <SettingsOutlinedIcon />
-
-    },
-
-    {
-        text: "Forms",
+        text: "Help",
+        link: 'help',
+        icon: <HelpOutlineIcon />
 
     },
 
 
-    {
-        text: "New Position",
-        link: "new-position",
-        icon: <AddCircleOutlineIcon />,
-    },
-    {
-        text: "New Candidate",
-        link: "candidate",
-        icon: <AddIcon />,
-    },
-    {
-        text: "New FAQ",
-        link: "faq",
-        icon: <HelpOutlineOutlinedIcon />,
-    },
-    {
-        text: 'New Notification',
-        link: "notification",
-        icon: <NotificationsNoneIcon />
-
-    },
 
     {
         text: 'Results',
 
 
-    }, {
-        text: 'Results Bar Chart',
-        link: 'bar',
-        icon: <BarChartOutlinedIcon />
-
-    }, {
+    },
+    {
         text: 'Results Pie Chart',
         link: 'pie',
         icon: <PieChartOutlineOutlinedIcon />
