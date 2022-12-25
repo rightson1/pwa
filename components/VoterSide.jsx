@@ -38,24 +38,6 @@ const drawerWidth = 240;
 
 const AdminSide = () => {
 
-    const { colors, mode, dispatch, actionTypes, open, setOpen, isMobile, isLarge } = useGlobalProvider();
-    const theme = useTheme();
-    const [selected, setSelected] = React.useState()
-    const [active, setActive] = React.useState(false);
-    const close = useRef()
-    const router = useRouter()
-
-    const handleDrawerClose = () => {
-        setOpen(false);
-    };
-
-
-    useEffect(() => {
-        if (isMobile) {
-            close.current?.click()
-        }
-    }, [router.pathname])
-
     const openedMixin = (theme) => ({
         width: drawerWidth,
         transition: theme.transitions.create('width', {
@@ -73,12 +55,9 @@ const AdminSide = () => {
         overflowX: 'hidden',
         width: isLarge ? `calc(${theme.spacing(7)} + 1px)` : 0,
         [theme.breakpoints.up('md')]: {
-            width: isLarge ? `calc(${theme.spacing(8)} + 1px)` : '0',
+            width: !isLarge ? `calc(${theme.spacing(8)} + 1px)` : '0',
         },
     });
-
-
-
 
     const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
         ({ theme, open }) => ({
@@ -98,6 +77,24 @@ const AdminSide = () => {
     );
     const FramerDrawer = motion(Drawer);
 
+    const { colors, mode, dispatch, actionTypes, open, setOpen, isMobile, isLarge } = useGlobalProvider();
+    const theme = useTheme();
+    const [selected, setSelected] = React.useState()
+    const [active, setActive] = React.useState(false);
+    const close = useRef()
+    const router = useRouter()
+
+    const handleDrawerClose = () => {
+        setOpen(false);
+    };
+
+
+    useEffect(() => {
+        if (isMobile) {
+            close.current?.click()
+        }
+    }, [router.pathname])
+
     return <Box sx={{
         display: "flex",
         flexGrow: 1,
@@ -106,10 +103,7 @@ const AdminSide = () => {
 
 
         <FramerDrawer
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
 
-            exit={{ opacity: 0 }}
             variant="permanent" open={open}
 
             sx={{
@@ -246,6 +240,7 @@ const AdminSide = () => {
 
         </FramerDrawer>
 
+
     </Box>;
 };
 
@@ -357,7 +352,6 @@ const navItems = [
 ];
 
 const MenuList = []
-
 
 
 

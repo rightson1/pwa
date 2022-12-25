@@ -5,6 +5,7 @@ import {
     useMemo,
     useReducer,
     useContext,
+    useEffect,
 } from "react";
 import { reducer, actionTypes } from "./reducer";
 import { tokens, themeSettings } from "./theme";
@@ -24,8 +25,18 @@ export const ThemeProvider = ({ children }) => {
     const [events, setEvents] = useState([])
     const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
     const [open, setOpen] = useState(false);
+    const [close, setClose] = useState(false);
     const isMobile = useMediaQuery("(max-width: 600px)")
-    console.log(events)
+    const isLarge = useMediaQuery("(min-width: 900px)");
+    useEffect(() => {
+        if (isMobile) {
+            setOpen(false)
+        } else {
+            setOpen(true)
+
+        }
+        console.log(isLarge)
+    }, [isLarge, isMobile])
     return (
         <ThemeContext.Provider
             value={{
@@ -38,7 +49,10 @@ export const ThemeProvider = ({ children }) => {
                 mode,
                 isMobile,
                 events,
-                setEvents
+                setEvents,
+                close,
+                isLarge,
+                setClose
 
             }}
         >

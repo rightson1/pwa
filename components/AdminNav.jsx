@@ -16,17 +16,21 @@ import SearchIcon from "@mui/icons-material/Search";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Flex from "./Flex"
+import { useTheme } from "@mui/material";
 const AdminNav = () => {
-    const { colors, mode, dispatch, actionTypes, isMobile, open, setOpen } = useGlobalProvider();
+    const { colors, mode, dispatch, actionTypes, isMobile, open, setOpen, isLarge } = useGlobalProvider();
     const [anchorEl, setAnchorEl] = useState(null);
     const isOpen = Boolean(anchorEl);
     const handleClick = (event) => setAnchorEl(event.currentTarget);
     const handleClose = () => setAnchorEl(null);
+    const theme = useTheme()
+    console.log(isLarge)
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static" sx={{
                 background: 'transparent',
-                // boxShadow: "none",
+
             }}>
                 <Toolbar sx={{
                     justifyContent: "space-between",
@@ -34,7 +38,7 @@ const AdminNav = () => {
                 }}>
                     <Flex>
 
-                        {isMobile && (
+                        {!isLarge && (
                             <IconButton
                                 onClick={() => setOpen(!open)}
                                 size="large"
