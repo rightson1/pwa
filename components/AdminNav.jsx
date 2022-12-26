@@ -17,6 +17,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Flex from "./Flex"
 import { useTheme } from "@mui/material";
+import { useAuth } from "../context/authContext";
 const AdminNav = () => {
     const { colors, mode, dispatch, actionTypes, isMobile, open, setOpen, isLarge } = useGlobalProvider();
     const [anchorEl, setAnchorEl] = useState(null);
@@ -24,6 +25,7 @@ const AdminNav = () => {
     const handleClick = (event) => setAnchorEl(event.currentTarget);
     const handleClose = () => setAnchorEl(null);
     const theme = useTheme()
+    const { logout } = useAuth();
 
 
     return (
@@ -91,7 +93,7 @@ const AdminNav = () => {
                         onClose={handleClose}
                         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                     >
-                        <MenuItem onClick={handleClose}>Log Out</MenuItem>
+                        <MenuItem onClick={logout}>Log Out</MenuItem>
                     </Menu>
                 </Toolbar>
             </AppBar>

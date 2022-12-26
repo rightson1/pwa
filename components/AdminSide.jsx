@@ -30,6 +30,7 @@ import AddIcon from '@mui/icons-material/Add';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import { useRouter } from "next/router";
 import { motion } from "framer-motion";
+import { useAuth } from "../context/authContext";
 const drawerWidth = 240;
 
 
@@ -37,6 +38,7 @@ const drawerWidth = 240;
 
 
 const AdminSide = () => {
+    const { admin } = useAuth();
 
     const { colors, mode, dispatch, actionTypes, open, setOpen, isMobile, isLarge } = useGlobalProvider();
     const theme = useTheme();
@@ -161,10 +163,10 @@ const AdminSide = () => {
                             height: "90px"
                         }} />
                         <Typography variant='h3' fontWeight="bold">
-                            ED ROH
+                            {admin.name}
                         </Typography>
                         <Typography variant='h6' fontWeight="bold" mt="-10px" color={colors.greenAccent[400]}>
-                            VP FANCE ADMIN
+                            {admin.role.toUpperCase()}
                         </Typography>
 
                     </Box></>)}

@@ -27,7 +27,7 @@ const HomeNav = () => {
                 <motion.button whileTap={{ background: 'black', color: 'black' }} className="cursor-pointer px-3 py-2 hover:border-b-[2px]" onClick={() => router.push('/')}>Home</motion.button>
                 <motion.button whileTap={{ background: 'black', color: 'black' }} className="cursor-pointer px-3 py-2 hover:border-b-[2px]" onClick={() => router.push('/')}>How To Use</motion.button>
             </div>
-            <button onClick={() => router.push('/')} className="hidden md:flex">Get Started</button>
+            <button onClick={() => router.push('/')} className="hidden md:flex">Register</button>
             <motion.div className="close xm:cursor-pointer md:hidden mr-5 text-2xl cursor-pointer" onClick={() => setOpen(!open)} layout>
                 {open ? <div className="flex flex-col gap-2">
                     <motion.div

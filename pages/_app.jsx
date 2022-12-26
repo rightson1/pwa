@@ -12,6 +12,7 @@ import { Box } from '@mui/system';
 import { ThemeProvider } from '../context/themeContext';
 import { AnimatePresence } from 'framer-motion';
 import VoterSide from '../components/VoterSide';
+import Protected from "../components/Protected";
 const clientSideEmotionCache = createEmotionCache();
 
 export default function MyApp(props) {
@@ -54,19 +55,21 @@ export default function MyApp(props) {
       <CacheProvider value={emotionCache}>
         <ThemeProvider>
           <CssBaseline />
-          <AnimatePresence>
-            <div className='app'>
-              <AdminSide />
-              <main className="content" style={{
-                width: "100%",
-              }}>
-                <AdminNav />
-                <Component {...pageProps} />
-              </main>
+          <Protected>
+            <AnimatePresence>
+              <div className='app'>
+                <AdminSide />
+                <main className="content" style={{
+                  width: "100%",
+                }}>
+                  <AdminNav />
+                  <Component {...pageProps} />
+                </main>
 
 
-            </div>;
-          </AnimatePresence>
+              </div>;
+            </AnimatePresence>
+          </Protected>
 
         </ThemeProvider>
       </CacheProvider>

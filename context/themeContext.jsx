@@ -7,6 +7,7 @@ import {
     useContext,
     useEffect,
 } from "react";
+import { AuthProvider } from "./authContext";
 import { reducer, actionTypes } from "./reducer";
 import { tokens, themeSettings } from "./theme";
 import { createTheme } from "@mui/material/styles";
@@ -15,6 +16,7 @@ import { CssBaseline, useMediaQuery } from "@mui/material";
 import { useRouter } from "next/router";
 
 const ThemeContext = createContext();
+export const baseUrl = "http://localhost:3000/api/";
 export const ThemeProvider = ({ children }) => {
     const router = useRouter()
     const initialState = {
@@ -30,6 +32,7 @@ export const ThemeProvider = ({ children }) => {
     const [close, setClose] = useState(false);
     const isMobile = useMediaQuery("(max-width: 600px)")
     const isLarge = useMediaQuery("(min-width: 900px)");
+
     useEffect(() => {
         if (isMobile) {
             setOpen(false)
@@ -49,6 +52,7 @@ export const ThemeProvider = ({ children }) => {
         }
 
     }, [router.pathname])
+
     return (
         <ThemeContext.Provider
             value={{
@@ -64,13 +68,16 @@ export const ThemeProvider = ({ children }) => {
                 setEvents,
                 close,
                 isLarge,
-                setClose
+                setClose,
+                baseUrl
 
             }}
         >
-            <Theme theme={theme}>
-                <CssBaseline />
-                {children}</Theme>
+            <AuthProvider>
+                <Theme theme={theme}>
+                    <CssBaseline />
+                    {children}</Theme>
+            </AuthProvider>
         </ThemeContext.Provider>
     );
 };
