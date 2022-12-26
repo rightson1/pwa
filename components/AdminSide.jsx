@@ -163,10 +163,10 @@ const AdminSide = () => {
                             height: "90px"
                         }} />
                         <Typography variant='h3' fontWeight="bold">
-                            {admin.name}
+                            {admin?.name}
                         </Typography>
                         <Typography variant='h6' fontWeight="bold" mt="-10px" color={colors.greenAccent[400]}>
-                            {admin.role.toUpperCase()}
+                            {admin?.role?.toUpperCase()}
                         </Typography>
 
                     </Box></>)}
