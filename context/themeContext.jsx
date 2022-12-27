@@ -17,7 +17,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 const ThemeContext = createContext();
 // export const baseUrl = "http://localhost:3000/api/";
-export const baseUrl = "https://pwa-lake-kappa.vercel.app/api/";
+export const baseUrl = "https://pwa-lake-kappa.vercel.app/api/events";
 export const ThemeProvider = ({ children }) => {
     const router = useRouter()
     const initialState = {
