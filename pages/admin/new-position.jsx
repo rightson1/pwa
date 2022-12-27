@@ -1,25 +1,45 @@
 import React from "react";
-import dynamic from "next/dynamic";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useGlobalProvider } from "../../context/themeContext";
+import Info from "../../components/Info"
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Title"
-const QuillNoSSRWrapper = dynamic(import('react-quill'), {
-    ssr: false,
-    loading: () => <p>Loading ...</p>,
-})
-
-
-
+import axios from "axios";
+import { setDoc, doc } from "firebase/firestore";
+import { db } from "../../firebase";
+import { useAuth } from "../../context/authContext";
 const Form = () => {
+    const { colors, baseUrl } = useGlobalProvider();
+    const [loading, setLoading] = React.useState(false);
+    const [message, setMessage] = React.useState("");
+    const [open, setOpen] = React.useState(false);
+    const { admin } = useAuth()
 
-
-    const { colors } = useGlobalProvider();
     const isNonMobile = useMediaQuery("(min-width:600px)");
-    const handleFormSubmit = (values) => {
-        console.log(values)
+    const handleFormSubmit = (values, { resetForm }) => {
+        const data = { name: values.position, desc: values.desc, admin: admin.name }
+        setLoading(true)
+        axios.post(`${baseUrl}/positions`, data).then(res => {
+            const positionRef = doc(db, "positions", res.data._id);
+            setDoc(positionRef, res.data).then(() => {
+                setMessage("Position Created Successfully")
+                setOpen(true)
+                setLoading(false)
+                resetForm()
+
+            }).catch(() => {
+                setLoading(false)
+                setMessage('There Was An Error')
+                setOpen(true)
+            })
+
+        }).catch(() => {
+            setLoading(false)
+            setMessage('There Was An Error')
+            setOpen(true)
+        })
     }
     return <Box m="20px">
         <Header title="NEW ELECROL POSITION" subtitle="Create a new electrol position" />
@@ -73,13 +93,13 @@ const Form = () => {
                             fullWidth
                             variant="filled"
                             type="text"
-                            label="Short Description"
+                            label="Position Description"
                             onBlur={handleBlur}
                             onChange={handleChange}
-                            value={values.shortDesc}
-                            name="shortDesc"
-                            error={!!touched.shortDesc && !!errors.shortDesc}
-                            helperText={touched.shortDesc && errors.shortDesc}
+                            value={values.desc}
+                            name="desc"
+                            error={!!touched.desc && !!errors.desc}
+                            helperText={touched.desc && errors.desc}
                             sx={{
                                 gridColumn: {
                                     xs: "span 4",
@@ -91,85 +111,37 @@ const Form = () => {
                             }
                         />
 
-                        <Box sx={{
-                            gridColumn: "span 4",
 
-                            '& .quill': {
-                                background: colors.primary[400],
-                                '& .ql-toolbar': {
-                                    border: 'none',
-                                    '& > select': {
-                                        color: `${colors.grey[100]} !important`,
-                                    },
-                                },
-                                '& .ql-container': {
-                                    border: 'none',
-                                    color: colors.grey[100]
-                                },
-
-                            }
-
-                        }} mt={2} display="flex" flexDirection="column" gap={2}  >
-                            <Typography variant="h5" fontWeight="bold" color={colors.greenAccent[400]}>ALL SEAT DETAIS</Typography>
-
-                            <QuillNoSSRWrapper placeholder="Enter position details...." theme="snow" modules={modules} formats={formats} onChange={(e) => console.log(e)} />
-                        </Box>
                     </Box>
                     <Box display="flex" justifyContent="end" mt="50px">
-                        <Button type="submit" sx={{
+                        {loading ? <Button type="button" sx={{
                             color: colors.grey[100],
                             backgroundColor: colors.primary[400] + " !important",
+                            opacity: 0.5 + " !important",
                         }} variant="contained">
-                            Create New Position
-                        </Button>
+                            Loading...
+                        </Button> :
+                            <Button type="submit" sx={{
+                                color: colors.grey[100],
+                                backgroundColor: colors.primary[400] + " !important",
+                            }} variant="contained">
+                                Create New Position
+                            </Button>}
                     </Box>
                 </form>
             )}
         </Formik>
 
+        <Info open={open} setOpen={setOpen} message={message} />
     </Box>;
 };
 const initialValues = {
     position: "",
-    shortDesc: "",
+    desc: "",
 };
 const userSchema = yup.object().shape({
     position: yup.string().required("Electrol Position Name is required"),
-    shortDesc: yup.string().required("Electorate Description is required"),
+    desc: yup.string().required("Electorate Description is required"),
 })
-const formats = [
-    'header',
-    'font',
-    'size',
-    'bold',
-    'italic',
-    'underline',
-    'strike',
-    'blockquote',
-    'list',
-    'bullet',
-    'indent',
-    'link',
-    'image',
-    'video',
-]
-const modules = {
-    toolbar: [
-        [{ header: '1' }, { header: '2' }, { font: [] }],
-        [{ size: [] }],
-        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-        [
-            { list: 'ordered' },
-            { list: 'bullet' },
-            { indent: '-1' },
-            { indent: '+1' },
-        ],
 
-        ['clean'],
-    ],
-    clipboard: {
-
-        matchVisual: false,
-    },
-}
 export default Form;

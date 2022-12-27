@@ -8,7 +8,7 @@ export default function SimpleSnackbar({ message, open, setOpen, error }) {
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
-            return;
+            setOpen(false);
         }
 
         setOpen(false);

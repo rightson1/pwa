@@ -4,21 +4,36 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { useGlobalProvider } from "../../context/themeContext";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import Header from "../../components/Title"
-import InputAdornment from "@mui/material/InputAdornment";
-import SearchIcon from "@mui/icons-material/Search";
-import TextareaAutosize from '@mui/base/TextareaAutosize';
+import Header from "../../components/Title";
+import Info from "../../components/Info"
+import axios from "axios";
+
 const Form = () => {
-    const [age, setAge] = React.useState('');
-    const handleChange = (event) => {
-        setAge(event.target.value);
-    };
-
-
-    const { colors } = useGlobalProvider();
+    const [ans, setAns] = React.useState('');
+    const { colors, baseUrl } = useGlobalProvider();
+    const [loading, setLoading] = React.useState(false);
+    const [message, setMessage] = React.useState("");
+    const [open, setOpen] = React.useState(false);
     const isNonMobile = useMediaQuery("(min-width:600px)");
-    const handleFormSubmit = (values) => {
-        console.log(values)
+    const handleFormSubmit = (values, { resetForm }) => {
+        const data = { ...values, ans }
+        setLoading(true)
+        axios.post(`${baseUrl}/faqs`, data).then(res => {
+
+            setMessage("FAQ Created Successfully")
+            setOpen(true)
+            setLoading(false)
+            resetForm()
+            setAns('')
+
+
+        }).catch(() => {
+            setLoading(false)
+            setMessage('There Was An Error')
+            setOpen(true)
+        })
+
+
     }
     return <Box m="20px">
         <Header title="FREQUENTLY ASKED QUESTIONS" subtitle="Enter question and answer to help voters" />
@@ -55,52 +70,60 @@ const Form = () => {
                             label="Enter question"
                             onBlur={handleBlur}
                             onChange={handleChange}
-                            value={values.position}
-                            name="position"
-                            error={!!touched.position && !!errors.position}
-                            helperText={touched.position && errors.position}
-                            InputProps={{
-                                endAdornment: <InputAdornment position="end">
-                                    <IconButton>
-                                        <SearchIcon />
-                                    </IconButton>
-                                </InputAdornment>,
-                            }}
-
+                            value={values.quiz}
+                            name="quiz"
+                            error={!!touched.quiz && !!errors.quiz}
+                            helperText={touched.quiz && errors.quiz}
                             sx={{
                                 gridColumn: "span 4",
 
 
                             }}
                         />
-                        <textarea style={{
-                            backgroundColor: colors.primary[400],
-                            gridColumn: 'span 4',
-                        }} className="p-2  outline-none border-b-[1px] border-white" placeholder="Enter answer" />
+                        <textarea
+                            type="text"
+                            value={ans}
+                            label="Enter question"
+
+                            onChange={(e) => setAns(e.target.value)}
+
+                            style={{
+                                backgroundColor: colors.primary[400],
+                                gridColumn: 'span 4',
+
+                            }} className="p-2  outline-none border-b-[1px] border-white" placeholder="Enter response" />
 
 
                     </Box>
                     <Box display="flex" justifyContent="end" mt="50px">
-                        <Button type="submit" sx={{
+                        {loading ? <Button type="button" sx={{
                             color: colors.grey[100],
                             backgroundColor: colors.primary[400] + " !important",
+                            opacity: 0.5 + " !important",
                         }} variant="contained">
-                            Select
-                        </Button>
+                            Loading...
+                        </Button> :
+                            <Button type="submit" sx={{
+                                color: colors.grey[100],
+                                backgroundColor: colors.primary[400] + " !important",
+                            }} variant="contained">
+                                Create New  FAQ
+                            </Button>}
                     </Box>
                 </form>
             )}
         </Formik>
 
+        <Info open={open} setOpen={setOpen} message={message} />
+
     </Box>;
 };
 const initialValues = {
-    title: "",
-    desc: "",
+    quiz: "",
 };
 const userSchema = yup.object().shape({
-    title: yup.string().required("Electrol Position Name is required"),
-    desc: yup.string().required("Electorate Description is required"),
+    quiz: yup.string().required("FAQ QUIZ is required"),
+
 })
 
 export default Form;

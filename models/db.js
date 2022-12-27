@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
-const MONGO_URL = "mongodb://localhost:27017/mkuvoting";
-// const MONGO_URL =
-//     "mongodb+srv://Rightson:Rightson@nodeexpressproject.afbca.mongodb.net/mkuvoting?retryWrites=true&w=majority";
+// const MONGO_URL = "mongodb://localhost:27017/mkuvoting";
+const MONGO_URL =
+    "mongodb+srv://Rightson:Rightson@nodeexpressproject.afbca.mongodb.net/mkuvoting?retryWrites=true&w=majority";
 
 if (!MONGO_URL) {
     throw new Error(

@@ -14,7 +14,6 @@ import PersonAdd from "@mui/icons-material/PersonAdd";
 import HowToVoteIcon from '@mui/icons-material/HowToVote';
 import Clock from "../../components/Clock";
 import { formatDate } from "fullcalendar";
-
 const Admin = () => {
     const { colors, events } = useGlobalProvider()
     return <Box m="1rem">

@@ -93,7 +93,6 @@ const AdminSide = () => {
             }),
         }),
     );
-    const FramerDrawer = motion(Drawer);
 
     return <Box sx={{
         display: "flex",
@@ -102,11 +101,7 @@ const AdminSide = () => {
     >
 
 
-        <FramerDrawer
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-
-            exit={{ opacity: 0 }}
+        <Drawer
             variant="permanent" open={open}
 
             sx={{
@@ -139,40 +134,30 @@ const AdminSide = () => {
                 </ListItem>
             }
 
-            <motion.div
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.5 }}
-                exit={{ scale: 0, opacity: 0 }}
-
-            >
 
 
-                {open && (<>  <Box display="flex" justifyContent="space-between" alignItems="center" p="1rem">
+            {open && (<>  <Box display="flex" justifyContent="space-between" alignItems="center" p="1rem">
 
-                    <Typography>
-                        ADMINS
+                <Typography>
+                    ADMINS
+                </Typography>
+                <IconButton onClick={handleDrawerClose} >
+                    {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+                </IconButton>
+            </Box>
+                <Box gap={1} display="flex" p="1rem" flexDirection="column" alignItems="center">
+                    <Avatar src='/avatar.png' sx={{
+                        width: '90px',
+                        height: "90px"
+                    }} />
+                    <Typography variant='h3' fontWeight="bold">
+                        {admin?.name}
                     </Typography>
-                    <IconButton onClick={handleDrawerClose} >
-                        {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                    </IconButton>
-                </Box>
-                    <Box gap={1} display="flex" p="1rem" flexDirection="column" alignItems="center">
-                        <Avatar src='/avatar.png' sx={{
-                            width: '90px',
-                            height: "90px"
-                        }} />
-                        <Typography variant='h3' fontWeight="bold">
-                            {admin?.name}
-                        </Typography>
-                        <Typography variant='h6' fontWeight="bold" mt="-10px" color={colors.greenAccent[400]}>
-                            {admin?.role?.toUpperCase()}
-                        </Typography>
+                    <Typography variant='h6' fontWeight="bold" mt="-10px" color={colors.greenAccent[400]}>
+                        {admin?.role?.toUpperCase()}
+                    </Typography>
 
-                    </Box></>)}
-
-
-            </motion.div>
+                </Box></>)}
 
 
             <List>
@@ -241,7 +226,7 @@ const AdminSide = () => {
 
 
 
-        </FramerDrawer>
+        </Drawer>
 
     </Box>;
 };

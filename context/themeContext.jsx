@@ -14,9 +14,10 @@ import { createTheme } from "@mui/material/styles";
 import { ThemeProvider as Theme } from "@mui/material/styles";
 import { CssBaseline, useMediaQuery } from "@mui/material";
 import { useRouter } from "next/router";
-
+import axios from "axios";
 const ThemeContext = createContext();
-export const baseUrl = "http://localhost:3000/api/";
+// export const baseUrl = "http://localhost:3000/api/";
+export const baseUrl = "https://pwa-lake-kappa.vercel.app/api/";
 export const ThemeProvider = ({ children }) => {
     const router = useRouter()
     const initialState = {
@@ -32,6 +33,7 @@ export const ThemeProvider = ({ children }) => {
     const [close, setClose] = useState(false);
     const isMobile = useMediaQuery("(max-width: 600px)")
     const isLarge = useMediaQuery("(min-width: 900px)");
+    const [change, setChange] = useState(false)
 
     useEffect(() => {
         if (isMobile) {
@@ -43,7 +45,7 @@ export const ThemeProvider = ({ children }) => {
 
     }, [isLarge, isMobile])
     useEffect(() => {
-        if (isMobile) {
+        if (!isLarge) {
             setOpen(false)
             return;
         } else if (isLarge) {
@@ -52,6 +54,13 @@ export const ThemeProvider = ({ children }) => {
         }
 
     }, [router.pathname])
+    useEffect(() => {
+        axios.get(`${baseUrl}/events`).then((res) => {
+            setEvents(res.data)
+        }).catch((err) => {
+            console.log(err)
+        })
+    }, [change])
 
     return (
         <ThemeContext.Provider
@@ -64,20 +73,25 @@ export const ThemeProvider = ({ children }) => {
                 setOpen,
                 mode,
                 isMobile,
+                change,
                 events,
                 setEvents,
                 close,
                 isLarge,
+                setChange,
                 setClose,
                 baseUrl
 
             }}
         >
-            <AuthProvider>
-                <Theme theme={theme}>
+
+            <Theme theme={theme}>
+                <AuthProvider>
                     <CssBaseline />
-                    {children}</Theme>
-            </AuthProvider>
+                    {children}
+                </AuthProvider>
+            </Theme>
+
         </ThemeContext.Provider>
     );
 };

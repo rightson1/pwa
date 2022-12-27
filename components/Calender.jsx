@@ -4,7 +4,9 @@ import FullCalendar from '@fullcalendar/react' // must go before plugins
 import dayGridPlugin from '@fullcalendar/daygrid' // a plugin!
 import interactionPlugin from "@fullcalendar/interaction" // needed for dayClick
 import listPlugin from "@fullcalendar/list";
+import timeGridPlugin from "@fullcalendar/timegrid";
 import { formatDate } from "fullcalendar";
+import Info from "./Info";
 import Flex from "./Flex";
 import { useGlobalProvider } from "../context/themeContext";
 import {
@@ -17,11 +19,17 @@ import {
     Typography,
     useTheme,
 } from "@mui/material";
+import axios from "axios";
 const Calender = () => {
     const [currentEvents, setCurrentEvents] = React.useState([])
+    const [message, setMessage] = React.useState("");
+    const [open, setOpen] = React.useState(false);
 
 
-    const { colors, setEvents } = useGlobalProvider();
+    const { colors, baseUrl, setChange, change, events } = useGlobalProvider();
+
+
+
     const handleDateClick = (selected) => {
         const title = prompt("Enter Event Title");
         const calendarApi = selected.view.calendar;
@@ -36,14 +44,33 @@ const Calender = () => {
             })
         }
     }
-    useEffect(() => {
-        setEvents(currentEvents)
-    }, [currentEvents])
 
     const handleEventClick = (selected) => {
         if (window.confirm(`Are you sure you want to delete ${selected.event.title}`)) {
             selected.event.remove();
         }
+    }
+    const handleEvent = (event) => {
+        const { id, title, start, end, allDay } = event.event;
+        axios.post(`${baseUrl}/events`, { id, title, start, end, allDay }).then(() => {
+            setMessage("Event Saved To Database Successfully")
+            setOpen(true)
+            setChange(!change)
+        }).catch(() => {
+            setMessage('There Was An Error')
+            setOpen(true)
+        })
+    }
+    const handleDelete = (event) => {
+        const { id } = event.event;
+        axios.delete(`${baseUrl}/events?id=${id}`).then(() => {
+            setMessage("Event Deleted From Database Successfully")
+            setOpen(true)
+            setChange(!change)
+        }).catch(() => {
+            setMessage('There Was An Error')
+            setOpen(true)
+        })
     }
     return <Flex sx={{
         mt: "4rem",
@@ -160,38 +187,34 @@ const Calender = () => {
         >
             <FullCalendar
                 height="75vh"
-
-                plugins={[dayGridPlugin, interactionPlugin, listPlugin]}
+                plugins={[
+                    dayGridPlugin,
+                    timeGridPlugin,
+                    interactionPlugin,
+                    listPlugin,
+                ]}
                 headerToolbar={{
-                    left: 'prev,next,today',
-                    center: 'title',
-                    right: 'dayGridMonth,dayGridWeek,dayGridDay,listWeek'
+                    left: "prev,next,today",
+                    center: "title",
+                    right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
                 }}
+                initialView="dayGridMonth"
                 editable={true}
                 selectable={true}
                 selectMirror={true}
                 dayMaxEvents={true}
-                weekends
                 select={handleDateClick}
                 eventClick={handleEventClick}
                 eventsSet={(events) => setCurrentEvents(events)}
-                longPressDelay={1}
-                initialEvents={[
-                    {
-                        id: "12315",
-                        title: "All-day event",
-                        date: "2022-09-14",
-                    },
-                    {
-                        id: "5123",
-                        title: "Timed event",
-                        date: "2022-09-28",
-                    },
-                ]}
+                eventAdd={handleEvent}
+                eventChange={function () { }}
+                eventRemove={handleDelete}
+                events={events.length > 0 && events}
             />
 
         </Box>
 
+        <Info open={open} setOpen={setOpen} message={message} />
     </Flex>
 };
 
