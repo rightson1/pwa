@@ -1,9 +1,8 @@
 import db from "../../../models/db";
 import Position from "../../../models/Position";
-const handler = async (req, res) => {
-    await db()
+const handler = async(req, res) => {
+    await db();
     if (req.method === "POST") {
-
         try {
             const position = await Position.create(req.body);
             res.status(201).json(position);
@@ -37,10 +36,19 @@ const handler = async (req, res) => {
         } catch (error) {
             res.status(500).json(error);
         }
+    } else if (req.method === "PUT") {
+        const { id } = req.query;
+
+        try {
+            const position = await Position.findOneAndUpdate({ _id: id }, req.body, {
+                new: true,
+            });
+            res.status(200).json(position);
+        } catch (error) {
+            res.status(500).json(error);
+        }
     } else {
         res.status(200).json({ error: "Method not allowed" });
     }
-
-
 };
 export default handler;

@@ -16,6 +16,8 @@ import { CssBaseline, useMediaQuery } from "@mui/material";
 import { baseUrl } from "../src/data";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { setDoc, doc, getDocs, collection, onSnapshot } from "firebase/firestore";
+import { db } from "../firebase";
 const ThemeContext = createContext();
 
 
@@ -35,6 +37,7 @@ export const ThemeProvider = ({ children }) => {
     const isMobile = useMediaQuery("(max-width: 600px)")
     const isLarge = useMediaQuery("(min-width: 900px)");
     const [change, setChange] = useState(false)
+    const [positions, setPositions] = useState([])
 
     useEffect(() => {
         if (isMobile) {
@@ -58,12 +61,29 @@ export const ThemeProvider = ({ children }) => {
 
 
     useEffect(() => {
-        axios.get(`${baseUrl}/events`).then((res) => {
-            setEvents(res.data)
-        }).catch((e) => {
-            console.log(e)
+        getDocs(collection(db, "events")).then((res) => {
+            const data = res.docs.map(doc => (doc.data()));
+            setEvents(data)
+
+
         })
+
+
+    }, [change])
+    useEffect(() => {
+        const colRef = collection(db, "positions");
+        const unsubscribe = onSnapshot(colRef, snapshot => {
+            const data = snapshot.docs.map(doc => (doc.data()));
+            setPositions(data)
+
+        })
+
+        return () => {
+            unsubscribe()
+        }
+
     }, [])
+
 
 
     return (
@@ -84,6 +104,7 @@ export const ThemeProvider = ({ children }) => {
                 isLarge,
                 setChange,
                 setClose,
+                positions,
                 baseUrl
 
             }}

@@ -9,6 +9,8 @@ import { formatDate } from "fullcalendar";
 import Info from "./Info";
 import Flex from "./Flex";
 import { useGlobalProvider } from "../context/themeContext";
+import { db } from "../firebase";
+import { setDoc, doc, deleteDoc } from "firebase/firestore";
 import {
     Box,
     Button,
@@ -25,9 +27,8 @@ const Calender = () => {
     const [message, setMessage] = React.useState("");
     const [open, setOpen] = React.useState(false);
 
-
     const { colors, baseUrl, setChange, change, events } = useGlobalProvider();
-
+    console.log(events)
 
 
     const handleDateClick = (selected) => {
@@ -52,7 +53,9 @@ const Calender = () => {
     }
     const handleEvent = (event) => {
         const { id, title, start, end, allDay } = event.event;
-        axios.post(`${baseUrl}/events`, { id, title, start, end, allDay }).then(() => {
+
+        const colRef = doc(db, "events", id);
+        setDoc(colRef, { id, title, start, end, allDay }).then(() => {
             setMessage("Event Saved To Database Successfully")
             setOpen(true)
             setChange(!change)
@@ -64,7 +67,7 @@ const Calender = () => {
 
     const handleDelete = (event) => {
         const { id } = event.event;
-        axios.delete(`${baseUrl}/events?id=${id}`).then(() => {
+        deleteDoc(doc(db, "events", id)).then(() => {
             setMessage("Event Deleted From Database Successfully")
             setOpen(true)
             setChange(!change)

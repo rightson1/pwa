@@ -16,10 +16,12 @@ const Form = () => {
     const [message, setMessage] = React.useState("");
     const [open, setOpen] = React.useState(false);
     const { admin } = useAuth()
+    const [desc, setDesc] = React.useState('');
 
     const isNonMobile = useMediaQuery("(min-width:600px)");
     const handleFormSubmit = (values, { resetForm }) => {
-        const data = { name: values.position, desc: values.desc, admin: admin.name }
+        const data = { name: values.position, desc, admin: admin.name }
+        console.log(data)
         setLoading(true)
         axios.post(`${baseUrl}/positions`, data).then(res => {
             const positionRef = doc(db, "positions", res.data._id);
@@ -28,6 +30,7 @@ const Form = () => {
                 setOpen(true)
                 setLoading(false)
                 resetForm()
+                setDesc('')
 
             }).catch(() => {
                 setLoading(false)
@@ -84,33 +87,23 @@ const Form = () => {
                                 gridColumn: {
                                     xs: "span 4",
                                     sm: "span 4",
-                                    md: "span 2",
+                                    md: "span 4",
 
                                 }
                             }}
                         />
-                        <TextField
-                            fullWidth
-                            variant="filled"
+                        <textarea
                             type="text"
-                            label="Position Description"
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                            value={values.desc}
-                            name="desc"
-                            error={!!touched.desc && !!errors.desc}
-                            helperText={touched.desc && errors.desc}
-                            sx={{
-                                gridColumn: {
-                                    xs: "span 4",
-                                    sm: "span 4",
-                                    md: "span 2",
+                            value={desc}
+                            label="Enter question"
 
-                                }
-                            }
-                            }
-                        />
+                            onChange={(e) => setDesc(e.target.value)}
 
+                            style={{
+                                backgroundColor: colors.primary[400],
+                                gridColumn: 'span 4',
+
+                            }} className="p-2  outline-none border-b-[1px] border-white" placeholder="Enter response" />
 
                     </Box>
                     <Box display="flex" justifyContent="end" mt="50px">
@@ -137,11 +130,9 @@ const Form = () => {
 };
 const initialValues = {
     position: "",
-    desc: "",
 };
 const userSchema = yup.object().shape({
     position: yup.string().required("Electrol Position Name is required"),
-    desc: yup.string().required("Electorate Description is required"),
 })
 Form.getLayout = (page) => {
     return <>
