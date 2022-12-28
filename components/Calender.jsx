@@ -28,8 +28,12 @@ const Calender = () => {
     const [open, setOpen] = React.useState(false);
 
     const { colors, baseUrl, setChange, change, events } = useGlobalProvider();
-    console.log(events)
+    useEffect(() => {
+        axios.get(`${baseUrl}/events`).then((res) => {
+            console.log(res.data)
 
+        })
+    }, [])
 
     const handleDateClick = (selected) => {
         const title = prompt("Enter Event Title");
@@ -52,7 +56,8 @@ const Calender = () => {
         }
     }
     const handleEvent = (event) => {
-        const { id, title, start, end, allDay } = event.event;
+        const { id, title, startStr: start, endStr: end, allDay } = event.event;
+        console.log({ id, title, start, end, allDay })
 
         const colRef = doc(db, "events", id);
         setDoc(colRef, { id, title, start, end, allDay }).then(() => {
@@ -113,7 +118,7 @@ const Calender = () => {
             <List
             >
                 {
-                    currentEvents.map((event) => (
+                    events.map((event) => (
                         <ListItem key={event.id} sx={
                             {
                                 backgroundColor: colors.greenAccent[500],
@@ -213,7 +218,8 @@ const Calender = () => {
                 eventAdd={handleEvent}
                 eventChange={function () { }}
                 eventRemove={handleDelete}
-                events={events.length > 0 && events}
+                longPressDelay={1}
+                events={events}
             />
 
         </Box>
