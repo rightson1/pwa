@@ -20,7 +20,6 @@ const AdminSchema = new Schema({
     isDeleted: {
         type: Boolean,
         default: false,
-    }
-
+    },
 }, { timestamps: true });
 export default models.Admin || model("Admin", AdminSchema);
