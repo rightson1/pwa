@@ -38,7 +38,6 @@
         "mongoose": "^6.8.1",
         "next": "^12.3.0",
         "next-pwa": "^5.6.0",
-        "postcss": "^8.4.16",
         "prosemirror-keymap": "^1.2.0",
         "react": "^18.2.0",
         "react-datepicker": "^4.8.0",
@@ -49,7 +48,6 @@
     },
     "devDependencies": {
         "eslint": "8.23.1",
-        "eslint-config-next": "12.3.0",
-        "tailwindcss": "^3.1.8"
+        "eslint-config-next": "12.3.0"
     }
 }

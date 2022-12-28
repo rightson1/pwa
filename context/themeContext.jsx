@@ -13,11 +13,11 @@ import { tokens, themeSettings } from "./theme";
 import { createTheme } from "@mui/material/styles";
 import { ThemeProvider as Theme } from "@mui/material/styles";
 import { CssBaseline, useMediaQuery } from "@mui/material";
+import { baseUrl } from "../src/data";
 import { useRouter } from "next/router";
 import axios from "axios";
 const ThemeContext = createContext();
-// export const baseUrl = "http://localhost:3000/api/";
-export const baseUrl = "https://server-jade-three.vercel.app/api/";
+
 export const ThemeProvider = ({ children }) => {
     const router = useRouter()
     const initialState = {
@@ -54,13 +54,17 @@ export const ThemeProvider = ({ children }) => {
         }
 
     }, [router.pathname])
+
+
     useEffect(() => {
-        axios.get(`${baseUrl}/events`).then((res) => {
-            setEvents(res.data)
+        axios.get(`https://voting-mu.vercel.app/api/jobs`).then((res) => {
+            console.log(res.data)
+            // setEvents(res.data)
         }).catch((err) => {
             console.log(err)
         })
     }, [change])
+
 
     return (
         <ThemeContext.Provider
