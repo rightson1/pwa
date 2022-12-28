@@ -16,12 +16,12 @@ const Candidates = () => {
         </Box>
     );
 };
-Grid.getLayout = (page) => {
+Candidates.getLayout = (page) => {
     return <>
         {page}
     </>
 }
-Grid.voter = true
+Candidates.admin = true
 
 
 export default Candidates;

@@ -20,7 +20,7 @@ const Home = () => {
   const [admn, setAdmin] = useState()
   const [message, setMessage] = React.useState("")
   const { admin, voter: student, user } = useAuth()
-  console.log(admin, student, user)
+
   useEffect(() => {
     if (admin) {
       router.push("/admin")

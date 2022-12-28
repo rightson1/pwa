@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 const ThemeContext = createContext();
 
+
 export const ThemeProvider = ({ children }) => {
     const router = useRouter()
     const initialState = {
@@ -59,10 +60,10 @@ export const ThemeProvider = ({ children }) => {
     useEffect(() => {
         axios.get(`${baseUrl}/events`).then((res) => {
             setEvents(res.data)
-        }).catch((err) => {
-            console.log(err)
+        }).catch((e) => {
+            console.log(e)
         })
-    }, [change])
+    }, [])
 
 
     return (
