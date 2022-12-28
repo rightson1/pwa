@@ -122,6 +122,13 @@ const userSchema = yup.object().shape({
     title: yup.string().required("Notification title is required"),
 
 })
+Form.getLayout = (page) => {
+    return <>
+        {page}
+    </>
+}
+Form.admin = true
+
 
 export default Form;
 

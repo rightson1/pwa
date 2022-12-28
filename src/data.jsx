@@ -906,4 +906,4 @@ export const mockBarData = [{
     ZeddyColor: "hsl(340, 70%, 50%)",
 }]
 
-export const baseUrl = "https://pwa-seven-ruby.vercel.app/";
+export const baseUrl = " http://localhost:3000/api/";

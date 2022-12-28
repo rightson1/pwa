@@ -57,9 +57,8 @@ export const ThemeProvider = ({ children }) => {
 
 
     useEffect(() => {
-        axios.get(`https://voting-mu.vercel.app/api/jobs`).then((res) => {
-            console.log(res.data)
-            // setEvents(res.data)
+        axios.get(`${baseUrl}/events`).then((res) => {
+            setEvents(res.data)
         }).catch((err) => {
             console.log(err)
         })

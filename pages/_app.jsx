@@ -40,7 +40,36 @@ export default function MyApp(props) {
           </ThemeProvider>
         </CacheProvider>
       </div>)
-    } else {
+    }
+    else if (Component.admin) {
+      return (
+        <div>
+          <CacheProvider value={emotionCache}>
+            <ThemeProvider>
+              <CssBaseline />
+              <Protected>
+                <AnimatePresence>
+                  <div className='app'>
+                    <AdminSide />
+                    <main className="content" style={{
+                      width: "100%",
+                    }}>
+                      <AdminNav />
+                      <Component {...pageProps} />
+                    </main>
+
+
+                  </div>;
+                </AnimatePresence>
+              </Protected>
+
+            </ThemeProvider>
+          </CacheProvider>
+        </div>
+      );
+    }
+
+    else {
       return Component.getLayout(<CacheProvider value={emotionCache}>
         <ThemeProvider>
           <CssBaseline />
@@ -50,31 +79,12 @@ export default function MyApp(props) {
       </CacheProvider>)
     }
   }
-  return (
-    <div>
-      <CacheProvider value={emotionCache}>
-        <ThemeProvider>
-          <CssBaseline />
-          <Protected>
-            <AnimatePresence>
-              <div className='app'>
-                <AdminSide />
-                <main className="content" style={{
-                  width: "100%",
-                }}>
-                  <AdminNav />
-                  <Component {...pageProps} />
-                </main>
+  else {
+    <>
+      <Component {...pageProps} />
+    </>
 
-
-              </div>;
-            </AnimatePresence>
-          </Protected>
-
-        </ThemeProvider>
-      </CacheProvider>
-    </div>
-  );
+  }
 }
 
 MyApp.propTypes = {

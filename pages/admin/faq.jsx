@@ -125,5 +125,12 @@ const userSchema = yup.object().shape({
     quiz: yup.string().required("FAQ QUIZ is required"),
 
 })
+Form.getLayout = (page) => {
+    return <>
+        {page}
+    </>
+}
+Form.admin = true
+
 
 export default Form;

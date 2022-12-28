@@ -61,6 +61,13 @@ const Calender = () => {
             setOpen(true)
         })
     }
+    useEffect(() => {
+        axios.get(`${baseUrl}/events`).then((res) => {
+            setEvents(res.data)
+        }).catch((err) => {
+            console.log(err)
+        })
+    }, [change])
     const handleDelete = (event) => {
         const { id } = event.event;
         axios.delete(`${baseUrl}/events?id=${id}`).then(() => {

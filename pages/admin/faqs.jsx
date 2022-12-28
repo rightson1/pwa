@@ -11,4 +11,11 @@ const Faq = () => {
     </Box>;
 };
 
+Faq.getLayout = (page) => {
+    return <>
+        {page}
+    </>
+}
+Faq.admin = true
+
 export default Faq;

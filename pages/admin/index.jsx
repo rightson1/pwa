@@ -192,5 +192,12 @@ const Admin = () => {
 
     </Box>
 };
+Admin.getLayout = (page) => {
+    return <>
+        {page}
+    </>
+}
+Admin.admin = true
+
 
 export default Admin;

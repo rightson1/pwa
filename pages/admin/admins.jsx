@@ -137,5 +137,12 @@ const Contacts = () => {
         </Box>
     );
 };
+Contacts.getLayout = (page) => {
+    return <>
+        {page}
+    </>
+}
+Contacts.admin = true
+
 
 export default Contacts;

@@ -45,5 +45,12 @@ const Bar = () => {
         </Box>
     );
 };
+Bar.getLayout = (page) => {
+    return <>
+        {page}
+    </>
+}
+Bar.admin = true
+
 
 export default Bar;

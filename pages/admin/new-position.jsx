@@ -143,5 +143,11 @@ const userSchema = yup.object().shape({
     position: yup.string().required("Electrol Position Name is required"),
     desc: yup.string().required("Electorate Description is required"),
 })
+Form.getLayout = (page) => {
+    return <>
+        {page}
+    </>
+}
+Form.admin = true
 
 export default Form;

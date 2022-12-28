@@ -44,5 +44,12 @@ const Pie = () => {
         </Box>
     );
 };
+Pie.getLayout = (page) => {
+    return <>
+        {page}
+    </>
+}
+Pie.admin = true
+
 
 export default Pie;

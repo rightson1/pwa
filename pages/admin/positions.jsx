@@ -38,5 +38,12 @@ const Positions = () => {
         }
     </Box>
 };
+Positions.getLayout = (page) => {
+    return <>
+        {page}
+    </>
+}
+Positions.admin = true
+
 
 export default Positions;

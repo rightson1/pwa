@@ -118,4 +118,12 @@ const Contacts = () => {
     );
 };
 
+Contacts.getLayout = (page) => {
+    return <>
+        {page}
+    </>
+}
+Contacts.admin = true
+
+
 export default Contacts;

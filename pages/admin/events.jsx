@@ -17,5 +17,12 @@ const Events = () => {
         <Calender />
     </Box>;
 };
+Events.getLayout = (page) => {
+    return <>
+        {page}
+    </>
+}
+Events.admin = true
+
 
 export default Events;

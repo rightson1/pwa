@@ -127,6 +127,7 @@ const Settings = () => {
 };
 
 
+
 const steps = [
     {
         label: 'Select campaign settings',
@@ -147,6 +148,15 @@ const steps = [
               they're running and how to resolve approval issues.`,
     },
 ];
+
+
+Settings.getLayout = (page) => {
+    return <>
+        {page}
+    </>
+}
+Settings.admin = true
+
 
 
 

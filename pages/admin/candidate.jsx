@@ -137,4 +137,11 @@ const userSchema = yup.object().shape({
   shortDesc: yup.string().required("Electorate Description is required"),
 })
 
+Form.getLayout = (page) => {
+  return <>
+    {page}
+  </>
+}
+Form.admin = true
+
 export default Form;
