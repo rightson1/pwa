@@ -274,11 +274,6 @@ const navItems = [
         icon: <HelpOutlineOutlinedIcon />,
     },
     {
-        text: 'Messages',
-        link: 'messages',
-        icon: <MessageOutlined />,
-    },
-    {
         text: 'Events',
         link: 'events',
         icon: <CalendarTodayOutlinedIcon />

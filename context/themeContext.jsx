@@ -38,6 +38,7 @@ export const ThemeProvider = ({ children }) => {
     const isLarge = useMediaQuery("(min-width: 900px)");
     const [change, setChange] = useState(false)
     const [positions, setPositions] = useState([])
+    const [faqs, setFaqs] = useState([])
 
     useEffect(() => {
         if (isMobile) {
@@ -60,6 +61,24 @@ export const ThemeProvider = ({ children }) => {
     }, [router.pathname])
 
 
+    useEffect(() => {
+        getDocs(collection(db, "faq")).then((res) => {
+            const data = res.docs.map(doc => (doc.data()));
+            setFaqs(data)
+        })
+
+    }, [])
+
+    useEffect(() => {
+        getDocs(collection(db, "events")).then((res) => {
+            const data = res.docs.map(doc => (doc.data()));
+            setEvents(data)
+
+
+        })
+
+
+    }, [change])
     useEffect(() => {
         getDocs(collection(db, "events")).then((res) => {
             const data = res.docs.map(doc => (doc.data()));
@@ -102,10 +121,13 @@ export const ThemeProvider = ({ children }) => {
                 setEvents,
                 close,
                 isLarge,
+                faqs,
                 setChange,
                 setClose,
                 positions,
-                baseUrl
+                baseUrl,
+                events
+
 
             }}
         >

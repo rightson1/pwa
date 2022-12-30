@@ -5,74 +5,40 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
+
 const FAQ = () => {
-    const { colors, isMobile } = useGlobalProvider()
+    const { colors, isMobile, faqs } = useGlobalProvider()
+    console.log(faqs)
     return <Box>
-        <Accordion defaultExpanded>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography color={colors.greenAccent[500]} variant="h5">
-                    An Important Question
-                </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-                <Typography>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                    malesuada lacus ex, sit amet blandit leo lobortis eget.
-                </Typography>
-            </AccordionDetails>
-        </Accordion>
-        <Accordion>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography color={colors.greenAccent[500]} variant="h5">
-                    Another Important Question
-                </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-                <Typography>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                    malesuada lacus ex, sit amet blandit leo lobortis eget.
-                </Typography>
-            </AccordionDetails>
-        </Accordion>
-        <Accordion>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography color={colors.greenAccent[500]} variant="h5">
-                    Your Favorite Question
-                </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-                <Typography>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                    malesuada lacus ex, sit amet blandit leo lobortis eget.
-                </Typography>
-            </AccordionDetails>
-        </Accordion>
-        <Accordion>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography color={colors.greenAccent[500]} variant="h5">
-                    Some Random Question
-                </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-                <Typography>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                    malesuada lacus ex, sit amet blandit leo lobortis eget.
-                </Typography>
-            </AccordionDetails>
-        </Accordion>
-        <Accordion>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography color={colors.greenAccent[500]} variant="h5">
-                    The Final Question
-                </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-                <Typography>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                    malesuada lacus ex, sit amet blandit leo lobortis eget.
-                </Typography>
-            </AccordionDetails>
-        </Accordion>
+        {faqs.length ?
+            faqs.map((faq, index) => (<Accordion defaultExpanded key={index}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography color={colors.greenAccent[500]} variant="h5">
+                        {faq.quiz}
+                    </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <Typography>
+                        {faq.ans}
+                    </Typography>
+                </AccordionDetails>
+            </Accordion>)) : (
+                <>
+                    {
+                        [1, 2, 3, 4, 5, 6, 7, 8, 9].map((item, index) => (
+                            <Stack spacing={.5} key={index} mb="2rem">
+
+                                <Skeleton variant="rectangular" width="100%" height={10} />
+                                <Skeleton variant="rounded" width="100%" height={60} />
+                            </Stack>
+                        ))
+                    }
+                </>
+            )
+        }
+
     </Box>;
 };
 

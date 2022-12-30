@@ -5,9 +5,10 @@ import * as yup from "yup";
 import { useGlobalProvider } from "../../context/themeContext";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Title";
+import { db } from "../../firebase";
 import Info from "../../components/Info"
 import axios from "axios";
-
+import { collection, addDoc, doc } from "firebase/firestore";
 const Form = () => {
     const [ans, setAns] = React.useState('');
     const { colors, baseUrl } = useGlobalProvider();
@@ -18,21 +19,18 @@ const Form = () => {
     const handleFormSubmit = (values, { resetForm }) => {
         const data = { ...values, ans }
         setLoading(true)
-        axios.post(`${baseUrl}/faqs`, data).then(res => {
-
+        const colRef = collection(db, "faq");
+        addDoc(colRef, data).then(() => {
             setMessage("FAQ Created Successfully")
             setOpen(true)
             setLoading(false)
             resetForm()
             setAns('')
-
-
         }).catch(() => {
             setLoading(false)
             setMessage('There Was An Error')
             setOpen(true)
         })
-
 
     }
     return <Box m="20px">

@@ -139,7 +139,7 @@ const Home = () => {
               </div>
 
               <button className="bg-black py-3 px-4 text-white rounded-md w-full flex justify-center items-center gap-2 w-3/4" onClick={voter ? voterSubmit : adminSubmit}>{loading ? "Please Wait..." : "Login"} </button>
-              <p>Dont have an account? <button className="text-green cursor-pointer" onClick={() => router.push("/worker/register")}>Register As Worker </button> or <button className="text-green cursor-pointer" onClick={() => router.push("/register")}> Register As Admin</button></p>
+              <p>Dont have an account? <button className="text-green cursor-pointer" onClick={() => router.push("/register")}>Register As Voter </button> or <button className="text-green cursor-pointer" onClick={() => router.push("/register")}> Register As Admin</button></p>
 
             </div>
 
