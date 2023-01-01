@@ -258,17 +258,6 @@ const navItems = [
         icon: <QuizIcon />,
     },
     {
-        text: 'Messages',
-        link: 'messages',
-        icon: <MessageOutlined />,
-    },
-    {
-        text: 'Events',
-        link: 'events',
-        icon: <CalendarTodayOutlinedIcon />
-
-    },
-    {
         text: "Help",
         link: 'help',
         icon: <HelpOutlineIcon />

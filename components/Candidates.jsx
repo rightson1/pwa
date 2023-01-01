@@ -7,7 +7,7 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useGlobalProvider } from "../context/themeContext"
 import { candidates } from "../src/data";
 
-const Candidates = () => {
+const Candidates = ({ isDashboard }) => {
     const { colors } = useGlobalProvider()
     const columns = [
         { field: "id", headerName: "ADM NO.", flex: 0.5 },
