@@ -1,5 +1,6 @@
-import React from "react";
-import { Box, Typography, useTheme } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import axios from "axios"
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import { useGlobalProvider } from "../context/themeContext";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -7,22 +8,43 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
+import { useFaqDelete, useFaqQuery } from "../util/useFaq";
 
 const FAQ = () => {
     const { colors, isMobile, faqs } = useGlobalProvider()
-    console.log(faqs)
+    const { data, isLoading, isError, error } = useFaqQuery()
+    const [id, setId] = useState()
+
+    const { mutate, isError: isDelete, isLoading: loading } = useFaqDelete()
+    const { refetch } = useFaqQuery()
+    const handleDelete = (id) => {
+        setId(id)
+        mutate(id)
+        if (!isDelete) {
+            refetch()
+        }
+    }
     return <Box>
-        {faqs.length ?
-            faqs.map((faq, index) => (<Accordion defaultExpanded key={index}>
+
+        {data?.length ?
+            data?.map(({ id: faqId, faq }, index) => (<Accordion defaultExpanded key={index}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography color={colors.greenAccent[500]} variant="h5">
-                        {faq.quiz}
+                        {faq?.quiz}
                     </Typography>
+
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography>
-                        {faq.ans}
+                        {faq?.ans}
                     </Typography>
+                    <Button
+                        sx={{
+                            color: `${colors.redAccent[700]} !important`,
+
+                        }}
+                        onClick={() => handleDelete(faqId)}
+                    >{loading && id === faqId ? "loading..." : 'Delete'}</Button>
                 </AccordionDetails>
             </Accordion>)) : (
                 <>

@@ -9,6 +9,8 @@ import { formatDate } from "fullcalendar";
 import Info from "./Info";
 import Flex from "./Flex";
 import { useGlobalProvider } from "../context/themeContext";
+import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
 import { db } from "../firebase";
 import { setDoc, doc, deleteDoc } from "firebase/firestore";
 import {
@@ -22,18 +24,15 @@ import {
     useTheme,
 } from "@mui/material";
 import axios from "axios";
+import { useEventsDelete, useEventsMutation, useEventsQuery } from "../util/useEvents";
 const Calender = () => {
     const [currentEvents, setCurrentEvents] = React.useState([])
     const [message, setMessage] = React.useState("");
     const [open, setOpen] = React.useState(false);
-
+    const { mutate, isSuccess: added, isError: failed } = useEventsMutation()
+    const { data } = useEventsQuery()
+    const { mutate: deleteEvent, isSuccess, isError } = useEventsDelete()
     const { colors, baseUrl, setChange, change, events } = useGlobalProvider();
-    useEffect(() => {
-        axios.get(`${baseUrl}/events`).then((res) => {
-            console.log(res.data)
-
-        })
-    }, [])
 
     const handleDateClick = (selected) => {
         const title = prompt("Enter Event Title");
@@ -57,29 +56,33 @@ const Calender = () => {
     }
     const handleEvent = (event) => {
         const { id, title, startStr: start, endStr: end, allDay } = event.event;
-        console.log({ id, title, start, end, allDay })
+        const data = { id, title, start, end, allDay }
+        mutate(data)
 
-        const colRef = doc(db, "events", id);
-        setDoc(colRef, { id, title, start, end, allDay }).then(() => {
+    }
+    useEffect(() => {
+        if (added) {
             setMessage("Event Saved To Database Successfully")
             setOpen(true)
-            setChange(!change)
-        }).catch(() => {
+
+        } else if (failed) {
             setMessage('There Was An Error')
             setOpen(true)
-        })
-    }
 
+        }
+    }, [added, failed])
     const handleDelete = (event) => {
         const { id } = event.event;
-        deleteDoc(doc(db, "events", id)).then(() => {
+        deleteEvent(id)
+        if (isSuccess) {
             setMessage("Event Deleted From Database Successfully")
             setOpen(true)
-            setChange(!change)
-        }).catch(() => {
+        } else if (isError) {
             setMessage('There Was An Error')
             setOpen(true)
-        })
+        }
+
+
     }
     return <Flex sx={{
         mt: "4rem",
@@ -117,8 +120,8 @@ const Calender = () => {
             <Typography>Events</Typography>
             <List
             >
-                {
-                    events.map((event) => (
+                {data?.length > 0 ?
+                    data?.map((event) => (
                         <ListItem key={event.id} sx={
                             {
                                 backgroundColor: colors.greenAccent[500],
@@ -141,7 +144,15 @@ const Calender = () => {
                             />
                         </ListItem>
                     )
-                    )
+                    ) : <>
+                        {
+                            [1, 2, 3, 4, 5, 6, 7, 8, 9].map((item, index) => (
+                                <Stack spacing={.5} key={index} mb="2rem">
+                                    <Skeleton variant="rounded" width="100%" height={60} />
+                                </Stack>
+                            ))
+                        }
+                    </>
                 }
 
             </List>
@@ -219,7 +230,7 @@ const Calender = () => {
                 eventChange={function () { }}
                 eventRemove={handleDelete}
                 longPressDelay={1}
-                events={events}
+                events={data}
             />
 
         </Box>

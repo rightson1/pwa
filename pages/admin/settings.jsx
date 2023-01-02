@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -10,20 +10,16 @@ import Typography from '@mui/material/Typography';
 import { useGlobalProvider } from "../../context/themeContext";
 import Header from "../../components/Title";
 import Flex from "../../components/Flex";
-import dayjs from 'dayjs';
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 
+import TextField from '@mui/material/TextField';
+import moment from 'moment';
+import { useTimeMutation, useTimeQuery, useTimeUpdate } from "../../util/useTime";
+import { baseUrl } from "../../src/data";
 const Settings = () => {
     const { colors } = useGlobalProvider();
     const [activeStep, setActiveStep] = React.useState(0);
-
+    const [date, setDate] = useState()
+    const [time, setTime] = useState()
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
@@ -35,10 +31,22 @@ const Settings = () => {
     const handleReset = () => {
         setActiveStep(0);
     };
-    const [value, setValue] = React.useState(dayjs('2014-08-18T21:11:54'));
 
-    const handleChange = (newValue) => {
-        setValue(newValue);
+
+    const { mutate, isLoading, isSuccess } = useTimeMutation()
+    const { mutate: update, isLoading: loading } = useTimeUpdate()
+    const { data: savedTime } = useTimeQuery()
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        const date = e.target.date.value;
+        const data = { date, id: savedTime.id }
+        console.log(data)
+        if (savedTime) {
+            update(data)
+        } else {
+            mutate(data)
+
+        }
     };
 
     return <Box m="20px">
@@ -113,16 +121,26 @@ const Settings = () => {
 
         </Box>
         <Typography variant="h6" sx={{ color: colors.greenAccent[500] }}>Election Date Settings</Typography>
-        {/* <LocalizationProvider>
-            <Stack spacing={3}>
-                <DateTimePicker
-                    label="Date&Time picker"
-                    value={value}
-                    onChange={handleChange}
-                    renderInput={(params) => <TextField {...params} />}
-                />
-            </Stack>
-        </LocalizationProvider> */}
+        <Box my={2} gap={2} display="flex" alignItems="center" flexWrap="wrap" component="form" onSubmit={handleSubmit}>
+            <Box display="flex" gap={3} alignItems="center">
+                <Typography>Date:</Typography>
+                <TextField required name="date" type="date" />
+
+            </Box>
+
+            <Button
+                sx={{
+                    bgcolor: colors.greenAccent[500] + "!important",
+                    color: colors.grey[100],
+                    py: 2,
+                    px: 4
+                }}
+                type="submit"
+
+
+            >{isLoading || loading ? 'Loading...' : 'Update'}</Button>
+        </Box>
+
     </Box>;
 };
 

@@ -8,6 +8,7 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { useGlobalProvider } from "../context/themeContext";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useAuth } from "../context/authContext";
+import { useTimeQuery } from "../util/useTime";
 
 const Home = () => {
   const router = useRouter()
@@ -20,6 +21,7 @@ const Home = () => {
   const [admn, setAdmin] = useState()
   const [message, setMessage] = React.useState("")
   const { admin, voter: student, user } = useAuth()
+  const { data: time } = useTimeQuery()
 
   useEffect(() => {
     if (admin) {

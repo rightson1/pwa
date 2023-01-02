@@ -14,8 +14,20 @@ import PersonAdd from "@mui/icons-material/PersonAdd";
 import HowToVoteIcon from '@mui/icons-material/HowToVote';
 import Clock from "../../components/Clock";
 import { formatDate } from "fullcalendar";
+import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
+import { useAdminQuery } from "../../util/useAdmin";
+import { useEventsQuery } from "../../util/useEvents";
+import { useTimeQuery } from "../../util/useTime";
+
 const Admin = () => {
-    const { colors, events } = useGlobalProvider()
+    const { colors } = useGlobalProvider()
+    const { data: admins, isLoading } = useAdminQuery();
+    const { data: events } = useEventsQuery()
+    const { data: time } = useTimeQuery()
+
+
+
     return <Box m="1rem">
         <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
         <Box
@@ -64,7 +76,7 @@ const Admin = () => {
                 >
                     <Typography variant="h5" fontWeight="600" colors={colors.grey[100]}>All Administrators</Typography>
                 </Box>
-                {data.map((admin, index) => (
+                {admins?.length > 0 ? admins?.map(({ admin, id }, index) => (
                     <Box key={index}
                         display="flex"
                         justifyContent="space-between"
@@ -79,7 +91,7 @@ const Admin = () => {
                                 variant="h5"
                                 fontWeight="600"
                             >
-                                {admin.id}
+                                {index + 1}
                             </Typography>
                             <Typography color={colors.grey[100]}>
                                 {admin.name}
@@ -91,10 +103,24 @@ const Admin = () => {
                             p="5px 10px"
                             borderRadius="4px"
                         >
-                            {admin.access}
+                            {admin.role}
                         </Box>
                     </Box>
-                ))}
+                )) : (
+                    <>
+                        <Skeleton variant="rectangular" width="100%" height={10} />
+                        {
+                            [1, 2, 3, 4, 5, 6, 7, 8, 9].map((item, index) => (
+                                <Stack spacing={.5} key={index} mb="2rem">
+
+                                    <Skeleton variant="rectangular" width="100%" height={10} />
+                                    <Skeleton variant="rounded" width="100%" height={60} />
+                                </Stack>
+                            ))
+                        }
+                    </>
+                )
+                }
             </Box>
 
             <StatBox
@@ -158,8 +184,8 @@ const Admin = () => {
                 <Typography>Events</Typography>
                 <List
                 >
-                    {
-                        events.map((event) => (
+                    {events?.length > 0 ?
+                        events?.map((event) => (
                             <ListItem key={event.id} sx={
                                 {
                                     backgroundColor: colors.greenAccent[500],
@@ -182,7 +208,15 @@ const Admin = () => {
                                 />
                             </ListItem>
                         )
-                        )
+                        ) : <>
+                            {
+                                [1, 2, 3, 4, 5, 6, 7, 8, 9].map((item, index) => (
+                                    <Stack spacing={.5} key={index} mb="2rem">
+                                        <Skeleton variant="rounded" width="100%" height={60} />
+                                    </Stack>
+                                ))
+                            }
+                        </>
                     }
 
                 </List>

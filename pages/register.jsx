@@ -58,7 +58,6 @@ const Home = () => {
 
     }
 
-    console.log(message)
     return <div className="w-screen h-screen overflow-hidden bg-[rgb(150,150,150)] -md md:p-8 ">
         <div className="w-full h-full bg-[rgb(200,200,200)] rounded p-4 overflow-y-auto overflow-x-hidden md:p-8">
             <HomeNav />

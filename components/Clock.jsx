@@ -2,8 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Box, Typography, useTheme } from "@mui/material";
 import { useGlobalProvider } from "../context/themeContext";
 import useClock from "./useClock";
+import { useTimeQuery } from "../util/useTime";
 function ClockParent() {
-    const { timerDays, timerHours, timerMinutes, timerSeconds } = useClock();
+    const { data } = useTimeQuery()
+
+
+    const { timerDays, timerHours, timerMinutes, timerSeconds } = useClock({ data });
     const { colors } = useGlobalProvider();
     return (
         <Box display="flex" sx={{
@@ -22,10 +26,8 @@ function ClockParent() {
                 justifyContent: 'center',
                 alignItems: 'center',
                 p: "1rem",
-
-
             }}>
-                <Typography variant="h3" fontWeight="600">{timerDays}</Typography>
+                <Typography variant="h3" fontWeight="600">{timerDays ? timerDays : 0}</Typography>
                 <Typography variant="h6" fontWeight="400" color={colors.primary[100]}>Days</Typography>
             </Box>
             <Typography variant="h3" fontWeight="500" color={colors.primary[100]}>:</Typography>
@@ -38,7 +40,7 @@ function ClockParent() {
 
 
             }}>
-                <Typography variant="h3" fontWeight="600">{timerHours}</Typography>
+                <Typography variant="h3" fontWeight="600">{timerHours ? timerHours : 0}</Typography>
                 <Typography variant="h6" fontWeight="400" color={colors.primary[100]}>Hours</Typography>
             </Box>
             <Typography variant="h3" fontWeight="500" color={colors.primary[100]}>:</Typography>
@@ -51,7 +53,7 @@ function ClockParent() {
 
 
             }}>
-                <Typography variant="h3" fontWeight="600">{timerMinutes}</Typography>
+                <Typography variant="h3" fontWeight="600">{timerMinutes ? timerMinutes : 0}</Typography>
                 <Typography variant="h6" fontWeight="400" color={colors.primary[100]}>Minutes</Typography>
             </Box>
             <Typography variant="h3" fontWeight="500" color={colors.primary[100]}>:</Typography>
@@ -64,7 +66,7 @@ function ClockParent() {
 
 
             }}>
-                <Typography variant="h3" fontWeight="600">{timerSeconds}</Typography>
+                <Typography variant="h3" fontWeight="600">{timerSeconds ? timerSeconds : 0}</Typography>
                 <Typography variant="h6" fontWeight="400" color={colors.primary[100]}>Minutes</Typography>
             </Box>
 

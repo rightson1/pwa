@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -9,6 +9,7 @@ import { db } from "../../firebase";
 import Info from "../../components/Info"
 import axios from "axios";
 import { collection, addDoc, doc } from "firebase/firestore";
+import { useFaqMutation, useFaqQuery } from "../../util/useFaq";
 const Form = () => {
     const [ans, setAns] = React.useState('');
     const { colors, baseUrl } = useGlobalProvider();
@@ -16,23 +17,24 @@ const Form = () => {
     const [message, setMessage] = React.useState("");
     const [open, setOpen] = React.useState(false);
     const isNonMobile = useMediaQuery("(min-width:600px)");
+
+    const { mutate, isLoading, error, isError } = useFaqMutation()
+    const { refetch } = useFaqQuery()
+    console.log(isError, isLoading)
     const handleFormSubmit = (values, { resetForm }) => {
         const data = { ...values, ans }
-        setLoading(true)
-        const colRef = collection(db, "faq");
-        addDoc(colRef, data).then(() => {
-            setMessage("FAQ Created Successfully")
-            setOpen(true)
-            setLoading(false)
+        mutate(data)
+        if (!isError) {
             resetForm()
+
             setAns('')
-        }).catch(() => {
-            setLoading(false)
-            setMessage('There Was An Error')
-            setOpen(true)
-        })
+
+        }
+        setOpen(true)
 
     }
+
+
     return <Box m="20px">
         <Header title="FREQUENTLY ASKED QUESTIONS" subtitle="Enter question and answer to help voters" />
 
@@ -94,7 +96,7 @@ const Form = () => {
 
                     </Box>
                     <Box display="flex" justifyContent="end" mt="50px">
-                        {loading ? <Button type="button" sx={{
+                        {isLoading ? <Button type="button" sx={{
                             color: colors.grey[100],
                             backgroundColor: colors.primary[400] + " !important",
                             opacity: 0.5 + " !important",
@@ -112,7 +114,7 @@ const Form = () => {
             )}
         </Formik>
 
-        <Info open={open} setOpen={setOpen} message={message} />
+        <Info open={open} setOpen={setOpen} message={isError ? 'Error !!!😞😞' : 'Success🥂🥂'} />
 
     </Box>;
 };

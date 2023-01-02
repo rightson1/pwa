@@ -5,9 +5,19 @@ import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../components/Title"
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useGlobalProvider } from "../../context/themeContext"
-import { admins } from "../../src/data";
+// import { admins } from "../../src/data";
+import { useAdminQuery } from "../../util/useAdmin";
+import { useMemo } from "react";
 const Contacts = () => {
     const { colors } = useGlobalProvider()
+    const { data, isLoading } = useAdminQuery();
+    const admins = useMemo(() => {
+        if (!data) return;
+        const admins = data.map(({ id, admin }) => ({ id, ...admin }))
+        return admins
+    }, [data])
+
+
     const columns = [
         { field: "id", headerName: "ID", flex: 0.5 },
         {
@@ -24,10 +34,10 @@ const Contacts = () => {
         },
 
         {
-            field: "access",
-            headerName: "Access",
+            field: "role",
+            headerName: "Role",
 
-            renderCell: ({ row: { access } }) => {
+            renderCell: ({ row: { role } }) => {
                 return (
                     <Box
                         width="100%"
@@ -35,17 +45,17 @@ const Contacts = () => {
                         display="flex"
                         justifyContent="center"
                         p="5px"
+                        color={colors.grey[800]}
                         backgroundColor={
-                            access === "super-admin" ? colors.greenAccent[600] : colors.greenAccent[200]
+                            role === "s.admin" ? colors.greenAccent[600] : colors.greenAccent[200]
                         }
                         borderRadius="5px"
                     >
-                        {access === "admin" && <AdminPanelSettingsOutlinedIcon />
+                        {role === "admin" && <AdminPanelSettingsOutlinedIcon />
                         }
-                        {access === "manager" && <SecurityOutlinedIcon />}
-                        {access === "user" && <LockOpenOutlinedIcon />}
-                        <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
-                            {access}
+
+                        <Typography color={colors.grey[800]} sx={{ ml: "5px" }}>
+                            {role}
                         </Typography>
                     </Box>
 
@@ -127,7 +137,15 @@ const Contacts = () => {
                 }
                 }
             >
-                <DataGrid checkboxSelection rows={admins} columns={columns}
+                <DataGrid checkboxSelection columns={columns}
+                    loading={isLoading || !admins}
+                    getRowId={(row) => row.id}
+                    sx={{
+                        '@media print': {
+                            '.MuiDataGrid-main': { color: 'rgba(0, 0, 0, 0.87)' },
+                        },
+                    }}
+                    rows={admins || []}
                     components={{
                         Toolbar: GridToolbar,
                     }}
