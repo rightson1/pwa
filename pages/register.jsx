@@ -69,8 +69,8 @@ const Home = () => {
                             <div className="h-full w-[20px] bg-black"></div>
                             <div className="flex flex-col text-black">
                                 <h1 className="text-xl font-bold"> THE </h1>
-                                <h1 className="text-xl font-bold"> BURA</h1>
-                                <p className="text-[15px] font-thin">Teachers collage school</p>
+                                <h1 className="text-xl font-bold"> MKU</h1>
+                                <p className="text-[15px] font-thin">Parklands</p>
 
                             </div>
 
