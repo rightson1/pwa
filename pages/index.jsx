@@ -42,30 +42,31 @@ const Home = () => {
 
     }
     setLoading(true)
-    const q = query(collection(db, "admins"), where("email", "==", email));
-    getDocs(q).then((res) => {
-      const [user, ...rest] = res.docs.map((doc) => {
-        return { id: doc.id, ...doc.data() }
-      })
-      if (!user) {
-        setMessage("Admin does not exist")
-        setOpen(true)
-        setLoading(false)
-        return
-      }
-      signInWithEmailAndPassword(auth, email, password).then(() => {
-        router.push("/admin")
-      }).catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        setMessage(errorCode)
-        setOpen(true)
-        setLoading(false)
-      })
-    }).catch(e => {
+    // const q = query(collection(db, "admins"), where("email", "==", email));
+    // getDocs(q).then((res) => {
+    //   const [user, ...rest] = res.docs.map((doc) => {
+    //     return { id: doc.id, ...doc.data() }
+    //   })
+    //   if (!user) {
+    //     setMessage("Admin does not exist")
+    //     setOpen(true)
+    //     setLoading(false)
+    //     return
+    //   }
+    signInWithEmailAndPassword(auth, email, password).then(() => {
+      router.push("/admin")
+    }).catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      setMessage(errorCode)
+      setOpen(true)
       setLoading(false)
-      console.log(e)
     })
+    // })
+    // .catch(e => {
+    //   setLoading(false)
+    //   console.log(e)
+    // })
 
 
   }

@@ -85,7 +85,7 @@ const Home = () => {
 
                             <div className="flex flex-col text-black items-start w-full">
                                 <label htmlFor="">Name</label>
-                                <input type="email" placeholder="Enter email" className="py-4 placeholder:text-[10px] border-b border-black w-full  px-2   outline-none" required name="name" onChange={(e) => setName(e.target.value)} />
+                                <input type="text" placeholder="Enter Name" className="py-4 placeholder:text-[10px] border-b border-black w-full  px-2   outline-none" required name="name" onChange={(e) => setName(e.target.value)} />
                             </div>
 
                             <div className="flex flex-col text-black items-start w-full">
