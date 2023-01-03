@@ -3,8 +3,11 @@ import { Box, Typography, useTheme } from "@mui/material";
 import Header from "../../components/Title";
 import { useGlobalProvider } from "../../context/themeContext";
 import PositionCard from "../../components/PositionCard";
+import { usePositionsQuery } from "../../util/usePositions";
+import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
 const Positions = () => {
-    const { positions } = useGlobalProvider()
+    const { data, isLoading, } = usePositionsQuery();
     return <Box m={{
         xs: '20px 5px',
         sm: '20px 10px ',
@@ -14,7 +17,7 @@ const Positions = () => {
         <Header title="ELECTROL POSITIONS" subtitle="List Of Electron Positions" />
 
         {
-            positions || !isLoading ? (
+            data?.length > 0 ? (
                 <Box
                     mt="20px"
                     display="grid"
@@ -26,16 +29,32 @@ const Positions = () => {
                 >
                     {
 
-                        positions.map((item) => {
+                        data.map((item) => {
                             return <PositionCard key={item.id} {...item} />
 
                         }
                         )
                     }
                 </Box>
-            ) : (<>
-                Loading....
-            </>)
+            ) : (
+                <Box
+                    Box
+                    mt="20px"
+                    display="grid"
+                    gridTemplateColumns="repeat(auto-fit, minmax(250px, 1fr))"
+                    justifyContent="space-between"
+                    rowGap="20px"
+                    columnGap="1.33%">
+                    {
+                        [1, 2, 3, 4, 5, 6, 7, 8, 9].map((item, index) => (
+                            <Box spacing={.5} key={index} height="100%" width="100%">
+
+                                <Skeleton variant="rectangular" width="100%" height="200px" />
+                            </Box>
+                        ))
+                    }
+                </Box>
+            )
         }
     </Box>
 };

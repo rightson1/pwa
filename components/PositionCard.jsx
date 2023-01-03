@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useGlobalProvider } from "../context/themeContext";
 import { collection, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import AdminPanelSettings from "@mui/icons-material/AdminPanelSettings";
@@ -22,6 +22,7 @@ import Flex from "./Flex"
 import axios from "axios";
 import Info from "./Info"
 import { db } from "../firebase";
+import { usePositionsDelete, usePositionsMutation, usePositionUpdate } from "../util/usePositions";
 
 const PositionCard = ({ _id, admin, desc, name }) => {
     const [open, setOpen] = React.useState(false);
@@ -29,13 +30,31 @@ const PositionCard = ({ _id, admin, desc, name }) => {
     const [message, setMessage] = React.useState("");
     const [opened, setOpened] = React.useState(false);
     const [values, setValues] = useState(null)
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
 
     const { colors, mode, dispatch, actionTypes, isMobile, baseUrl } = useGlobalProvider();
+    const { mutate, isLoading, isSuccess, isError } = usePositionsDelete()
+    const { mutate: update, isSuccess: isSuccessUpdate, isError: isErrorUpdate, isLoading: isUpdateLoading } = usePositionUpdate()
+
 
     const [isExpanded, setIsExpanded] = useState(false);
+
+    useEffect(() => {
+        if (isError || isErrorUpdate) {
+            setMessage('There Was An Error')
+            setOpened(true)
+        }
+        if (isSuccess || isSuccessUpdate) {
+            setMessage('Success')
+            setOpened(true)
+        }
+
+    }, [isError, isSuccess]);
+
+
     const style = {
         position: 'absolute',
         top: '50%',
@@ -64,49 +83,14 @@ const PositionCard = ({ _id, admin, desc, name }) => {
     const handleSubmit = (e) => {
         setLoading(true)
         e.preventDefault()
-        axios.put(`${baseUrl}/positions?id=${_id}`, values).then((res) => {
-            const docRef = doc(db, "positions", _id)
-            updateDoc(docRef, values).then((res) => {
-                setMessage("Position Edited Successfully")
-                setOpened(true)
-                handleClose()
-                setLoading(false)
-                setValues('')
-            }).catch(() => {
-                setLoading(false)
-                setMessage('There Was An Error')
-                setOpen(true)
-            })
-        }).catch(() => {
-            setLoading(false)
-            setMessage('There Was An Error')
-            setOpen(true)
-        })
+        update({ _id, values })
+
 
     }
 
     const handleDelete = (e) => {
-        setLoading(true)
         e.preventDefault()
-        axios.delete(`${baseUrl}/positions?id=${_id}`, values).then((res) => {
-            const docRef = doc(db, "positions", _id)
-            deleteDoc(docRef).then((res) => {
-                setMessage("Position Edited Successfully")
-                setOpened(true)
-                handleClose()
-                setLoading(false)
-                setValues('')
-            }).catch(() => {
-                setLoading(false)
-                setMessage('There Was An Error')
-                setOpen(true)
-            })
-        }).catch(() => {
-            setLoading(false)
-            setMessage('There Was An Error')
-            setOpen(true)
-        })
-
+        mutate(_id)
     }
     return (
 
@@ -225,8 +209,8 @@ const PositionCard = ({ _id, admin, desc, name }) => {
                                     '&:hover': {
                                         backgroundColor: colors.greenAccent[800] + " !important",
                                     }
-                                }}>{loading ? "loading..." : 'Delete Position'}</Button>
-                            {loading ? <Button type="submit" sx={{
+                                }}>{isLoading ? "loading..." : 'Delete Position'}</Button>
+                            {isUpdateLoading ? <Button type="submit" sx={{
                                 backgroundColor: colors.greenAccent[800] + " !important",
                                 color: colors.grey[100] + " !important",
                             }}>Loading...</Button> : <Button type="submit" sx={{

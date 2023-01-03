@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -10,40 +10,35 @@ import axios from "axios";
 import { setDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useAuth } from "../../context/authContext";
+import { usePositionsMutation } from "../../util/usePositions";
 const Form = () => {
-    const { colors, baseUrl } = useGlobalProvider();
-    const [loading, setLoading] = React.useState(false);
+    const { colors } = useGlobalProvider();
     const [message, setMessage] = React.useState("");
     const [open, setOpen] = React.useState(false);
     const { admin } = useAuth()
     const [desc, setDesc] = React.useState('');
+    const { mutateAsync, isLoading, isSuccess, isError } = usePositionsMutation()
 
     const isNonMobile = useMediaQuery("(min-width:600px)");
     const handleFormSubmit = (values, { resetForm }) => {
         const data = { name: values.position, desc, admin: admin.name }
-        console.log(data)
-        setLoading(true)
-        axios.post(`${baseUrl}/positions`, data).then(res => {
-            const positionRef = doc(db, "positions", res.data._id);
-            setDoc(positionRef, res.data).then(() => {
-                setMessage("Position Created Successfully")
-                setOpen(true)
-                setLoading(false)
-                resetForm()
-                setDesc('')
+        mutateAsync(data)
+        resetForm()
+        setDesc('')
 
-            }).catch(() => {
-                setLoading(false)
-                setMessage('There Was An Error')
-                setOpen(true)
-            })
 
-        }).catch(() => {
-            setLoading(false)
+    }
+    useEffect(() => {
+        if (isError) {
             setMessage('There Was An Error')
             setOpen(true)
-        })
-    }
+        }
+        if (isSuccess) {
+            setMessage('Position Created Successfully')
+            setOpen(true)
+        }
+
+    }, [isError, isSuccess]);
     return <Box m="20px">
         <Header title="NEW ELECROL POSITION" subtitle="Create a new electrol position" />
 
@@ -107,7 +102,7 @@ const Form = () => {
 
                     </Box>
                     <Box display="flex" justifyContent="end" mt="50px">
-                        {loading ? <Button type="button" sx={{
+                        {isLoading ? <Button type="button" sx={{
                             color: colors.grey[100],
                             backgroundColor: colors.primary[400] + " !important",
                             opacity: 0.5 + " !important",

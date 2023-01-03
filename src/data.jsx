@@ -906,5 +906,5 @@ export const mockBarData = [{
     ZeddyColor: "hsl(340, 70%, 50%)",
 }]
 
-export const baseUrl = "https://server-jade-three.vercel.app/api";
-// export const baseUrl = " http://localhost:3002/api";
+// export const baseUrl = "https://server-jade-three.vercel.app/api";
+export const baseUrl = " http://localhost:3002/api";

@@ -67,7 +67,7 @@ function ClockParent() {
 
             }}>
                 <Typography variant="h3" fontWeight="600">{timerSeconds ? timerSeconds : 0}</Typography>
-                <Typography variant="h6" fontWeight="400" color={colors.primary[100]}>Minutes</Typography>
+                <Typography variant="h6" fontWeight="400" color={colors.primary[100]}>Seconds</Typography>
             </Box>
 
         </Box>

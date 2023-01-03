@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -17,9 +17,10 @@ import { useTimeMutation, useTimeQuery, useTimeUpdate } from "../../util/useTime
 import { baseUrl } from "../../src/data";
 const Settings = () => {
     const { colors } = useGlobalProvider();
-    const [activeStep, setActiveStep] = React.useState(0);
-    const [date, setDate] = useState()
-    const [time, setTime] = useState()
+    const step = Number(localStorage.getItem('activeStep') ? localStorage.getItem('activeStep') : 0)
+
+    const [activeStep, setActiveStep] = React.useState(step);
+
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
@@ -31,7 +32,9 @@ const Settings = () => {
     const handleReset = () => {
         setActiveStep(0);
     };
-
+    useEffect(() => {
+        localStorage.setItem('activeStep', activeStep)
+    }, [activeStep])
 
     const { mutate, isLoading, isSuccess } = useTimeMutation()
     const { mutate: update, isLoading: loading } = useTimeUpdate()
@@ -40,7 +43,6 @@ const Settings = () => {
         e.preventDefault()
         const date = e.target.date.value;
         const data = { date, id: savedTime.id }
-        console.log(data)
         if (savedTime) {
             update(data)
         } else {
@@ -73,7 +75,7 @@ const Settings = () => {
                     <Step key={step.label}>
                         <StepLabel
                             optional={
-                                index === 2 ? (
+                                index === steps.length - 1 ? (
                                     <Typography variant="caption">Last step</Typography>
                                 ) : null
                             }
@@ -148,23 +150,31 @@ const Settings = () => {
 
 const steps = [
     {
-        label: 'Select campaign settings',
-        description: `For each ad campaign that you create, you can control how much
-              you're willing to spend on clicks and conversions, which networks
-              and geographical locations you want your ads to show on, and more.`,
+        label: 'Create An Account',
+        description: `First create an account/login if you already have one or if your
+         were account was created by a Super Admin`,
     },
     {
-        label: 'Create an ad group',
+        label: 'Create Electrol Positions',
         description:
-            'An ad group contains one or more ads which target a shared set of keywords.',
+            'Add or create positions for the election',
     },
     {
-        label: 'Create an ad',
-        description: `Try out different ad text to see what brings in the most customers,
-              and learn how to enhance your ads using features like ad extensions.
-              If you run into any problems with your ads, find out how to tell if
-              they're running and how to resolve approval issues.`,
+        label: 'Add Candidates',
+        description: `Add candidates to the positions you created`,
     },
+    {
+        label: 'Add FAQ',
+        description: 'Add Frequently Asked Questions',
+    },
+    {
+        label: 'Create Notifications',
+        description: 'Create notifications for the election e.g. elections day, results day, etc',
+    },
+    {
+        label: "Verify Voters",
+        description: "Verify voters to be able to vote"
+    }
 ];
 
 

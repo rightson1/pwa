@@ -2,6 +2,9 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth"
 import { useRouter } from "next/router";
 import { auth, db } from "../firebase";
+import axios from "axios"
+import { useMutation, useQuery, useQueryClient } from "react-query"
+
 import { collection, query, where, getDocs } from "firebase/firestore";
 const AuthContext = createContext();
 
@@ -14,21 +17,31 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const unsub = onAuthStateChanged(auth, (user) => {
+            const sAdmin = localStorage.getItem('admin') ? JSON.parse(localStorage.getItem('admin')) : null
+
             if (user) {
                 setUser({
                     uid: user.uid,
                     email: user.email,
                     displayName: user.displayName,
                 });
-                const q = query(collection(db, "admins"), where("email", "==", user.email));
-                getDocs(q).then((res) => {
-                    const [user, ...rest] = res.docs.map((doc) => {
-                        return { id: doc.id, ...doc.data() }
+                if (sAdmin && sAdmin?.email === user.email) {
+                    setAdmin(sAdmin)
+
+                } else if (!admin || admin?.email !== user.email) {
+                    const q = query(collection(db, "admins"), where("email", "==", user.email));
+
+
+                    getDocs(q).then((res) => {
+                        const [user, ...rest] = res.docs.map((doc) => {
+                            return { id: doc.id, ...doc.data() }
+                        })
+                        if (user) {
+                            setAdmin(user)
+                            localStorage.setItem('admin', JSON.stringify(user))
+                        }
                     })
-                    if (user) {
-                        setAdmin(user)
-                    }
-                })
+                }
 
             } else {
                 setUser(null);
