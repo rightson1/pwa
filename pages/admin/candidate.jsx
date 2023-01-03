@@ -12,6 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import Select from '@mui/material/Select';
+import Skeleton from '@mui/material/Skeleton';
 const Form = () => {
   const [age, setAge] = React.useState('');
 
@@ -26,8 +27,8 @@ const Form = () => {
     console.log(values)
   }
   return <Box m="20px">
-    <Header title="NEW CANDIDATE" subtitle="Candidate must be a registered voter" />
-
+    <Header title="NEW CANDIDATE" subtitle="Still Under Construction!!!!!" />
+    <Skeleton variant="rounded" width="100%" height={60} />
     <Box my={2}></Box>
     <Formik
       onSubmit={handleFormSubmit}
@@ -82,7 +83,7 @@ const Form = () => {
               }}
             />
 
-            <FormControl sx={{
+            {/* <FormControl sx={{
               gridColumn: {
                 xs: "span 4",
                 sm: "span 4",
@@ -108,7 +109,7 @@ const Form = () => {
                 <MenuItem value={22}>Twenty one and a half</MenuItem>
               </Select>
               <FormHelperText>Select Position</FormHelperText>
-            </FormControl>
+            </FormControl> */}
           </Box>
           <Box display="flex" justifyContent="end" mt="50px">
             <Button type="submit" sx={{
@@ -143,5 +144,6 @@ Form.getLayout = (page) => {
   </>
 }
 Form.admin = true
+Form.head = "Candidates"
 
 export default Form;

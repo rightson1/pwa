@@ -22,6 +22,7 @@ Candidates.getLayout = (page) => {
     </>
 }
 Candidates.admin = true
+Candidates.head = "Candidates"
 
 
 export default Candidates;

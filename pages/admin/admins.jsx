@@ -161,6 +161,7 @@ Contacts.getLayout = (page) => {
     </>
 }
 Contacts.admin = true
+Contacts.head = "Admins"
 
 
 export default Contacts;

@@ -8,6 +8,8 @@ import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import Select from '@mui/material/Select';
 import BarChart from "../../components/BarChart";
+import Skeleton from '@mui/material/Skeleton';
+
 const Bar = () => {
     const [age, setAge] = React.useState('');
     const handleChange = (event) => {
@@ -16,7 +18,8 @@ const Bar = () => {
 
     return (
         <Box m="20px">
-            <Header title="Results In Bar Chart " subtitle="Choose position to view" />
+            <Header title="Results In Bar Chart " subtitle="Still Under Construction !!!!!!" />
+            <Skeleton variant="rounded" width="100%" height={10} />
             <FormControl sx={{
                 my: 3
             }}>
@@ -51,6 +54,7 @@ Bar.getLayout = (page) => {
     </>
 }
 Bar.admin = true
+Bar.head = "Result Bar Chart"
 
 
 export default Bar;

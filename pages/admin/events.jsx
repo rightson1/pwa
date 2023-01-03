@@ -23,6 +23,7 @@ Events.getLayout = (page) => {
     </>
 }
 Events.admin = true
+Events.head = ""
 
 
 export default Events;

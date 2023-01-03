@@ -7,6 +7,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import Select from '@mui/material/Select';
+import Skeleton from '@mui/material/Skeleton';
+
 const Pie = () => {
     const [age, setAge] = React.useState('');
     const handleChange = (event) => {
@@ -15,7 +17,8 @@ const Pie = () => {
 
     return (
         <Box m="20px">
-            <Header title="Results In Pie Chart " subtitle="Election Results in Pie Chats" />
+            <Header title="Results In Pie Chart " subtitle="Still Under Construction !!!!!!" />
+            <Skeleton variant="rounded" width="100%" height={10} />
             <FormControl sx={{
                 my: 3
             }}>
