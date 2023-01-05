@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import { useGlobalProvider } from "../../context/themeContext";
 import Header from "../../components/Title";
 import Flex from "../../components/Flex";
-const Help = () => {
+const Notification = () => {
     const { colors } = useGlobalProvider();
     const [activeStep, setActiveStep] = React.useState(0);
 
@@ -26,7 +26,7 @@ const Help = () => {
         setActiveStep(0);
     };
     return <Box m="20px">
-        <Header title="HELP PAGE" subtitle="Help Page" />
+        <Header title="NOTIFICATNotification PAGE" subtitle="Notification Page" />
         <Box mt={2}>
             <Flex>   <Typography variant="h6" sx={{ color: colors.greenAccent[500] }}>Your Progress</Typography>    <Button sx={{
                 bgcolor: colors.greenAccent[500] + "!important",
@@ -96,7 +96,6 @@ const Help = () => {
             )}
 
         </Box>
-        <Typography variant="h6" sx={{ color: colors.greenAccent[500] }}>Election Date Settings</Typography>
 
     </Box>;
 };
@@ -122,13 +121,13 @@ const steps = [
               they're running and how to resolve approval issues.`,
     },
 ];
-Help.getLayout = (page) => {
+Notification.getLayout = (page) => {
     return <>
         {page}
     </>
 }
-Help.voter = true
+Notification.voter = true
 
 
 
-export default Help;
+export default Notification;

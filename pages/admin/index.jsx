@@ -76,7 +76,7 @@ const Admin = () => {
                 >
                     <Typography variant="h5" fontWeight="600" colors={colors.grey[100]}>All Administrators</Typography>
                 </Box>
-                {admins?.length > 0 ? admins?.map(({ admin, id }, index) => (
+                {admins?.length > 0 ? admins?.map((admin, index) => (
                     <Box key={index}
                         display="flex"
                         justifyContent="space-between"

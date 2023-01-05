@@ -10,7 +10,7 @@ import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import { useFaqDelete, useFaqQuery } from "../util/useFaq";
 
-const FAQ = () => {
+const FAQ = ({ voter }) => {
     const { colors, isMobile, faqs } = useGlobalProvider()
     const { data, isLoading, isError, error } = useFaqQuery()
     const [id, setId] = useState()
@@ -27,7 +27,11 @@ const FAQ = () => {
     return <Box>
 
         {data?.length ?
-            data?.map(({ id: faqId, faq }, index) => (<Accordion defaultExpanded key={index}>
+            data?.map(({ id: faqId, faq }, index) => (<Accordion
+                sx={{
+                    background: colors.primary[400]
+                }}
+                defaultExpanded key={index}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography color={colors.greenAccent[500]} variant="h5">
                         {faq?.quiz}
@@ -38,13 +42,13 @@ const FAQ = () => {
                     <Typography>
                         {faq?.ans}
                     </Typography>
-                    <Button
+                    {!voter && <Button
                         sx={{
                             color: `${colors.redAccent[700]} !important`,
 
                         }}
                         onClick={() => handleDelete(faqId)}
-                    >{loading && id === faqId ? "loading..." : 'Delete'}</Button>
+                    >{loading && id === faqId ? "loading..." : 'Delete'}</Button>}
                 </AccordionDetails>
             </Accordion>)) : (
                 <>

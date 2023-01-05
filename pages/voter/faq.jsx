@@ -7,15 +7,18 @@ const Faq = () => {
     const { colors, isMobile } = useGlobalProvider()
     return <Box m="20px">
         <Header title="FAQ" subtitle="Frequently Asked Questions Page" />
-        <FAQ />
+        <Box my={2}>
+            <FAQ voter={true} />
+        </Box>
     </Box>;
 };
-FAQ.getLayout = (page) => {
+
+Faq.getLayout = (page) => {
     return <>
         {page}
     </>
 }
-FAQ.voter = true
+Faq.voter = true
 
-export default FAQ;
+export default Faq
 

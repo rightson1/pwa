@@ -18,10 +18,11 @@ const Home = () => {
   const [email, setEmail] = React.useState();
   const [password, setPassword] = React.useState();
   const [open, setOpen] = React.useState(false);
-  const [admn, setAdmin] = useState()
+  const [reg, setReg] = useState()
   const [message, setMessage] = React.useState("")
   const { admin, voter: student, user } = useAuth()
   const { data: time } = useTimeQuery()
+
 
   useEffect(() => {
     if (admin) {
@@ -32,7 +33,40 @@ const Home = () => {
     }
   }, [])
   const voterSubmit = () => {
-    console.log('Be Patient')
+    if (!reg || !password) {
+      setMessage("Please fill in all fields")
+      setOpen(true)
+      return
+
+    }
+
+    setLoading(true)
+    const q = query(collection(db, "voters"), where("reg", "==", reg.trim()));
+    getDocs(q).then((res) => {
+      const [user, ...rest] = res.docs.map((doc) => {
+        return { id: doc.id, ...doc.data() }
+      })
+      if (!user) {
+        setMessage("Voter does not exist")
+        setOpen(true)
+        setLoading(false)
+        return
+      }
+      signInWithEmailAndPassword(auth, user.email, password.trim()).then(() => {
+        router.push("/voter")
+      }).catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setMessage(errorCode)
+        setOpen(true)
+        setLoading(false)
+      })
+    })
+      .catch(e => {
+        setLoading(false)
+        console.log(e)
+      })
+
   }
   const adminSubmit = async () => {
     if (!email || !password) {
@@ -97,14 +131,17 @@ const Home = () => {
             <div className="flex flex-col  w-full mt-7  gap-4  z-[5]" >
 
               {
-                voter ? <div className="flex flex-col text-black items-start w-3/4 tl:w-full">
+                voter && <div className="flex flex-col text-black items-start w-3/4 tl:w-full">
                   <label htmlFor="">Admission Number</label>
-                  <input type="text" placeholder="Enter Admisssion Number" className="py-4 placeholder:text-[10px] border-b border-black w-full  px-2   outline-none" required name="email" onChange={(e) => setEmail(e.target.value)} />
-                </div> :
-                  <div className="flex flex-col text-black items-start w-3/4 tl:w-full">
-                    <label htmlFor="">Email</label>
-                    <input type="email" placeholder="Enter email" className="py-4 placeholder:text-[10px] border-b border-black w-full  px-2   outline-none" required name="email" onChange={(e) => setEmail(e.target.value)} />
-                  </div>
+                  <input type="text" placeholder="Enter Registration  Number" className="py-4 placeholder:text-[10px] border-b border-black w-full  px-2   outline-none" required name="reg" onChange={(e) => setReg(e.target.value)} />
+                </div>
+              }
+              {
+                !voter &&
+                <div className="flex flex-col text-black items-start w-3/4 tl:w-full">
+                  <label htmlFor="">Email</label>
+                  <input type="email" placeholder="Enter email" className="py-4 placeholder:text-[10px] border-b border-black w-full  px-2   outline-none" required name="email" onChange={(e) => setEmail(e.target.value)} />
+                </div>
               }
               <div className="flex flex-col text-black items-start w-3/4 tl:w-full ">
                 <label htmlFor="">Enter Password</label>
@@ -143,7 +180,7 @@ const Home = () => {
               </div>
 
               <button className="bg-black py-3 px-4 text-white rounded-md w-full flex justify-center items-center gap-2 w-3/4" onClick={voter ? voterSubmit : adminSubmit}>{loading ? "Please Wait..." : "Login"} </button>
-              <p>Dont have an account? <button className="text-green cursor-pointer" onClick={() => router.push("/register")}>Register As Voter </button> or <button className="text-green cursor-pointer" onClick={() => router.push("/register")}> Register As Admin</button></p>
+              <p>Dont have an account? <button className="text-green cursor-pointer" onClick={() => router.push("/voter-registration")}>Register As Voter </button> or <button className="text-green cursor-pointer" onClick={() => router.push("/register")}> Register As Admin</button></p>
 
             </div>
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -10,32 +10,33 @@ import Info from "../../components/Info"
 import SearchIcon from "@mui/icons-material/Search";
 import { db } from "../../firebase";
 import { collection, addDoc, doc } from "firebase/firestore";
+import { useNotificationMutation } from "../../util/useNotification";
 const Form = () => {
     const [ans, setAns] = React.useState('');
     const { colors, baseUrl } = useGlobalProvider();
-    const [loading, setLoading] = React.useState(false);
     const [message, setMessage] = React.useState("");
     const [open, setOpen] = React.useState(false);
     const isNonMobile = useMediaQuery("(min-width:600px)");
-
+    const { mutateAsync, isLoading, isError, isSuccess } = useNotificationMutation()
     const handleFormSubmit = (values, { resetForm }) => {
         const data = { title: values.title, desc: ans }
-
-        const colRef = collection(db, "notifications");
-        addDoc(colRef, data).then(() => {
-            setMessage("Notification Created Successfully")
-            setOpen(true)
-            setLoading(false)
-            resetForm()
-            setAns('')
-        }).catch(() => {
-            setLoading(false)
-            setMessage('There Was An Error')
-            setOpen(true)
-        })
-
+        mutateAsync(data)
+        resetForm()
+        setAns('')
 
     }
+    useEffect(() => {
+        if (isSuccess) {
+            setMessage('Notification sent successfully')
+            setOpen(true)
+
+        }
+        if (isError) {
+            setMessage('Error sending notification')
+            setOpen(true)
+        }
+    }, [isSuccess, isError])
+
     return <Box m="20px">
         <Header title="NOTIFICATIONS PAGE" subtitle="Enter new notification to be displayed to all voters" />
 
@@ -94,7 +95,7 @@ const Form = () => {
                             }} className="p-2  outline-none border-b-[1px] border-white" placeholder="Enter description" />
                     </Box>
                     <Box display="flex" justifyContent="end" mt="50px">
-                        {loading ? <Button type="button" sx={{
+                        {isLoading ? <Button type="button" sx={{
                             color: colors.grey[100],
                             backgroundColor: colors.primary[400] + " !important",
                             opacity: 0.5 + " !important",

@@ -18,7 +18,6 @@ export const useTimeMutation = () => {
 }
 const updateTime = (newTime) => {
     const { id, date } = newTime
-    console.log(date)
     return axios.put(`${baseUrl}/time?id=${id}`, { date })
 }
 export const useTimeUpdate = () => {

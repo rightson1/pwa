@@ -14,20 +14,24 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
-import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import QuizIcon from '@mui/icons-material/Quiz';
-import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
+import PersonIcon from '@mui/icons-material/Person';
 import { Avatar, Tooltip, useMediaQuery } from '@mui/material';
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import HowToVoteIcon from '@mui/icons-material/HowToVote';
 import MessageOutlined from "@mui/icons-material/MessageOutlined";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 import { useRouter } from "next/router";
 import { motion } from "framer-motion";
+import { useAuth } from "../context/authContext";
 const drawerWidth = 240;
 
 const AdminSide = () => {
+    const { voter } = useAuth()
+    console.log(voter)
 
     const openedMixin = (theme) => ({
         width: drawerWidth,
@@ -141,7 +145,7 @@ const AdminSide = () => {
                         height: "90px"
                     }} />
                     <Typography variant='h3' fontWeight="bold">
-                        RIGHTSON
+                        {voter && voter.email.split("@")[0]}
                     </Typography>
                     <Typography variant='h6' fontWeight="bold" mt="-10px" color={colors.greenAccent[400]}>
                         VOTER
@@ -238,7 +242,7 @@ const navItems = [
 
     },
     {
-        text: "candidates",
+        text: "Candidates",
         link: 'candidates',
         icon: <PeopleOutlinedIcon />,
     },
@@ -263,21 +267,25 @@ const navItems = [
         icon: <HelpOutlineIcon />
 
     },
-
-
-
     {
-        text: 'Results',
-
+        text: "Notifications",
+        link: 'notifications',
+        icon: <NotificationsNoneIcon />
 
     },
     {
-        text: 'Results Pie Chart',
-        link: 'pie',
-        icon: <PieChartOutlineOutlinedIcon />
+        text: "Vote",
+        link: 'vote',
+        icon: <HowToRegIcon />
 
+    },
+    {
+        text: "Candidate",
+        link: 'candidate',
+        icon: <PersonIcon />
 
-    }
+    },
+
 
 ];
 

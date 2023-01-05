@@ -6,9 +6,6 @@ import { useGlobalProvider } from "../../context/themeContext";
 import Info from "../../components/Info"
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Title"
-import axios from "axios";
-import { setDoc, doc } from "firebase/firestore";
-import { db } from "../../firebase";
 import { useAuth } from "../../context/authContext";
 import { usePositionsMutation } from "../../util/usePositions";
 const Form = () => {

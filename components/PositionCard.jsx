@@ -23,6 +23,8 @@ import axios from "axios";
 import Info from "./Info"
 import { db } from "../firebase";
 import { usePositionsDelete, usePositionsMutation, usePositionUpdate } from "../util/usePositions";
+import { useAuth } from "../context/authContext";
+import { useRouter } from "next/router";
 
 const PositionCard = ({ _id, admin, desc, name }) => {
     const [open, setOpen] = React.useState(false);
@@ -30,7 +32,9 @@ const PositionCard = ({ _id, admin, desc, name }) => {
     const [message, setMessage] = React.useState("");
     const [opened, setOpened] = React.useState(false);
     const [values, setValues] = useState(null)
-
+    const { admin: sadmin } = useAuth()
+    const router = useRouter()
+    console.log(sadmin)
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -142,11 +146,16 @@ const PositionCard = ({ _id, admin, desc, name }) => {
                         onClick={() => setIsExpanded(!isExpanded)}
 
                     >See More</Button>
-                    <Button
+                    {sadmin && <Button
                         variant="primary"
                         size="small"
                         onClick={handleOpen}
-                    >Edit</Button>
+                    >Edit</Button>}
+                    <Button
+                        variant="primary"
+                        size="small"
+                        onClick={() => router.push(`/voter/p-candidates/${_id}`)}
+                    >View Candidates</Button>
                 </Flex>
                 <Collapse
                     in={isExpanded}
@@ -158,7 +167,8 @@ const PositionCard = ({ _id, admin, desc, name }) => {
                 >
                     <CardContent>
 
-                        <Typography>Description :{desc}</Typography>
+                        <Typography textAlign="center" ml={-4} fontWeight={600}> Description</Typography>
+                        <Typography>{desc}</Typography>
 
                     </CardContent>
 

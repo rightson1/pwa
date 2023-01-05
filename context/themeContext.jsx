@@ -61,49 +61,6 @@ export const ThemeProvider = ({ children }) => {
     }, [router.pathname])
 
 
-    useEffect(() => {
-        getDocs(collection(db, "faq")).then((res) => {
-            const data = res.docs.map(doc => (doc.data()));
-            setFaqs(data)
-        })
-
-    }, [])
-
-    useEffect(() => {
-        getDocs(collection(db, "events")).then((res) => {
-            const data = res.docs.map(doc => (doc.data()));
-            setEvents(data)
-
-
-        })
-
-
-    }, [change])
-    useEffect(() => {
-        getDocs(collection(db, "events")).then((res) => {
-            const data = res.docs.map(doc => (doc.data()));
-            setEvents(data)
-
-
-        })
-
-
-    }, [change])
-    useEffect(() => {
-        const colRef = collection(db, "positions");
-        const unsubscribe = onSnapshot(colRef, snapshot => {
-            const data = snapshot.docs.map(doc => (doc.data()));
-            setPositions(data)
-
-        })
-
-        return () => {
-            unsubscribe()
-        }
-
-    }, [])
-
-
 
     return (
         <ThemeContext.Provider

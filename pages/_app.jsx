@@ -44,7 +44,7 @@ export default function MyApp(props) {
               </ThemeProvider>
             </CacheProvider>
           </div>
-          <ReactQueryDevtools />
+          <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
         </QueryClientProvider>
 
       )
