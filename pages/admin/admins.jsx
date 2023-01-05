@@ -11,11 +11,11 @@ import { useMemo } from "react";
 const Contacts = () => {
     const { colors } = useGlobalProvider()
     const { data, isLoading } = useAdminQuery();
-    const admins = useMemo(() => {
-        if (!data) return;
-        const admins = data.map(({ id, admin }) => ({ id, ...admin }))
-        return admins
-    }, [data])
+    // const admins = useMemo(() => {
+    //     if (!data) return;
+    //     const admins = data.map((admin) => ({ id, ...admin }))
+    //     return admins
+    // }, [data])
 
 
     const columns = [
@@ -138,14 +138,14 @@ const Contacts = () => {
                 }
             >
                 <DataGrid checkboxSelection columns={columns}
-                    loading={isLoading || !admins}
-                    getRowId={(row) => row.id}
+                    loading={isLoading || !data}
+                    getRowId={(row) => row._id}
                     sx={{
                         '@media print': {
                             '.MuiDataGrid-main': { color: 'rgba(0, 0, 0, 0.87)' },
                         },
                     }}
-                    rows={admins || []}
+                    rows={data || []}
                     components={{
                         Toolbar: GridToolbar,
                     }}
