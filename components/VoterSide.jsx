@@ -31,7 +31,6 @@ const drawerWidth = 240;
 
 const AdminSide = () => {
     const { voter } = useAuth()
-    console.log(voter)
 
     const openedMixin = (theme) => ({
         width: drawerWidth,
@@ -99,7 +98,8 @@ const AdminSide = () => {
 
             sx={{
                 '& .MuiDrawer-paper': {
-                    background: colors.primary[400]
+                    background: colors.primary[400],
+                    overflowY: 'scroll',
                 }
             }}>
             {

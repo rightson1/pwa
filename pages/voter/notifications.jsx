@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -10,10 +10,16 @@ import Typography from '@mui/material/Typography';
 import { useGlobalProvider } from "../../context/themeContext";
 import Header from "../../components/Title";
 import Flex from "../../components/Flex";
+import { useNotificationQuery } from "../../util/useNotification";
 const Notification = () => {
     const { colors } = useGlobalProvider();
-    const [activeStep, setActiveStep] = React.useState(0);
+    const step = Number(localStorage.getItem('step') ? localStorage.getItem('step') : 0)
 
+    const [activeStep, setActiveStep] = React.useState(step);
+
+    useEffect(() => {
+        localStorage.setItem('step', activeStep)
+    }, [activeStep])
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
@@ -25,62 +31,68 @@ const Notification = () => {
     const handleReset = () => {
         setActiveStep(0);
     };
+    const { data } = useNotificationQuery();
+
+
     return <Box m="20px">
-        <Header title="NOTIFICATNotification PAGE" subtitle="Notification Page" />
+        <Header title="NOTIFICATION PAGE" subtitle="Notification Page" />
         <Box mt={2}>
             <Flex>   <Typography variant="h6" sx={{ color: colors.greenAccent[500] }}>Your Progress</Typography>    <Button sx={{
                 bgcolor: colors.greenAccent[500] + "!important",
                 color: colors.grey[100],
-            }}>Change Stepper </Button>  </Flex>
+            }}>Save </Button>  </Flex>
             <Stepper activeStep={activeStep} orientation="vertical" sx={{
                 "& .MuiSvgIcon-root": {
-                    color: colors.greenAccent[500],
+                    color: colors.greenAccent[400],
                 },
                 "& .MuiButton-root": {
                     backgroundColor: colors.greenAccent[400] + "!important",
 
                 },
                 "& .MuiButton-completed": {
-                    backgroundColor: colors.greenAccent[400] + "!important",
+                    backgroundColor: colors.greenAccent[800] + "!important",
 
                 },
             }}>
-                {steps.map((step, index) => (
-                    <Step key={step.label}>
-                        <StepLabel
-                            optional={
-                                index === 2 ? (
-                                    <Typography variant="caption">Last step</Typography>
-                                ) : null
-                            }
-                        >
-                            {step.label}
-                        </StepLabel>
-                        <StepContent>
-                            <Typography>{step.description}</Typography>
-                            <Box sx={{ mb: 2 }}>
-                                <div>
-                                    <Button
-                                        variant="contained"
-                                        onClick={handleNext}
-                                        sx={{ mt: 1, mr: 1 }}
-                                    >
-                                        {index === steps.length - 1 ? 'Finish' : 'Continue'}
-                                    </Button>
-                                    <Button
-                                        disabled={index === 0}
-                                        onClick={handleBack}
-                                        sx={{ mt: 1, mr: 1 }}
-                                    >
-                                        Back
-                                    </Button>
-                                </div>
-                            </Box>
-                        </StepContent>
-                    </Step>
-                ))}
+                {data?.length && data?.map(({ notification: step }, index) => {
+
+                    return (
+                        <Step key={step.title}>
+                            <StepLabel
+                                optional={
+                                    index === (data.length - 1) ? (
+                                        <Typography variant="caption">Last step</Typography>
+                                    ) : null
+                                }
+                            >
+                                {step.title}
+                            </StepLabel>
+                            <StepContent>
+                                <Typography>{step.desc}</Typography>
+                                <Box sx={{ mb: 2 }}>
+                                    <div>
+                                        <Button
+                                            variant="contained"
+                                            onClick={handleNext}
+                                            sx={{ mt: 1, mr: 1 }}
+                                        >
+                                            {index === (data.length - 1) ? 'Finish' : 'Continue'}
+                                        </Button>
+                                        <Button
+                                            disabled={index === 0}
+                                            onClick={handleBack}
+                                            sx={{ mt: 1, mr: 1 }}
+                                        >
+                                            Back
+                                        </Button>
+                                    </div>
+                                </Box>
+                            </StepContent>
+                        </Step>
+                    )
+                })}
             </Stepper>
-            {activeStep === steps.length && (
+            {activeStep === data?.length && (
                 <Paper square elevation={0} sx={{ p: 3 }}>
                     <Typography>All steps completed - you&apos;re finished</Typography>
                     <Button onClick={handleReset} sx={{

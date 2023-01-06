@@ -6,38 +6,36 @@ import Header from "./Title"
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useGlobalProvider } from "../context/themeContext"
 import { candidates } from "../src/data";
+import { useCandidatesQuery } from "../util/useCandidate";
+import { useAuth } from "../context/authContext";
+import Link from "next/link";
 
 const Candidates = ({ isDashboard }) => {
+    const { data, isLoading } = useCandidatesQuery()
+    const { admin } = useAuth()
     const { colors } = useGlobalProvider()
     const columns = [
-        { field: "id", headerName: "ADM NO.", flex: 0.5 },
+        { field: "reg", headerName: "reg", flex: 2, minWidth: 100, hide: false },
         {
-            field: "username",
+            field: "name",
             headerName: "Username",
-            flex: 1,
+            flex: 2,
             minWidth: 150,
             cellClassName: "name-column--cell",
 
+
         },
         {
-            field: "email", headerName: "Email",
+            field: "positionName", headerName: "Position",
             flex: 2,
             cellClassName: "name-column--cell",
-        }, {
-            field: "bio",
-            headerName: "Bio",
-            flex: 1,
-
-        }, {
-            field: "position",
-            headerName: "Position",
-            flex: 1,
+            minWidth: 150
         },
         {
             field: "View",
             headerName: "View",
 
-            renderCell: () => {
+            renderCell: ({ row: { positionId } }) => {
                 return (
                     <Box
                         width="100%"
@@ -51,7 +49,9 @@ const Candidates = ({ isDashboard }) => {
 
                         <LockOpenOutlinedIcon />
                         <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
-                            View
+                            <Link href={`/${admin ? 'admin' : 'voter'}/p-candidates/${positionId}`}>
+                                View
+                            </Link>
                         </Typography>
                     </Box>
 
@@ -95,12 +95,15 @@ const Candidates = ({ isDashboard }) => {
         }
         }
     >
-        <DataGrid checkboxSelection rows={candidates} columns={columns} sx={{
-            '@media print': {
-                '.MuiDataGrid-main': { color: 'rgba(0, 0, 0, 0.87)' },
-            },
-        }}
-            getRowId={(row) => row.id}
+        <DataGrid checkboxSelection rows={data || []}
+            disableSelectionOnClick
+            loading={isLoading}
+            columns={columns} sx={{
+                '@media print': {
+                    '.MuiDataGrid-main': { color: 'rgba(0, 0, 0, 0.87)' },
+                },
+            }}
+            getRowId={(row) => row.reg}
             components={{
                 Toolbar: GridToolbar,
             }}

@@ -1,10 +1,37 @@
 import { ResponsivePie } from "@nivo/pie";
+import React, { useMemo } from "react";
 import { useTheme } from "@mui/material";
 import { pie as data } from "../src/data";
 import { useGlobalProvider } from "../context/themeContext";
 import { Box, Typography } from "@mui/material";
-const PieChart = ({ isDashboard }) => {
+const PieChart = ({ votes, isDashboard }) => {
     const { colors } = useGlobalProvider();
+    const [total, setTotal] = React.useState(0);
+    const pieColors = [
+        "hsl(344, 70%, 50%)",
+        "hsl(229, 70%, 50%)",
+        "hsl(291, 70%, 50%)",
+        "hsl(162, 70%, 50%)",
+        "hsl(150,0%, 30%)",
+        "hsl(150, 70%, 50%)",
+        "hsl(104, 70%, 50%)",
+        "hsl(0, 70%, 50%)",
+    ]
+    const data = useMemo(() => {
+        const data = []
+        let totalVotes = 0
+        votes.map((vote, index) => {
+            totalVotes += vote.count
+            setTotal(totalVotes)
+            data.push({
+                id: vote._id,
+                label: vote._id,
+                value: vote.count,
+                color: pieColors[index]
+            })
+        })
+        return data
+    }, [votes])
 
     return (
         <Box height={isDashboard ? "400px" : "100%"}
@@ -112,7 +139,7 @@ const PieChart = ({ isDashboard }) => {
                 }}
             >
                 <Typography variant="h6" color={colors.redAccent[200]}>
-                    Total: 600
+                    Total: {total}
                 </Typography>
             </Box>
         </Box>

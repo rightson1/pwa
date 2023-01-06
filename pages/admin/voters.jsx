@@ -9,7 +9,7 @@ import { voters } from "../../src/data";
 const Contacts = () => {
     const { colors } = useGlobalProvider()
     const columns = [
-        { field: "AdmNo", headerName: "Admn No.", flex: 1 },
+        { field: "AdmNo", headerName: "Admn No.", flex: 1, minWidth: 150, },
         {
             field: "Name",
             headerName: "Name",
@@ -21,6 +21,7 @@ const Contacts = () => {
             field: "email", headerName: "Email",
             flex: 2,
             cellClassName: "name-column--cell",
+            minWidth: 200,
         },
 
 

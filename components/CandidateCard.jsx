@@ -15,7 +15,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useGlobalProvider } from '../context/themeContext';
-
+import dateFormat from 'dateformat';
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
     return <IconButton {...other} />;
@@ -27,7 +27,7 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-export default function RecipeReviewCard() {
+export default function Candidate({ reg, name, created, bio, manifesto }) {
     const [expanded, setExpanded] = React.useState(false);
     const { colors } = useGlobalProvider()
 
@@ -36,14 +36,14 @@ export default function RecipeReviewCard() {
     };
 
     return (
-        <Card sx={{ background: colors.primary[400], maxWidth: 345 }}
+        <Card sx={{ background: colors.primary[400] }}
 
 
         >
             <CardHeader
                 avatar={
                     <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                        R
+                        {name[0]}
                     </Avatar>
                 }
                 action={
@@ -51,14 +51,13 @@ export default function RecipeReviewCard() {
                         <MoreVertIcon />
                     </IconButton>
                 }
-                title="Shrimp and Chorizo Paella"
-                subheader="September 14, 2016"
+                title={name}
+                subheader={dateFormat(created, "dddd, mmmm dS, yyyy")}
+
             />
             <CardContent>
                 <Typography variant="body2" color="text.secondary">
-                    This impressive paella is a perfect party dish and a fun meal to cook
-                    together with your guests. Add 1 cup of frozen peas along with the mussels,
-                    if you like.
+                    {bio ? bio : "This Candidate has not provided a bio, please check their manifesto for more information"}
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>

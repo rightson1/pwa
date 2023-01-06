@@ -298,11 +298,6 @@ const navItems = [
         icon: <AddCircleOutlineIcon />,
     },
     {
-        text: "New Candidate",
-        link: "candidate",
-        icon: <AddIcon />,
-    },
-    {
         text: "New FAQ",
         link: "faq",
         icon: <HelpOutlineOutlinedIcon />,
@@ -318,16 +313,18 @@ const navItems = [
         text: 'Results',
 
 
-    }, {
-        text: 'Results Bar Chart',
-        link: 'bar',
-        icon: <BarChartOutlinedIcon />
+    },
 
-    }, {
+    {
         text: 'Results Pie Chart',
         link: 'pie',
         icon: <PieChartOutlineOutlinedIcon />
 
+
+    }, {
+        text: 'Results Bar Chart',
+        link: 'bar',
+        icon: <BarChartOutlinedIcon />
 
     }
 

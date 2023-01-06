@@ -21,7 +21,7 @@ const Home = () => {
     const [reg, setReg] = React.useState()
     const [message, setMessage] = React.useState("")
 
-    const submit = (e) => {
+    const submit = async (e) => {
         e.preventDefault()
         const email = e.target.email.value.trim()
         const password = e.target.password.value.trim()
@@ -30,6 +30,13 @@ const Home = () => {
         setLoading(true)
 
         if ((sreg === "DLAW") || (sreg === "BLAW") || (sreg === "blaw") || (sreg === "dlaw")) {
+            const exists = await axios.get(`${baseUrl}/voters?reg=${reg}`)
+            if (exists.data > 0) {
+                setLoading(false)
+                setMessage("Voter already exists")
+                setOpen(true)
+                return
+            }
             createUserWithEmailAndPassword(auth, email, password).then(() => {
                 axios.post(`${baseUrl}/voters`, { reg, email, password }).then((res) => {
                     const adminRef = doc(db, "voters", res.data._id);

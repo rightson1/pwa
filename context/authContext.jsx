@@ -76,6 +76,8 @@ export const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         setUser(null);
+        localStorage.removeItem('admin')
+        localStorage.removeItem('voter')
         await signOut(auth).then(() => {
             router.push('/')
         })

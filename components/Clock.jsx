@@ -8,7 +8,13 @@ function ClockParent() {
 
 
     const { timerDays, timerHours, timerMinutes, timerSeconds } = useClock({ data });
-    const { colors } = useGlobalProvider();
+    const { colors, isMobileSmall } = useGlobalProvider();
+    const handleSlice = (str) => {
+        if (isMobileSmall) {
+            return str.slice(0, 5)
+        }
+        return str
+    }
     return (
         <Box display="flex" sx={{
             justifyContent: "center",
@@ -28,7 +34,7 @@ function ClockParent() {
                 p: "1rem",
             }}>
                 <Typography variant="h3" fontWeight="600">{timerDays ? timerDays : 0}</Typography>
-                <Typography variant="h6" fontWeight="400" color={colors.primary[100]}>Days</Typography>
+                <Typography variant="h6" fontWeight="400" color={colors.primary[100]}>{handleSlice('Days')}</Typography>
             </Box>
             <Typography variant="h3" fontWeight="500" color={colors.primary[100]}>:</Typography>
             <Box sx={{
@@ -41,7 +47,7 @@ function ClockParent() {
 
             }}>
                 <Typography variant="h3" fontWeight="600">{timerHours ? timerHours : 0}</Typography>
-                <Typography variant="h6" fontWeight="400" color={colors.primary[100]}>Hours</Typography>
+                <Typography variant="h6" fontWeight="400" color={colors.primary[100]}>{handleSlice('Hours')}</Typography>
             </Box>
             <Typography variant="h3" fontWeight="500" color={colors.primary[100]}>:</Typography>
             <Box sx={{
@@ -54,7 +60,7 @@ function ClockParent() {
 
             }}>
                 <Typography variant="h3" fontWeight="600">{timerMinutes ? timerMinutes : 0}</Typography>
-                <Typography variant="h6" fontWeight="400" color={colors.primary[100]}>Minutes</Typography>
+                <Typography variant="h6" fontWeight="400" color={colors.primary[100]}>{isMobileSmall ? 'Mins' : 'Minutes'}</Typography>
             </Box>
             <Typography variant="h3" fontWeight="500" color={colors.primary[100]}>:</Typography>
             <Box sx={{
@@ -67,7 +73,7 @@ function ClockParent() {
 
             }}>
                 <Typography variant="h3" fontWeight="600">{timerSeconds ? timerSeconds : 0}</Typography>
-                <Typography variant="h6" fontWeight="400" color={colors.primary[100]}>Seconds</Typography>
+                <Typography variant="h6" fontWeight="400" color={colors.primary[100]}>{isMobileSmall ? 'Sec' : 'Seconds'}</Typography>
             </Box>
 
         </Box>

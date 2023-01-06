@@ -21,7 +21,7 @@ const Positions = () => {
                 <Box
                     mt="20px"
                     display="grid"
-                    gridTemplateColumns="repeat(auto-fit, minmax(250px, 1fr))"
+                    gridTemplateColumns="repeat(auto-fit, minmax(300px, 1fr))"
                     justifyContent="space-between"
                     rowGap="20px"
                     columnGap="1.33%"

@@ -35,6 +35,7 @@ export const ThemeProvider = ({ children }) => {
     const [open, setOpen] = useState(false);
     const [close, setClose] = useState(false);
     const isMobile = useMediaQuery("(max-width: 600px)")
+    const isMobileSmall = useMediaQuery("(max-width: 600px)")
     const isLarge = useMediaQuery("(min-width: 900px)");
     const [change, setChange] = useState(false)
     const [positions, setPositions] = useState([])
@@ -83,7 +84,8 @@ export const ThemeProvider = ({ children }) => {
                 setClose,
                 positions,
                 baseUrl,
-                events
+                events,
+                isMobileSmall
 
 
             }}

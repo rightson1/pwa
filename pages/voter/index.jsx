@@ -19,12 +19,15 @@ import Stack from '@mui/material/Stack';
 import { useAdminQuery } from "../../util/useAdmin";
 import { useEventsQuery } from "../../util/useEvents";
 import { useTimeQuery } from "../../util/useTime";
+import { usePositionsQuery } from "../../util/usePositions";
 
 const Voter = () => {
-    const { colors } = useGlobalProvider()
+    const { colors, isMobile } = useGlobalProvider()
     const { data: admins, isLoading } = useAdminQuery();
     const { data: events } = useEventsQuery()
     const { data: time } = useTimeQuery()
+    const { data: positions } = usePositionsQuery()
+
 
     return <Box m="1rem">
         <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
@@ -49,10 +52,10 @@ const Voter = () => {
                 }
             />
             <Voterbox
-                title="6"
+                title={positions ? positions?.length : '10'}
                 subtitle="Electrol Positions"
-                progress="0.3"
-                increase="50%"
+                progress=".9"
+                increase="90%"
                 icon={
                     <HowToVoteIcon
                         sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -95,10 +98,16 @@ const Voter = () => {
                                     {index + 1}
                                 </Typography>
                                 <Typography color={colors.grey[100]}>
-                                    {admin?.name}
+                                    {isMobile ? admin?.name.split(' ')[0] : admin?.name}
                                 </Typography>
                             </Box>
-                            <Box color={colors.grey[100]}>{admin?.email}</Box>
+                            <Box sx={{
+
+                            }} color={colors.grey[100]}>
+
+                                {isMobile ? admin?.email.slice(0, 15) + '..' : admin?.email}
+                            </Box>
+
                             <Box
                                 backgroundColor={colors.greenAccent[500]}
                                 p="5px 10px"

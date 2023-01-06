@@ -19,11 +19,12 @@ const Contacts = () => {
 
 
     const columns = [
-        { field: "id", headerName: "ID", flex: 0.5 },
+        { field: "id", headerName: "ID", flex: 2, minWidth: 150, },
         {
             field: "email", headerName: "Email",
             flex: 2,
             cellClassName: "name-column--cell",
+            minWidth: 200,
         },
         {
             field: "name",

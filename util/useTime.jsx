@@ -33,8 +33,8 @@ export const useTimeUpdate = () => {
 const getTime = () => axios.get(`${baseUrl}/time`)
 export const useTimeQuery = () => {
     return useQuery('time', getTime, {
-        staleTime: 1.8e+6,
-        cacheTime: 1.8e+6,
+        staleTime: 300000,
+        cacheTime: 300000,
         select: (data) => data.data
     })
 }

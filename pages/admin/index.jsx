@@ -21,7 +21,7 @@ import { useEventsQuery } from "../../util/useEvents";
 import { useTimeQuery } from "../../util/useTime";
 
 const Admin = () => {
-    const { colors } = useGlobalProvider()
+    const { colors, isMobile } = useGlobalProvider()
     const { data: admins, isLoading } = useAdminQuery();
     const { data: events } = useEventsQuery()
     const { data: time } = useTimeQuery()
@@ -76,37 +76,47 @@ const Admin = () => {
                 >
                     <Typography variant="h5" fontWeight="600" colors={colors.grey[100]}>All Administrators</Typography>
                 </Box>
-                {admins?.length > 0 ? admins?.map((admin, index) => (
-                    <Box key={index}
-                        display="flex"
-                        justifyContent="space-between"
-                        alignItems="center"
-                        borderBottom={`4px solid  ${colors.primary[500]}`}
+                {admins?.length > 0 ? admins?.map((admin, index) => {
+                    return (
 
-                        p="15px"
-                    >
-                        <Box>
-                            <Typography
-                                color={colors.greenAccent[500]}
-                                variant="h5"
-                                fontWeight="600"
-                            >
-                                {index + 1}
-                            </Typography>
-                            <Typography color={colors.grey[100]}>
-                                {admin.name}
-                            </Typography>
-                        </Box>
-                        <Box color={colors.grey[100]}>{admin.email}</Box>
-                        <Box
-                            backgroundColor={colors.greenAccent[500]}
-                            p="5px 10px"
-                            borderRadius="4px"
+
+                        <Box key={index}
+                            display="flex"
+                            justifyContent="space-between"
+                            alignItems="center"
+                            borderBottom={`4px solid  ${colors.primary[500]}`}
+
+                            p="15px"
                         >
-                            {admin.role}
+                            <Box>
+                                <Typography
+                                    color={colors.greenAccent[500]}
+                                    variant="h5"
+                                    fontWeight="600"
+                                >
+                                    {index + 1}
+                                </Typography>
+                                <Typography color={colors.grey[100]}>
+                                    {isMobile ? admin?.name.split(' ')[0] : admin?.name}
+                                </Typography>
+                            </Box>
+                            <Box sx={{
+
+                            }} color={colors.grey[100]}>
+
+                                {isMobile ? admin?.email.slice(0, 15) + '..' : admin?.email}
+                            </Box>
+
+                            <Box
+                                backgroundColor={colors.greenAccent[500]}
+                                p="5px 10px"
+                                borderRadius="4px"
+                            >
+                                {admin?.role}
+                            </Box>
                         </Box>
-                    </Box>
-                )) : (
+                    )
+                }) : (
                     <>
                         <Skeleton variant="rectangular" width="100%" height={10} />
                         {

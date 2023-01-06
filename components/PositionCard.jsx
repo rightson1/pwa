@@ -34,7 +34,6 @@ const PositionCard = ({ _id, admin, desc, name }) => {
     const [values, setValues] = useState(null)
     const { admin: sadmin } = useAuth()
     const router = useRouter()
-    console.log(sadmin)
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -151,11 +150,13 @@ const PositionCard = ({ _id, admin, desc, name }) => {
                         size="small"
                         onClick={handleOpen}
                     >Edit</Button>}
+
+
                     <Button
                         variant="primary"
                         size="small"
-                        onClick={() => router.push(`/voter/p-candidates/${_id}`)}
-                    >View Candidates</Button>
+                        onClick={() => router.push(`/${sadmin ? 'admin' : 'voter'}/p-candidates/${_id}`)}
+                    >Candidates</Button>
                 </Flex>
                 <Collapse
                     in={isExpanded}

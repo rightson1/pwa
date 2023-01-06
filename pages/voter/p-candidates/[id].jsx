@@ -7,19 +7,21 @@ import { usePositionQuery } from "../../../util/usePositions";
 import { useRouter } from "next/router";
 import Skeleton from '@mui/material/Skeleton';
 import CandidateCard from "../../../components/CandidateCard";
-import { candidates as data } from "../../../src/data";
+import { usePositionCandidateQuery } from "../../../util/useCandidate"
 const Faq = () => {
-    const { colors, isMobile } = useGlobalProvider()
     const router = useRouter()
     const { id } = router.query
+
     const { data: position } = usePositionQuery(id);
+    const { data: candidates } = usePositionCandidateQuery(id)
 
 
     return <Box m="20px">
         {position && <Header title={position.name} subtitle={position.name} />}
+
         <Box my={2}>
             {
-                data?.length > 0 ? (
+                candidates?.length > 0 ? (
                     <Box
                         mt="20px"
                         display="grid"
@@ -28,10 +30,11 @@ const Faq = () => {
                         rowGap="20px"
                         columnGap="1.33%"
 
+
                     >
                         {
 
-                            data.map((item) => {
+                            candidates.map((item) => {
                                 return <CandidateCard key={item.id} {...item} />
 
                             }
