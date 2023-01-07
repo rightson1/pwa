@@ -63,7 +63,7 @@ const FAQ = ({ voter }) => {
                     }
                 </>
             ) :
-                <Typography variant="h5" color={colors.greenAccent[500]}>No FAQ's</Typography>
+                <Typography variant="h5" color={colors.greenAccent[500]}> No FAQ`&apos;s</Typography>
         }
 
     </Box>;
