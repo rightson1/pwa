@@ -28,6 +28,15 @@ export const useCandidatesDelete = () => {
         },
     });
 };
+const updateCandidates = ({ reg, values }) =>
+    axios.put(`${baseUrl}/candidates?reg=${reg}`, values);
+export const useCandidatesUpdate = () => {
+    return useMutation(updateCandidates, {
+        onSuccess: (data) => {
+            console.log(data)
+        }
+    });
+};
 const getCandidates = () => axios.get(`${baseUrl}/candidates`);
 export const useCandidatesQuery = () => {
     return useQuery("candidates", getCandidates, {

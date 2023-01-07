@@ -1,18 +1,48 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { useGlobalProvider } from "../../context/themeContext";
 import Header from "../../components/Title";
 import dynamic from "next/dynamic";
 
 import Box from '@mui/material/Box';
 import { Button, Typography } from '@mui/material';
+import { useCandidatesQuery, useCandidatesUpdate } from '../../util/useCandidate';
+import { set } from 'mongoose';
+import { useAuth } from '../../context/authContext';
+import Info from "../../components/Info"
 const QuillNoSSRWrapper = dynamic(import('react-quill'), {
     ssr: false,
     loading: () => <p>Loading ...</p>,
 })
 const Candidate = () => {
     const { loading, setLoading } = React.useState(false)
+    const [bio, setBio] = React.useState('')
+    const [manifesto, setManifesto] = React.useState('<div><div>');
+    const [message, setMessage] = React.useState("");
+    const [opened, setOpened] = React.useState(false);
+    const { voter } = useAuth();
+    const { mutate, isLoading, isSuccess, isError, error } = useCandidatesUpdate()
+    const submit = () => {
+        const values = { manifesto, bio }
+        mutate({ reg: voter.reg, values })
+    }
+
+
+
     const { colors } = useGlobalProvider();
     const [desc, setDesc] = React.useState('');
+    useEffect(() => {
+        console.log(error)
+        if (isSuccess) {
+            setMessage('success🥂')
+            setOpened(true)
+
+        }
+        if (isError) {
+            setMessage('Error😢')
+            setOpened(true)
+        }
+    }, [isSuccess, isError])
+
     return <Box m="20px">
         <Header title="CANDIDATE PAGE" subtitle="Tell Your Voters About You" />
         <Box my={3}>
@@ -20,10 +50,10 @@ const Candidate = () => {
 
             <textarea
                 type="text"
-                value={desc}
+                value={bio}
                 label="Enter Bio"
 
-                onChange={(e) => setDesc(e.target.value)}
+                onChange={(e) => setBio(e.target.value)}
 
                 style={{
                     backgroundColor: colors.primary[400],
@@ -50,10 +80,10 @@ const Candidate = () => {
 
                 <Typography fontWeight="h6" color={colors.greenAccent[400]}>Enter Your Manifesto (use Light Mode)</Typography>
 
-                <QuillNoSSRWrapper placeholder="Enter position details...." theme="snow" modules={modules} formats={formats} onChange={(e) => console.log(e)} />
+                <QuillNoSSRWrapper placeholder="Enter position details...." theme="snow" modules={modules} formats={formats} onChange={(e) => setManifesto(e)} />
 
                 <Box display="flex" justifyContent="end" mt="50px">
-                    {loading ? <Button type="button" sx={{
+                    {isLoading ? <Button type="button" sx={{
                         color: colors.grey[100],
                         backgroundColor: colors.primary[400] + " !important",
                         opacity: 0.5 + " !important",
@@ -63,12 +93,16 @@ const Candidate = () => {
                         <Button type="submit" sx={{
                             color: colors.grey[100],
                             backgroundColor: colors.primary[400] + " !important",
-                        }} variant="contained">
+                        }} variant="contained"
+                            onClick={submit}
+                        >
                             Submit You Details
                         </Button>}
                 </Box>
             </Box>
+            <div dangerouslySetInnerHTML={{ __html: manifesto }} className="mt-5"></div>
         </Box>
+        <Info open={opened} setOpen={setOpened} message={message} />
     </Box>
 };
 Candidate.getLayout = (page) => {

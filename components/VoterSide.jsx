@@ -27,6 +27,7 @@ import HowToRegIcon from '@mui/icons-material/HowToReg';
 import { useRouter } from "next/router";
 import { motion } from "framer-motion";
 import { useAuth } from "../context/authContext";
+import { useCandidatesQuery } from "../util/useCandidate";
 
 
 const AdminSide = () => {
@@ -75,12 +76,15 @@ const AdminSide = () => {
             }),
         }),
     );
+
     const FramerDrawer = motion(Drawer);
 
 
     const theme = useTheme();
     const [selected, setSelected] = React.useState()
     const [active, setActive] = React.useState(false);
+    const { data: candidates } = useCandidatesQuery();
+
     const close = useRef()
     const router = useRouter()
 
@@ -117,7 +121,7 @@ const AdminSide = () => {
 
                     </Box></>)}
                 <List >
-                    {items.map(({ text, icon, link }, index) => {
+                    {navItems.filter((item) => candidates?.some((candidate) => candidate.reg === voter?.reg) || item.text !== "Candidate").map(({ text, icon, link }, index) => {
                         if (!icon) {
                             return (
                                 <>
