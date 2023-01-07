@@ -39,8 +39,6 @@ const drawerWidth = 240;
 
 const AdminSide = () => {
     const { admin } = useAuth();
-    console.log(admin)
-
     const { colors, mode, dispatch, actionTypes, open, setOpen, isMobile, isLarge } = useGlobalProvider();
     const theme = useTheme();
     const [selected, setSelected] = React.useState()

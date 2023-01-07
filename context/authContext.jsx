@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
                 })
                 if (admins) {
                     setAdmin(admins)
-                    localStorage.setItem('admin', JSON.stringify(user))
+                    localStorage.setItem('admin', JSON.stringify(admins))
                     return
                 } else if (!admins) {
                     console.log(user)
