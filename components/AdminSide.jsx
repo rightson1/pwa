@@ -97,6 +97,8 @@ const AdminSide = () => {
     return <Box sx={{
         display: "flex",
         flexGrow: 1,
+        height: 'auto',
+        minHeight: '200vh',
     }}
     >
 
@@ -107,7 +109,9 @@ const AdminSide = () => {
             sx={{
                 '& .MuiDrawer-paper': {
                     background: colors.primary[400]
-                }
+                },
+                height: 'auto'
+
             }}>
             {
                 !open && <ListItem disablePadding sx={{ display: 'block' }}>
