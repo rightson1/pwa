@@ -36,7 +36,7 @@ const Positions = () => {
                         )
                     }
                 </Box>
-            ) : (
+            ) : isLoading ? (
                 <Box
                     Box
                     mt="20px"
@@ -53,8 +53,19 @@ const Positions = () => {
                             </Box>
                         ))
                     }
+                </Box>) :
+                <Box
+                    mt="20px"
+                    display="grid"
+                    gridTemplateColumns="repeat(auto-fit, minmax(300px, 1fr))"
+                    justifyContent="space-between"
+                    rowGap="20px"
+                    columnGap="1.33%"
+                >
+                    <Typography variant="h5" color="textSecondary" align="center">No Positions Found</Typography>
                 </Box>
-            )
+
+
         }
     </Box>
 };

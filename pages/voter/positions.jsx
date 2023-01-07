@@ -36,7 +36,7 @@ const Positions = () => {
                         )
                     }
                 </Box>
-            ) : (
+            ) : isLoading ? (
                 <Box
                     Box
                     mt="20px"
@@ -54,7 +54,29 @@ const Positions = () => {
                         ))
                     }
                 </Box>
-            )
+            ) :
+                <Box
+                    mt="20px"
+                    display="grid"
+                    gridTemplateColumns="repeat(auto-fit, minmax(250px, 1fr))"
+                    justifyContent="space-between"
+                    rowGap="20px"
+                    columnGap="1.33%"
+                >
+
+                    <Box
+                        display="flex"
+                        flexDirection="column"
+                        justifyContent="center"
+                        alignItems="center"
+                        height="100%"
+                        width="100%"
+                    >
+                        <Typography variant="h5" color="textSecondary" align="center">
+                            No Positions Found
+                        </Typography>
+                    </Box>
+                </Box>
         }
     </Box>
 };

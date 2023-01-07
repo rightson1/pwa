@@ -1,22 +1,71 @@
-
+import { useEffect, useMemo } from "react";
 import { ResponsiveBar } from "@nivo/bar";
-import { mockBarData as data } from "../src/data";
 import { useGlobalProvider } from "../context/themeContext";
 
-const BarChart = ({ isDashboard = false }) => {
+const BarChart = ({ votes, position, isDashboard = false }) => {
+    const { isMobile } = useGlobalProvider()
+
+    const data = useMemo(() => {
+        let data = { position }
+        votes.map((item) => {
+            const name = item._id
+            data[name] = item.count;
+        })
+        return [data]
+    }, [votes])
+
+    const keys = useMemo(() => {
+
+        return votes.map((item) => item._id)
+    }, [votes])
+
+
+
+    // const data = [{
+    //     position: "President",
+    //     "hot dog": 137,
+    //     // "hot dogColor": "hsl(229, 70%, 50%)",
+    //     burger: 96,
+    //     // burgerColor: "hsl(296, 70%, 50%)",
+    //     kebab: 72,
+    //     // kebabColor: "hsl(97, 70%, 50%)",
+    //     donut: 140,
+    //     // donutColor: "hsl(340, 70%, 50%)",
+    // },
+    // ];
+
 
     const { colors } = useGlobalProvider()
+    const pieColors = [
+        "hsl(344, 70%, 50%)",
+        "hsl(229, 70%, 50%)",
+        "hsl(291, 70%, 50%)",
+        "hsl(162, 70%, 50%)",
+        "hsl(150,0%, 30%)",
+        "hsl(150, 70%, 50%)",
+        "hsl(104, 70%, 50%)",
+        "hsl(0, 70%, 50%)",
+    ]
+    // const data = useMemo(() => {
+
+    //     const data = []
+    //     let totalVotes = 0
+    //     votes.map((vote, index) => {
+    //         totalVotes += vote.count
+    //         setTotal(totalVotes)
+    //         data.push({
+    //             id: vote._id,
+    //             label: vote._id,
+    //             value: vote.count,
+    //             color: pieColors[index]
+    //         })
+    //     })
+    //     return data
+    // }, [votes])
 
     return (
         <ResponsiveBar
             data={data}
-            keys={[
-                'Rightson',
-                'Enoch',
-                'Faith',
-                'Zeddy',
-
-            ]}
             theme={{
                 // added
                 axis: {
@@ -47,16 +96,19 @@ const BarChart = ({ isDashboard = false }) => {
                 },
                 tooltip: {
                     container: {
-                        color: colors.grey[400],
+                        color: colors.blueAccent[700],
                     },
                 },
             }}
-            indexBy="candidate"
-            margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+            keys={
+                keys
+            }
+            indexBy="position"
+            margin={{ top: 50, right: isMobile ? 70 : 130, bottom: 50, left: isMobile ? 50 : 70 }}
+            padding={0.3}
             groupMode="grouped"
             valueScale={{ type: 'linear' }}
             indexScale={{ type: 'band', round: true }}
-            valueFormat=" >-"
             colors={{ scheme: 'nivo' }}
             defs={[
                 {
@@ -107,7 +159,7 @@ const BarChart = ({ isDashboard = false }) => {
                 tickSize: 5,
                 tickPadding: 5,
                 tickRotation: 0,
-                legend: 'Candidate',
+                legend: 'position',
                 legendPosition: 'middle',
                 legendOffset: 32
             }}
@@ -115,18 +167,18 @@ const BarChart = ({ isDashboard = false }) => {
                 tickSize: 5,
                 tickPadding: 5,
                 tickRotation: 0,
-                legend: 'Votes',
+                legend: 'food',
                 legendPosition: 'middle',
                 legendOffset: -40
             }}
-            labelSkipWidth={36}
+            labelSkipWidth={12}
             labelSkipHeight={12}
             labelTextColor={{
                 from: 'color',
                 modifiers: [
                     [
                         'darker',
-                        '1.6'
+                        1.6
                     ]
                 ]
             }}
@@ -156,7 +208,7 @@ const BarChart = ({ isDashboard = false }) => {
             ]}
             role="application"
             ariaLabel="Nivo bar chart demo"
-            barAriaLabel={function (e) { return e.id + ": " + e.formattedValue + " in country: " + e.indexValue }}
+            barAriaLabel={function (e) { return e.id + ": " + e.formattedValue + " in position: " + e.indexValue }}
         />
     );
 };

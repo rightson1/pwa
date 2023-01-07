@@ -6,13 +6,56 @@ import Header from "../../components/Title"
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useGlobalProvider } from "../../context/themeContext"
 import { voters } from "../../src/data";
-import { useVotersQuery } from "../../util/useVoter";
+import { useVoterDelete, useVotersQuery } from "../../util/useVoter";
 import { useCandidatesQuery } from "../../util/useCandidate";
+import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 
+import { db } from "../../firebase";
+import React, { useEffect, useState } from "react";
+import Button from "@mui/material/Button";
+
+import Info from "../../components/Info"
 const Contacts = () => {
     const { data: voters, isLoading } = useVotersQuery()
     const { data: candidates, isLoading: isCandidateLoading } = useCandidatesQuery()
+    const { mutate, isLoading: loading, isError, isSuccess, error } = useVoterDelete()
+    const [wait, setWait] = useState(false)
+    const [message, setMessage] = React.useState("");
+    const [id, setId] = useState(null)
+    const [opened, setOpened] = React.useState(false);
+    const handleDelete = (id) => {
+        const confirm = window.confirm('Are you sure you want to delete voter')
+        if (!confirm) {
+            console.log(confirm)
+            return
+        }
+        else {
+            // setWait(true)
+            setId(id)
 
+            deleteDoc(doc(db, "voters", id)).then(() => {
+                mutate(id)
+
+            }).catch((error) => {
+                console.log(error)
+                setWait(false)
+            })
+        }
+
+    }
+    useEffect(() => {
+        console.log(error)
+        if (isSuccess) {
+            setMessage('success🥂')
+            setOpened(true)
+            setWait(false)
+
+        }
+        if (isError) {
+            setMessage('Error😢')
+            setOpened(true)
+        }
+    }, [isSuccess, isError])
     const { colors } = useGlobalProvider()
     const columns = [
         { field: "reg", headerName: "Reg No.", flex: 1, minWidth: 150, },
@@ -40,12 +83,16 @@ const Contacts = () => {
                             isCandidate ? colors.primary[400] : colors.primary[200]
                         }
                         borderRadius="5px"
+
                     >
 
                         {isCandidate ? <SecurityOutlinedIcon /> : <LockOpenOutlinedIcon />}
-                        <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
+                        <Box color={colors.grey[100]} sx={{
+                            ml: "5px", cursor: 'pointer',
+
+                        }}>
                             {isCandidate ? 'Yes' : 'No'}
-                        </Typography>
+                        </Box>
                     </Box>
 
                 )
@@ -56,7 +103,9 @@ const Contacts = () => {
             field: "DELETE",
             headerName: "DELETE",
 
-            renderCell: ({ row: { isCandidate } }) => {
+            renderCell: ({ row: { _id } }) => {
+
+
                 return (
                     <Box
                         width="100%"
@@ -66,12 +115,15 @@ const Contacts = () => {
                         p="5px"
                         backgroundColor={colors.redAccent[600]}
                         borderRadius="5px"
+                        sx={{
+                            cursor: 'pointer'
+                        }}
                     >
 
 
-                        <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
-                            DELETE
-                        </Typography>
+                        <Box color={colors.grey[100]} sx={{ ml: "5px" }} onClick={() => handleDelete(_id)}>
+                            {((wait || loading) && (id === _id)) ? 'Loading' : 'Delete'}
+                        </Box>
                     </Box>
 
                 )
@@ -128,11 +180,14 @@ const Contacts = () => {
                 }
                 }
             >
-                <DataGrid checkboxSelection rows={voters || []} loading={isLoading} columns={columns} sx={{
-                    '@media print': {
-                        '.MuiDataGrid-main': { color: 'rgba(0, 0, 0, 0.87)' },
-                    },
-                }}
+                <DataGrid disableSelectionOnClick checkboxSelection rows={voters || []} loading={isLoading} columns={columns}
+
+
+                    sx={{
+                        '@media print': {
+                            '.MuiDataGrid-main': { color: 'rgba(0, 0, 0, 0.87)' },
+                        },
+                    }}
                     getRowId={(row) => row._id}
                     components={{
                         Toolbar: GridToolbar,
@@ -140,6 +195,7 @@ const Contacts = () => {
                 />
 
             </Box>
+            <Info open={opened} setOpen={setOpened} message={message} />
         </Box>
     );
 };

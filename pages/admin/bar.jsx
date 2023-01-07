@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PieChart from "../../components/PieChart";
 import Box from "@mui/material/Box";
 import Header from "../../components/Title";
@@ -8,18 +8,38 @@ import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import Select from '@mui/material/Select';
 import BarChart from "../../components/BarChart";
-import Skeleton from '@mui/material/Skeleton';
+import Skeleton from '@mui/material/Skeleton'
+import { usePositionsQuery } from "../../util/usePositions";
+import axios from "axios";
+import { useGlobalProvider } from "../../context/themeContext";
+import { Typography } from "@mui/material";
 
 const Bar = () => {
-    const [age, setAge] = React.useState('');
-    const handleChange = (event) => {
-        setAge(event.target.value);
-    };
+    const [position, setPosition] = React.useState('President');
+    const [votes, setVotes] = React.useState([]);
+    const { baseUrl } = useGlobalProvider()
 
+    const handleChange = (event) => {
+        setPosition(event.target.value);
+    };
+    const { data: positions } = usePositionsQuery();
+    useEffect(() => {
+        if (positions?.length > 0) {
+            setPosition(positions[0].name)
+        }
+    }, [positions])
+    useEffect(() => {
+        if (!position) return
+        axios.get(`${baseUrl}/votes?position=${position}`).then((res) => {
+            setVotes(res.data)
+        }).catch((err) => {
+            console.log(err)
+        })
+    }, [position])
     return (
         <Box m="20px">
-            <Header title="Results In Bar Chart " subtitle="Still Under Construction !!!!!!" />
-            <Skeleton variant="rounded" width="100%" height={10} />
+            <Header title="BAR CHART " subtitle={`Results for ${position}`} />
+
             <FormControl sx={{
                 my: 3
             }}>
@@ -27,23 +47,32 @@ const Bar = () => {
                 <Select
                     labelId="demo-simple-select-autowidth-label"
                     id="demo-simple-select-autowidth"
-                    value={age}
+                    value={position}
                     onChange={handleChange}
                     fullWidth
                     label="Age"
                     readOnly={false}
+                    defaultValue="President"
+
                 >
                     <MenuItem value="">
                         <em>None</em>
                     </MenuItem>
-                    <MenuItem value={10}>Chairlady</MenuItem>
-                    <MenuItem value={21}>Secretary</MenuItem>
-                    <MenuItem value={22}>Tresures</MenuItem>
+                    {positions?.map((position) => (
+                        <MenuItem value={position.name} key={position._id}  >{position.name}</MenuItem>
+                    ))}
+
                 </Select>
                 <FormHelperText>Select Position</FormHelperText>
             </FormControl>
             <Box height="75vh">
-                <BarChart />
+                {!position ?
+                    <Typography>Please Select Category</Typography>
+                    :
+
+                    votes.length > 0 ? <BarChart position={position} votes={votes} /> :
+                        <Skeleton variant="rectangular" width="100%" height="100%" />
+                }
             </Box>
         </Box>
     );

@@ -30,7 +30,7 @@ const Calender = () => {
     const [message, setMessage] = React.useState("");
     const [open, setOpen] = React.useState(false);
     const { mutate, isSuccess: added, isError: failed } = useEventsMutation()
-    const { data } = useEventsQuery()
+    const { data, isLoading } = useEventsQuery()
     const { mutate: deleteEvent, isSuccess, isError } = useEventsDelete()
     const { colors, baseUrl, setChange, change, events } = useGlobalProvider();
 
@@ -144,15 +144,19 @@ const Calender = () => {
                             />
                         </ListItem>
                     )
-                    ) : <>
-                        {
-                            [1, 2, 3, 4, 5, 6, 7, 8, 9].map((item, index) => (
-                                <Stack spacing={.5} key={index} mb="2rem">
-                                    <Skeleton variant="rounded" width="100%" height={60} />
-                                </Stack>
-                            ))
-                        }
-                    </>
+                    ) :
+                    isLoading ?
+
+                        <>
+                            {
+                                [1, 2, 3, 4, 5, 6, 7, 8, 9].map((item, index) => (
+                                    <Stack spacing={.5} key={index} mb="2rem">
+                                        <Skeleton variant="rounded" width="100%" height={60} />
+                                    </Stack>
+                                ))
+                            }
+                        </> :
+                        <Typography>No Events Added</Typography>
                 }
 
             </List>

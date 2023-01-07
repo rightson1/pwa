@@ -24,7 +24,7 @@ import { usePositionsQuery } from "../../util/usePositions";
 const Voter = () => {
     const { colors, isMobile } = useGlobalProvider()
     const { data: admins, isLoading } = useAdminQuery();
-    const { data: events } = useEventsQuery()
+    const { data: events, isLoading: loading } = useEventsQuery()
     const { data: time } = useTimeQuery()
     const { data: positions } = usePositionsQuery()
 
@@ -219,7 +219,7 @@ const Voter = () => {
                                 />
                             </ListItem>
                         )
-                        ) : <>
+                        ) : loading ? <>
                             {
                                 [1, 2, 3, 4, 5, 6, 7, 8, 9].map((item, index) => (
                                     <Stack spacing={.5} key={index} mb="2rem">
@@ -227,7 +227,7 @@ const Voter = () => {
                                     </Stack>
                                 ))
                             }
-                        </>
+                        </> : <Typography color={colors.grey[100]}>No Events Added</Typography>
                     }
 
                 </List>

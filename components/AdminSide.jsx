@@ -210,7 +210,7 @@ const AdminSide = () => {
             display: "flex",
             flexGrow: 1,
             height: 'auto',
-            minHeight: '200vh',
+
         }}
         >
 

@@ -50,7 +50,7 @@ const FAQ = ({ voter }) => {
                         onClick={() => handleDelete(faqId)}
                     >{loading && id === faqId ? "loading..." : 'Delete'}</Button>}
                 </AccordionDetails>
-            </Accordion>)) : (
+            </Accordion>)) : isLoading ? (
                 <>
                     {
                         [1, 2, 3, 4, 5, 6, 7, 8, 9].map((item, index) => (
@@ -62,7 +62,8 @@ const FAQ = ({ voter }) => {
                         ))
                     }
                 </>
-            )
+            ) :
+                <Typography variant="h5" color={colors.greenAccent[500]}>No FAQ's</Typography>
         }
 
     </Box>;
