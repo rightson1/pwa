@@ -39,6 +39,7 @@ const drawerWidth = 240;
 
 const AdminSide = () => {
     const { admin } = useAuth();
+    console.log(admin)
 
     const { colors, mode, dispatch, actionTypes, open, setOpen, isMobile, isLarge } = useGlobalProvider();
     const theme = useTheme();
@@ -94,51 +95,8 @@ const AdminSide = () => {
         }),
     );
 
-    return <Box sx={{
-        display: "flex",
-        flexGrow: 1,
-        height: 'auto',
-        minHeight: '200vh',
-    }}
-    >
-
-
-        <Drawer
-            variant="permanent" open={open}
-
-            sx={{
-                '& .MuiDrawer-paper': {
-                    background: colors.primary[400]
-                },
-                height: 'auto'
-
-            }}>
-            {
-                !open && <ListItem disablePadding sx={{ display: 'block' }}>
-                    <ListItemButton
-                        onClick={() => setOpen(!open)}
-                        sx={{
-                            minHeight: 48,
-                            justifyContent: open ? 'initial' : 'center',
-                            px: 2.5,
-                        }}
-                    >
-
-                        <ListItemIcon
-                            sx={{
-                                minWidth: 0,
-                                mr: open ? 3 : 'auto',
-                                justifyContent: 'center',
-                            }}
-                        >
-                            <MenuOutlinedIcon />
-                        </ListItemIcon>
-
-                    </ListItemButton>
-                </ListItem>
-            }
-
-
+    const ListComponent = ({ items }) => {
+        return <Box width={240}>
 
             {open && (<>  <Box display="flex" justifyContent="space-between" alignItems="center" p="1rem">
 
@@ -165,7 +123,7 @@ const AdminSide = () => {
 
 
             <List>
-                {navItems.map(({ text, icon, link }, index) => {
+                {items.map(({ text, icon, link }, index) => {
                     if (!icon) {
                         return (<ListItem disablePadding sx={{ display: 'block' }} key={index}>
                             <ListItemButton
@@ -229,10 +187,79 @@ const AdminSide = () => {
             </List>
 
 
+        </Box>
 
-        </Drawer>
+    }
+    if (isMobile) {
+        return <>
+            <MuiDrawer
+                variant="persistent" open={open}
+                anchor="left"
+                onClose={() => setClose(false)}
+                sx={{
+                    '& .MuiDrawer-paper': {
+                        background: colors.primary[400],
 
-    </Box>;
+                    },
+                    flexGrow: 1,
+
+                }}>
+                <ListComponent items={navItems} />
+            </MuiDrawer>
+        </>;
+    } else {
+        return <Box sx={{
+            display: "flex",
+            flexGrow: 1,
+            height: 'auto',
+            minHeight: '200vh',
+        }}
+        >
+
+
+            <Drawer
+                variant="permanent" open={open}
+
+                sx={{
+                    '& .MuiDrawer-paper': {
+                        background: colors.primary[400]
+                    },
+
+                    height: 'auto'
+
+                }}>
+                {
+                    !open && <ListItem disablePadding sx={{ display: 'block' }}>
+                        <ListItemButton
+                            onClick={() => setOpen(!open)}
+                            sx={{
+                                minHeight: 48,
+                                justifyContent: open ? 'initial' : 'center',
+                                px: 2.5,
+                            }}
+                        >
+
+                            <ListItemIcon
+                                sx={{
+                                    minWidth: 0,
+                                    mr: open ? 3 : 'auto',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                <MenuOutlinedIcon />
+                            </ListItemIcon>
+
+                        </ListItemButton>
+                    </ListItem>
+                }
+
+
+                <ListComponent items={navItems} />
+
+            </Drawer>
+
+        </Box>;
+    }
 };
 
 
