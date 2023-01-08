@@ -96,11 +96,11 @@ const Home = () => {
                                 <input type="email" placeholder="Enter email" className="py-4 placeholder:text-[10px] w-full  px-2   outline-none rounded-md" required name="email" />
                             </div>
                             <div className="flex flex-col text-black items-start full">
-                                <label htmlFor="">Enter The You Experienced</label>
-                                <textarea type='text' placeholder="Enter Password" className="py-4 resize-none placeholder:text-[10px] w-full   px-2  outline-none rounded-md" required name="message" />
+                                <label htmlFor="">Enter The Problem You Experienced</label>
+                                <textarea type='text' placeholder="type your problem" className="py-4 resize-none placeholder:text-[10px] w-full   px-2  outline-none rounded-md" required name="message" />
                             </div>
                             <div className="w-full flex justify-end ">
-                                <button className="bg-black py-3 px-4 text-white rounded-md  self-end justify-end" type="submit">{loading ? "Please Wait..." : "Register"} </button>
+                                <button className="bg-black py-3 px-4 text-white rounded-md  self-end justify-end" type="submit">{loading ? "Please Wait..." : "Submit"} </button>
 
                             </div>
 
