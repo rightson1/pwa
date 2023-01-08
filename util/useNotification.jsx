@@ -21,14 +21,6 @@ export const useNotificationDelete = () => {
     return useMutation(deleteNotification, {
         onSuccess: (data) => {
             queryClient.refetchQueries('notifications', getNotifications)
-            queryClient.setQueryData('notifications', (oldData) => {
-
-                return {
-                    ...oldData,
-                    data: oldData.data.filter((item) => item.id !== data)
-                }
-
-            })
         }
     })
 }

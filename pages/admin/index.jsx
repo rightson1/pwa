@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
     Box, Button, IconButton, Typography, useTheme, List,
     ListItem,
@@ -19,15 +19,24 @@ import Stack from '@mui/material/Stack';
 import { useAdminQuery } from "../../util/useAdmin";
 import { useEventsQuery } from "../../util/useEvents";
 import { useTimeQuery } from "../../util/useTime";
-
+import { useAuth } from "../../context/authContext";
+import { useRouter } from "next/router";
+import { deleteDoc, doc } from "firebase/firestore";
+import { db } from "../../firebase";
+import { useVotersQuery } from "../../util/useVoter";
+import { useCandidatesQuery } from "../../util/useCandidate"
+import { usePositionsQuery } from "../../util/usePositions";
+import Link from "next/link";
 const Admin = () => {
     const { colors, isMobile } = useGlobalProvider()
+    const { data: positions } = usePositionsQuery();
+    const { admin } = useAuth()
     const { data: admins, isLoading } = useAdminQuery();
     const { data: events, isLoading: loading } = useEventsQuery()
     const { data: time } = useTimeQuery()
-
-
-
+    const { data: voters } = useVotersQuery()
+    const { data: candidates } = useCandidatesQuery()
+    const router = useRouter();
     return <Box m="1rem">
         <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
         <Box
@@ -40,10 +49,10 @@ const Admin = () => {
 
 
             <Voterbox
-                title="400"
+                title={voters ? voters?.length : 'loading..'}
                 subtitle="Registered Voters"
-                progress="0.75"
-                increase="50%"
+                progress={voters ? `${(voters?.length / 600)}` : '.2'}
+                increase={voters ? `${Math.floor((voters?.length / 600) * 100)}%` : '50%'}
                 icon={
                     <HowToRegIcon
                         sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -51,10 +60,10 @@ const Admin = () => {
                 }
             />
             <Voterbox
-                title="6"
+                title={positions ? positions?.length : '3'}
                 subtitle="Electrol Positions"
                 progress="0.3"
-                increase="50%"
+                increase={positions ? `${Math.floor((positions?.length / 15) * 100)}%` : '50%'}
                 icon={
                     <HowToVoteIcon
                         sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -172,7 +181,7 @@ const Admin = () => {
                     color={colors.greenAccent[500]}
                     sx={{ mt: "15px" }}
                 >
-                    You can change the date in the settings
+                    <Link href={'/admin/settings'}>   You can change the date in the settings</Link>
                 </Typography>
             </Box>
             <Box

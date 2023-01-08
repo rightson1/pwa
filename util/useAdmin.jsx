@@ -10,4 +10,13 @@ export const useAdminQuery = () => useQuery('admins', getAdmins, {
     cacheTime: 1.8e6,
 })
 
+const deleteAdmin = (_id) => axios.delete(`${baseUrl}/admins?id=${_id}`)
+export const useAdminDelete = () => {
+    const queryClient = useQueryClient();
+    return useMutation(deleteAdmin, {
+        onSuccess: (data) => {
+            queryClient.refetchQueries('admins', getAdmins)
 
+        }
+    })
+}

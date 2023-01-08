@@ -11,20 +11,14 @@ export const useCandidatesMutation = () => {
         },
     });
 };
-const deleteCandidates = (newCandidates) =>
-    axios.delete(`${baseUrl}/candidates?id=${newCandidates}`);
+const deleteCandidates = (_id) =>
+    axios.delete(`${baseUrl}/candidates?id=${_id}`);
 export const useCandidatesDelete = () => {
     const queryClient = useQueryClient();
-
     return useMutation(deleteCandidates, {
         onSuccess: (data) => {
             queryClient.refetchQueries("candidates", getCandidates);
-            queryClient.setQueryData("candidates", (oldData) => {
-                return {
-                    ...oldData,
-                    data: oldData.data.filter((item) => item.id !== data),
-                };
-            });
+
         },
     });
 };

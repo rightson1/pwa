@@ -61,7 +61,7 @@ const Faq = () => {
 
         }
         if (isError) {
-            setMessage('Error😢')
+            setMessage('Error😢, try again or check,candidate prolly exist')
             setOpened(true)
         }
     }, [isSuccess, isError])
@@ -118,7 +118,8 @@ const Faq = () => {
                         {
 
                             candidates.map((item) => {
-                                return <CandidateCard key={item.id} {...item} />
+
+                                return <CandidateCard key={item._id} {...item} admin={true} />
 
                             }
                             )

@@ -5,21 +5,15 @@ import * as yup from "yup";
 import { useGlobalProvider } from "../../context/themeContext";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Title";
-import { db } from "../../firebase";
 import Info from "../../components/Info"
-import axios from "axios";
-import { collection, addDoc, doc } from "firebase/firestore";
 import { useFaqMutation, useFaqQuery } from "../../util/useFaq";
 const Form = () => {
     const [ans, setAns] = React.useState('');
-    const { colors, baseUrl } = useGlobalProvider();
-    const [loading, setLoading] = React.useState(false);
-    const [message, setMessage] = React.useState("");
+    const { colors } = useGlobalProvider();
     const [open, setOpen] = React.useState(false);
     const isNonMobile = useMediaQuery("(min-width:600px)");
 
     const { mutate, isLoading, error, isError } = useFaqMutation()
-    const { refetch } = useFaqQuery()
     console.log(isError, isLoading)
     const handleFormSubmit = (values, { resetForm }) => {
         const data = { ...values, ans }

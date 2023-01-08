@@ -5,11 +5,9 @@ import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../components/Title"
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useGlobalProvider } from "../../context/themeContext"
-import { voters } from "../../src/data";
 import { useVoterDelete, useVotersQuery } from "../../util/useVoter";
 import { useCandidatesQuery } from "../../util/useCandidate";
-import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
-
+import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase";
 import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
@@ -30,18 +28,17 @@ const Contacts = () => {
             return
         }
         else {
-            // setWait(true)
+            setWait(true)
             setId(id)
-
-            deleteDoc(doc(db, "voters", id)).then(() => {
+            updateDoc(doc(db, "voters", id), {
+                isDeleted: true
+            }).then(() => {
                 mutate(id)
-
             }).catch((error) => {
                 console.log(error)
                 setWait(false)
             })
         }
-
     }
     useEffect(() => {
         console.log(error)

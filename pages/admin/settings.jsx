@@ -202,7 +202,7 @@ const Settings = () => {
                 >{isLoading || loading ? 'Loading...' : 'Update'}</Button>
             </Box>
         </Box>
-        {
+        {/* {
             admin && admin?.role === "s.admin" && (<Box my={5}>
                 <Typography my={2} variant="h6" sx={{ color: colors.greenAccent[500] }}>Add New Admin</Typography>
 
@@ -311,7 +311,8 @@ const Settings = () => {
                     )}
                 </Formik>
             </Box>)
-        }
+        } */}
+
         <Info open={open} setOpen={setOpen} message={message} />
     </Box>;
 };

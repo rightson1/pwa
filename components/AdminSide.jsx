@@ -314,7 +314,12 @@ const navItems = [
         icon: <SettingsOutlinedIcon />
 
     },
+    {
+        text: "Notifications",
+        link: 'notifications',
+        icon: <NotificationsNoneIcon />
 
+    },
     {
         text: "Forms",
 

@@ -4,8 +4,8 @@ import { useRouter } from "next/router";
 import { auth, db } from "../firebase";
 import axios from "axios"
 import { useMutation, useQuery, useQueryClient } from "react-query"
-
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, deleteDoc, doc } from "firebase/firestore";
+import { deleteUser } from "firebase/auth";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -30,9 +30,23 @@ export const AuthProvider = ({ children }) => {
                     return { id: doc.id, ...doc.data() }
                 })
                 if (admins) {
-                    setAdmin(admins)
-                    localStorage.setItem('admin', JSON.stringify(admins))
-                    return
+
+                    if (admins?.isDeleted) {
+                        const deleteRef = doc(db, "admins", admins.id);
+                        deleteUser(auth.currentUser).then(() => {
+                            deleteDoc(deleteRef).then(() => {
+                                signOut(auth).then(() => {
+                                    router.push('/')
+                                })
+                            })
+                        })
+                    }
+                    else {
+                        setAdmin(admins)
+
+                        localStorage.setItem('admin', JSON.stringify(admins))
+                        return
+                    }
                 } else if (!admins) {
                     console.log(user)
                     const q = query(collection(db, "voters"), where("email", "==", user.email));
@@ -42,15 +56,26 @@ export const AuthProvider = ({ children }) => {
                             return { id: doc.id, ...doc.data() }
                         })
                         if (user) {
-                            setVoter(user)
-                            localStorage.setItem('voter', JSON.stringify(user))
-                            return
+                            if (user?.isDeleted) {
+                                const deleteRef = doc(db, "voters", user.id);
+                                deleteUser(auth.currentUser).then(() => {
+                                    deleteDoc(deleteRef).then(() => {
+                                        signOut(auth).then(() => {
+                                            router.push('/')
+                                        })
+                                    })
+                                })
+                            } else {
+                                setVoter(user)
+                                localStorage.setItem('voter', JSON.stringify(user))
+                                return
+                            }
+
                         }
                     })
                 }
             })
         }
-
     }
     useEffect(() => {
         const unsub = onAuthStateChanged(auth, (user) => {

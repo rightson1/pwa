@@ -26,7 +26,7 @@ import {
 import axios from "axios";
 import { useEventsDelete, useEventsMutation, useEventsQuery } from "../util/useEvents";
 const Calender = () => {
-    const [currentEvents, setCurrentEvents] = React.useState([])
+    // const [currentEvents, setCurrentEvents] = React.useState([])
     const [message, setMessage] = React.useState("");
     const [open, setOpen] = React.useState(false);
     const { mutate, isSuccess: added, isError: failed } = useEventsMutation()
@@ -229,7 +229,7 @@ const Calender = () => {
                 dayMaxEvents={true}
                 select={handleDateClick}
                 eventClick={handleEventClick}
-                eventsSet={(events) => setCurrentEvents(events)}
+                // eventsSet={(events) => setCurrentEvents(events)}
                 eventAdd={handleEvent}
                 eventChange={function () { }}
                 eventRemove={handleDelete}

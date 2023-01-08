@@ -20,6 +20,8 @@ import { useAdminQuery } from "../../util/useAdmin";
 import { useEventsQuery } from "../../util/useEvents";
 import { useTimeQuery } from "../../util/useTime";
 import { usePositionsQuery } from "../../util/usePositions";
+import { useVotersQuery } from "../../util/useVoter";
+import { useCandidatesQuery } from "../../util/useCandidate"
 
 const Voter = () => {
     const { colors, isMobile } = useGlobalProvider()
@@ -27,6 +29,9 @@ const Voter = () => {
     const { data: events, isLoading: loading } = useEventsQuery()
     const { data: time } = useTimeQuery()
     const { data: positions } = usePositionsQuery()
+    const { data: voters } = useVotersQuery()
+    const { data: candidates } = useCandidatesQuery()
+
 
 
     return <Box m="1rem">
@@ -39,12 +44,11 @@ const Voter = () => {
             my={3}
         >
 
-
             <Voterbox
-                title="400"
+                title={voters ? voters?.length : 'loading..'}
                 subtitle="Registered Voters"
-                progress="0.75"
-                increase="50%"
+                progress={voters ? `${(voters?.length / 600)}` : '.2'}
+                increase={voters ? `${Math.floor((voters?.length / 600) * 100)}%` : '50%'}
                 icon={
                     <HowToRegIcon
                         sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -52,10 +56,10 @@ const Voter = () => {
                 }
             />
             <Voterbox
-                title={positions ? positions?.length : '10'}
+                title={positions ? positions?.length : '3'}
                 subtitle="Electrol Positions"
-                progress=".9"
-                increase="90%"
+                progress="0.3"
+                increase={positions ? `${Math.floor((positions?.length / 15) * 100)}%` : '50%'}
                 icon={
                     <HowToVoteIcon
                         sx={{ color: colors.greenAccent[600], fontSize: "26px" }}

@@ -5,21 +5,64 @@ import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../components/Title"
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useGlobalProvider } from "../../context/themeContext"
-// import { admins } from "../../src/data";
-import { useAdminQuery } from "../../util/useAdmin";
+import { useAdminDelete, useAdminQuery } from "../../util/useAdmin";
+import { collection, getDocs, deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { db } from "../../firebase";
 import { useMemo } from "react";
+import React, { useEffect, useState } from "react";
+import { useAuth } from "../../context/authContext";
+import Info from "../../components/Info"
 const Contacts = () => {
     const { colors } = useGlobalProvider()
+    const { admin } = useAuth()
     const { data, isLoading } = useAdminQuery();
-    // const admins = useMemo(() => {
-    //     if (!data) return;
-    //     const admins = data.map((admin) => ({ id, ...admin }))
-    //     return admins
-    // }, [data])
+    const { mutate, isLoading: loading, isError, isSuccess, error } = useAdminDelete()
+    const [wait, setWait] = useState(false)
+    const [message, setMessage] = React.useState("");
+    const [id, setId] = useState(null)
+    const [opened, setOpened] = React.useState(false);
+    const handleDelete = (id) => {
+        const confirm = window.confirm('Are you sure you want to delete voter')
+        if (!confirm) {
+            console.log(confirm)
+            return
+        } else if (admin.role == "admin") {
+            setOpened(true)
+            setMessage("You can't delete admin, only super admin can delete admin");
+            console.log(admin)
+            return
 
+        }
+        else {
+            setWait(true)
+            setId(id)
+
+            updateDoc(doc(db, "admins", id), { isDeleted: true }).then(() => {
+                mutate(id)
+
+            }).catch((error) => {
+                console.log(error)
+                setWait(false)
+            })
+        }
+
+    }
+    useEffect(() => {
+
+        if (isSuccess) {
+            setMessage('success🥂')
+            setOpened(true)
+            setWait(false)
+
+        }
+        if (isError) {
+            setMessage('Error😢')
+            setOpened(true)
+        }
+    }, [isSuccess, isError])
 
     const columns = [
-        { field: "id", headerName: "ID", flex: 2, minWidth: 150, },
+        { field: "_id", headerName: "ID", flex: 2, minWidth: 150, },
         {
             field: "email", headerName: "Email",
             flex: 2,
@@ -65,10 +108,12 @@ const Contacts = () => {
 
         },
         {
-            field: "View",
-            headerName: "View",
+            field: "DELETE",
+            headerName: "DELETE",
 
-            renderCell: () => {
+            renderCell: ({ row: { _id } }) => {
+
+
                 return (
                     <Box
                         width="100%"
@@ -76,21 +121,23 @@ const Contacts = () => {
                         display="flex"
                         justifyContent="center"
                         p="5px"
-                        backgroundColor={colors.redAccent[400]}
+                        backgroundColor={colors.redAccent[600]}
                         borderRadius="5px"
+                        sx={{
+                            cursor: 'pointer'
+                        }}
                     >
 
-                        <LockOpenOutlinedIcon />
-                        <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
-                            View
-                        </Typography>
+
+                        <Box color={colors.grey[100]} sx={{ ml: "5px" }} onClick={() => handleDelete(_id)}>
+                            {((wait || loading) && (id === _id)) ? 'Loading' : 'Delete'}
+                        </Box>
                     </Box>
 
                 )
             }
 
-        }
-
+        },
 
 
     ];
@@ -140,6 +187,7 @@ const Contacts = () => {
             >
                 <DataGrid checkboxSelection columns={columns}
                     loading={isLoading || !data}
+                    disableSelectionOnClick
                     getRowId={(row) => row._id}
                     sx={{
                         '@media print': {
@@ -153,6 +201,7 @@ const Contacts = () => {
                 />
 
             </Box>
+            <Info setOpen={setOpened} message={message} open={opened} />
         </Box>
     );
 };

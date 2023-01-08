@@ -42,7 +42,6 @@ export const usePositionUpdate = () => {
 const fetchPosition = (positionId) => axios.get(`${baseUrl}/positions?id=${positionId}`);
 export const usePositionQuery = (positionId) => {
     return useQuery(["position", positionId], () => fetchPosition(positionId), {
-        staleTime: 100000,
         staleTime: 1.8e+6,
         cacheTime: 1.8e+6,
         select: (data) => data.data

@@ -30,7 +30,7 @@ const Positions = () => {
                     {
 
                         data.map((item) => {
-                            return <PositionCard key={item.id} {...item} />
+                            return <PositionCard key={item.id} {...item} admin={true} />
 
                         }
                         )

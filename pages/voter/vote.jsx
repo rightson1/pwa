@@ -51,21 +51,21 @@ const Vote = () => {
     }
     const submit = (e) => {
         e.preventDefault()
-        // if (!voter) {
-        //     setOpened(true)
-        //     setMessage('You are not logged in')
-        //     setTimeout(() => {
-        //         router.push('/')
-        //     }, 2000)
-        //     return
-        // }
+        if (!voter) {
+            setOpened(true)
+            setMessage('You are not logged in')
+            setTimeout(() => {
+                router.push('/')
+            }, 2000)
+            return
+        }
 
 
-        // if (isVote > 0) {
-        //     setMessage('You Already Voted')
-        //     setOpened(true)
-        //     return
-        // }
+        if (isVote > 0) {
+            setMessage('You Already Voted')
+            setOpened(true)
+            return
+        }
         if (values === null) {
             setMessage('Kindly Select A Candidate')
             setOpened(true)
@@ -169,18 +169,27 @@ const Vote = () => {
                                 alignSelf: "flex-end",
                                 px: 5,
                             }}
-                        >Election Not Today</Button>
-                        :
+                        >Elections Not Today</Button>
+                        : (isVote > 0) ?
+                            <Button
+                                sx={{
+                                    backgroundColor: colors.greenAccent[400] + "!important",
+                                    alignSelf: "flex-end",
+                                    px: 5,
+                                }}
+                                disabled={true}
+                            >Voted!!</Button> :
 
-                        <Button
-                            sx={{
-                                backgroundColor: colors.greenAccent[400] + "!important",
-                                alignSelf: "flex-end",
-                                px: 5,
-                            }}
-                            type="submit"
-                            disabled={loading || isLoading || tLoading ? true : false}
-                        >Submit</Button>
+
+                            <Button
+                                sx={{
+                                    backgroundColor: colors.greenAccent[400] + "!important",
+                                    alignSelf: "flex-end",
+                                    px: 5,
+                                }}
+                                type="submit"
+                                disabled={loading || isLoading || isSuccess || tLoading ? true : false}
+                            >Submit</Button>
             }
         </Box>
         <Info open={opened} setOpen={setOpened} message={message} />
@@ -192,15 +201,6 @@ Vote.getLayout = (page) => {
     </>
 }
 Vote.voter = true
-// (isVote > 0) ?
-// <Button
-//     sx={{
-//         backgroundColor: colors.greenAccent[400] + "!important",
-//         alignSelf: "flex-end",
-//         px: 5,
-//     }}
-//     disabled={true}
-// >Voted!!</Button> :
 
 
 export default Vote;

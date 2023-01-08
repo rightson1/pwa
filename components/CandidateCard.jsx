@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from "react";
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -14,8 +14,13 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import CircularProgress from '@mui/material/CircularProgress';
+
+import Info from "./Info"
 import { useGlobalProvider } from '../context/themeContext';
 import dateFormat from 'dateformat';
+import { useCandidatesDelete } from '../util/useCandidate';
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
     return <IconButton {...other} />;
@@ -27,14 +32,31 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-export default function Candidate({ reg, name, created, bio, manifesto }) {
+export default function Candidate({ reg, name, created, bio, manifesto, _id, admin }) {
+    const { mutate, isLoading, isError, isSuccess } = useCandidatesDelete()
+    const [message, setMessage] = React.useState("");
+    const [opened, setOpened] = React.useState(false);
     const [expanded, setExpanded] = React.useState(false);
     const { colors } = useGlobalProvider()
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
+    const handleDelete = () => {
+        mutate(_id)
+    }
 
+    useEffect(() => {
+        if (isSuccess) {
+            setMessage('success🥂')
+            setOpened(true)
+
+        }
+        if (isError) {
+            setMessage('Error😢, try again or check,candidate prolly exist')
+            setOpened(true)
+        }
+    }, [isSuccess, isError])
     return (
         <Card sx={{ background: colors.primary[400] }}
 
@@ -61,12 +83,13 @@ export default function Candidate({ reg, name, created, bio, manifesto }) {
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
-                <IconButton aria-label="add to favorites">
-                    {/* <FavoriteIcon /> */}
-                </IconButton>
+
                 <IconButton aria-label="share">
                     <ShareIcon />
                 </IconButton>
+                {admin && <IconButton aria-label="add to favorites" onClick={() => handleDelete()}>
+                    {isLoading ? <CircularProgress /> : <DeleteOutlineIcon />}
+                </IconButton>}
                 <ExpandMore
                     expand={expanded}
                     onClick={handleExpandClick}
@@ -81,6 +104,7 @@ export default function Candidate({ reg, name, created, bio, manifesto }) {
                     <div dangerouslySetInnerHTML={{ __html: manifesto ? manifesto : '<div>This Candidate has not added his/her manifest</div>' }} className="mt-5"></div>
                 </CardContent>
             </Collapse>
+            <Info open={opened} setOpen={setOpened} message={message} />
         </Card>
     );
 }
