@@ -27,6 +27,7 @@ import { useAuth } from "../context/authContext";
 import { useRouter } from "next/router";
 
 const PositionCard = ({ _id, admin, desc, name }) => {
+    console.log(admin)
     const [open, setOpen] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
     const [message, setMessage] = React.useState("");

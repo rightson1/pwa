@@ -22,6 +22,7 @@ import { useTimeQuery } from "../../util/useTime";
 import { usePositionsQuery } from "../../util/usePositions";
 import { useVotersQuery } from "../../util/useVoter";
 import { useCandidatesQuery } from "../../util/useCandidate"
+import CopyRight from "../../components/CopyRight";
 
 const Voter = () => {
     const { colors, isMobile } = useGlobalProvider()
@@ -238,7 +239,7 @@ const Voter = () => {
             </Box>
 
         </Box>
-
+        <CopyRight dashboard={true} />
     </Box>
 };
 Voter.voter = true

@@ -27,6 +27,7 @@ import { useVotersQuery } from "../../util/useVoter";
 import { useCandidatesQuery } from "../../util/useCandidate"
 import { usePositionsQuery } from "../../util/usePositions";
 import Link from "next/link";
+import CopyRight from "../../components/CopyRight";
 const Admin = () => {
     const { colors, isMobile } = useGlobalProvider()
     const { data: positions } = usePositionsQuery();
@@ -242,7 +243,7 @@ const Admin = () => {
             </Box>
 
         </Box>
-
+        <CopyRight dashboard={true} />
     </Box>
 };
 Admin.getLayout = (page) => {

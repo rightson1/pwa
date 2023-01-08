@@ -2,11 +2,9 @@ import React, { useEffect } from 'react';
 import { useGlobalProvider } from "../../context/themeContext";
 import Header from "../../components/Title";
 import dynamic from "next/dynamic";
-
 import Box from '@mui/material/Box';
 import { Button, Typography } from '@mui/material';
-import { useCandidatesQuery, useCandidatesUpdate } from '../../util/useCandidate';
-import { set } from 'mongoose';
+import { useCandidatesUpdate } from '../../util/useCandidate';
 import { useAuth } from '../../context/authContext';
 import Info from "../../components/Info"
 const QuillNoSSRWrapper = dynamic(import('react-quill'), {
@@ -14,24 +12,19 @@ const QuillNoSSRWrapper = dynamic(import('react-quill'), {
     loading: () => <p>Loading ...</p>,
 })
 const Candidate = () => {
-    const { loading, setLoading } = React.useState(false)
     const [bio, setBio] = React.useState('')
     const [manifesto, setManifesto] = React.useState('<div><div>');
     const [message, setMessage] = React.useState("");
     const [opened, setOpened] = React.useState(false);
     const { voter } = useAuth();
-    const { mutate, isLoading, isSuccess, isError, error } = useCandidatesUpdate()
+    const { mutate, isLoading, isSuccess, isError } = useCandidatesUpdate()
     const submit = () => {
         const values = { manifesto, bio }
         mutate({ reg: voter.reg, values })
     }
 
-
-
     const { colors } = useGlobalProvider();
-    const [desc, setDesc] = React.useState('');
     useEffect(() => {
-        console.log(error)
         if (isSuccess) {
             setMessage('success🥂')
             setOpened(true)
@@ -100,7 +93,7 @@ const Candidate = () => {
                         </Button>}
                 </Box>
             </Box>
-            <div dangerouslySetInnerHTML={{ __html: manifesto }} className="mt-5"></div>
+
         </Box>
         <Info open={opened} setOpen={setOpened} message={message} />
     </Box>

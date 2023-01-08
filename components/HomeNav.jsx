@@ -25,9 +25,9 @@ const HomeNav = () => {
             </Button>
             <div className="hidden md:flex gap-4 text-[16px] opacity-75  ">
                 <motion.button whileTap={{ background: 'black', color: 'black' }} className="cursor-pointer px-3 py-2 hover:border-b-[2px]" onClick={() => router.push('/')}>Home</motion.button>
-                <motion.button whileTap={{ background: 'black', color: 'black' }} className="cursor-pointer px-3 py-2 hover:border-b-[2px]" onClick={() => router.push('/')}>How To Use</motion.button>
+                <motion.button whileTap={{ background: 'black', color: 'black' }} className="cursor-pointer px-3 py-2 hover:border-b-[2px]" onClick={() => router.push('/help')}>Help</motion.button>
             </div>
-            <button onClick={() => router.push('/')} className="hidden md:flex">Register</button>
+            <button onClick={() => router.push('/voter-registration')} className="hidden md:flex">Register</button>
             <motion.div className="close xm:cursor-pointer md:hidden mr-5 text-2xl cursor-pointer" onClick={() => setOpen(!open)} layout>
                 {open ? <div className="flex flex-col gap-2">
                     <motion.div
@@ -81,15 +81,20 @@ const HomeNav = () => {
         } onClick={() => setOpen(false)}>
             <div className="w-[250px]  h-[290px] bg-[rgba(255,255,255,1)] opacity-90  flex flex-col  justify-center  gap-4 mt-[100px] px-4" onClick={(e) => e.stopPropagation()}>
 
-                <a className="cursor-pointer px-4 py-6 text-black text-[16px]  shadow-lg bg-[rgba(255,255,255,.1)] hover:bg-black hover:text-black" onClick={() => {
+                <a className="cursor-pointer px-4 py-6 text-black text-[16px]  shadow-lg bg-[rgba(255,255,255,.1)] hover:bg-black hover:text-white" onClick={() => {
                     router.push('/')
                     return setOpen(false)
                 }}>Home</a>
                 <a className="cursor-pointer px-4 py-6 text-black text-[16px]  shadow-lg
-                 bg-[rgba(255,255,255,.1)] hover:bg-black hover:text-black" onClick={() => {
-                        router.push('/')
+                 bg-[rgba(255,255,255,.1)] hover:bg-black hover:text-white" onClick={() => {
+                        router.push('/voter-registration')
                         return setOpen(false)
                     }}>Register</a>
+                <a className="cursor-pointer px-4 py-6 text-black text-[16px]  shadow-lg
+                 bg-[rgba(255,255,255,.1)] hover:bg-black hover:text-white" onClick={() => {
+                        router.push('/help')
+                        return setOpen(false)
+                    }}>Help</a>
 
 
 

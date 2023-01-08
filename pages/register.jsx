@@ -37,6 +37,7 @@ const Home = () => {
                     setLoading(false)
                     router.push("/admin")
                     setMessage("Admin Created Successfully")
+                    setOpen(true)
 
                 }).catch(() => {
                     setLoading(false)

@@ -9,6 +9,7 @@ import { useGlobalProvider } from "../context/themeContext";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useAuth } from "../context/authContext";
 import { useTimeQuery } from "../util/useTime";
+import CopyRight from "../components/CopyRight";
 
 const Home = () => {
   const router = useRouter()
@@ -188,6 +189,7 @@ const Home = () => {
           <div className="absolute top-10 right-0 w-[80%] h-[400px] z-[1] opacity-10">
             <img src="/mku.png" alt="" className="h-full w-full object-cover " />
           </div>
+          <CopyRight />
 
 
 

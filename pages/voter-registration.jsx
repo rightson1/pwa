@@ -9,6 +9,7 @@ import { useGlobalProvider } from "../context/themeContext";
 import { setDoc, doc } from "firebase/firestore";
 import Info from "../components/Info";
 import axios from "axios"
+import CopyRight from "../components/CopyRight";
 
 const Home = () => {
     const router = useRouter()
@@ -136,7 +137,7 @@ const Home = () => {
                         <img src="/mku.png" alt="" className="h-full w-full object-cover " />
                     </div>
 
-
+                    <CopyRight />
 
                 </form>
 
