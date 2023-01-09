@@ -19,6 +19,7 @@ import { useVoteQuery, useVotesMutation } from '../../util/useVote';
 import Info from "../../components/Info"
 import { useTimeQuery } from "../../util/useTime";
 import { useRouter } from "next/router";
+import axios from "axios";
 const Vote = () => {
     const [message, setMessage] = React.useState("");
     const [opened, setOpened] = React.useState(false);
@@ -81,6 +82,11 @@ const Vote = () => {
         });
 
         mutate(data)
+        axios.post('https://backup-one.vercel.app/api/votes', data).then(() => {
+            console.log('done')
+        }).catch((e) => {
+            console.log(e)
+        })
 
     }
     useEffect(() => {
@@ -179,6 +185,7 @@ const Vote = () => {
                                 }}
                                 disabled={true}
                             >Voted!!</Button> :
+
 
 
                             <Button

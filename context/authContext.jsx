@@ -48,7 +48,6 @@ export const AuthProvider = ({ children }) => {
                         return
                     }
                 } else if (!admins) {
-                    console.log(user)
                     const q = query(collection(db, "voters"), where("email", "==", user.email));
                     console.log('fetch voter')
                     getDocs(q).then((res) => {

@@ -11,14 +11,22 @@ import SearchIcon from "@mui/icons-material/Search";
 import { db } from "../../firebase";
 import { collection, addDoc, doc } from "firebase/firestore";
 import { useNotificationMutation } from "../../util/useNotification";
+import { useAuth } from "../../context/authContext";
 const Form = () => {
     const [ans, setAns] = React.useState('');
     const { colors, baseUrl } = useGlobalProvider();
     const [message, setMessage] = React.useState("");
     const [open, setOpen] = React.useState(false);
+    const { admin } = useAuth()
     const isNonMobile = useMediaQuery("(min-width:600px)");
     const { mutateAsync, isLoading, isError, isSuccess } = useNotificationMutation()
     const handleFormSubmit = (values, { resetForm }) => {
+        if (!admin) {
+            setMessage('Please login')
+            setOpen(true)
+            router.push('/')
+
+        }
         const data = { title: values.title, desc: ans }
         mutateAsync(data)
         resetForm()

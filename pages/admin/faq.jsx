@@ -7,15 +7,25 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Title";
 import Info from "../../components/Info"
 import { useFaqMutation, useFaqQuery } from "../../util/useFaq";
+import { useRouter } from "next/router";
+import { useAuth } from "../../context/authContext";
 const Form = () => {
     const [ans, setAns] = React.useState('');
     const { colors } = useGlobalProvider();
+    const { admin } = useAuth()
     const [open, setOpen] = React.useState(false);
+    const router = useRouter()
     const isNonMobile = useMediaQuery("(min-width:600px)");
 
     const { mutate, isLoading, error, isError } = useFaqMutation()
     console.log(isError, isLoading)
     const handleFormSubmit = (values, { resetForm }) => {
+        if (!admin) {
+            setMessage('Please login')
+            setOpen(true)
+            router.push('/')
+
+        }
         const data = { ...values, ans }
         mutate(data)
         if (!isError) {

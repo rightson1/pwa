@@ -54,8 +54,15 @@ const Settings = () => {
     const [desc, setDesc] = React.useState('');
     const handleSubmit = (e) => {
         e.preventDefault()
+        if (!admin) {
+            setMessage('Please login')
+            setOpen(true)
+            router.push('/')
+
+        }
         const date = e.target.date.value;
         const data = { date, id: savedTime.id }
+
         if (savedTime) {
             update(data)
         } else {

@@ -8,16 +8,25 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Title"
 import { useAuth } from "../../context/authContext";
 import { usePositionsMutation } from "../../util/usePositions";
+import { useRouter } from "next/router";
 const Form = () => {
     const { colors } = useGlobalProvider();
     const [message, setMessage] = React.useState("");
     const [open, setOpen] = React.useState(false);
+    const router = useRouter()
     const { admin } = useAuth()
     const [desc, setDesc] = React.useState('');
     const { mutateAsync, isLoading, isSuccess, isError } = usePositionsMutation()
 
     const isNonMobile = useMediaQuery("(min-width:600px)");
     const handleFormSubmit = (values, { resetForm }) => {
+
+        if (!admin) {
+            setMessage('Please login')
+            setOpen(true)
+            router.push('/')
+
+        }
         const data = { name: values.position, desc, admin: admin.name }
         mutateAsync(data)
         resetForm()
