@@ -141,7 +141,7 @@ const Voter = () => {
 
             <StatBox
                 title="Candidates"
-                value={20}
+                value={candidates ? candidates?.length : 'loading..'}
                 increase="5.avg"
                 description="Per position"
                 icon={

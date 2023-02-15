@@ -105,7 +105,7 @@ const AdminLogin = () => {
             md={6}
             sx={{
                 position: 'relative',
-                backgroundImage: 'url(/register.svg)',
+                backgroundImage: 'url(/reg.png)',
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'contain',
                 backgroundPosition: 'right bottom',

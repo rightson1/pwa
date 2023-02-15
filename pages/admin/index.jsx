@@ -21,8 +21,6 @@ import { useEventsQuery } from "../../util/useEvents";
 import { useTimeQuery } from "../../util/useTime";
 import { useAuth } from "../../context/authContext";
 import { useRouter } from "next/router";
-import { deleteDoc, doc } from "firebase/firestore";
-import { db } from "../../firebase";
 import { useVotersQuery } from "../../util/useVoter";
 import { useCandidatesQuery } from "../../util/useCandidate"
 import { usePositionsQuery } from "../../util/usePositions";
@@ -145,7 +143,7 @@ const Admin = () => {
 
             <StatBox
                 title="Candidates"
-                value={20}
+                value={candidates ? candidates?.length : 'loading..'}
                 increase="5.avg"
                 description="Per position"
                 icon={
