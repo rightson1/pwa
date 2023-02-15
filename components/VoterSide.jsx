@@ -31,7 +31,7 @@ import { useCandidatesQuery } from "../util/useCandidate";
 
 
 const AdminSide = () => {
-    const { voter } = useAuth()
+    const { voter } = useAuth();
     const { colors, mode, dispatch, actionTypes, open, setOpen, isMobile, isLarge, isMobileSmall } = useGlobalProvider();
     const drawerWidth = 240;
     const openedMixin = (theme) => ({
@@ -113,7 +113,7 @@ const AdminSide = () => {
                             height: "90px"
                         }} />
                         <Typography variant='h3' fontWeight="bold">
-                            {voter && voter.email.split("@")[0]}
+                            {voter && voter.name}
                         </Typography>
                         <Typography variant='h6' fontWeight="bold" mt="-10px" color={colors.greenAccent[400]}>
                             VOTER
