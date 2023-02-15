@@ -13,6 +13,7 @@ import VoterSide from '../components/VoterSide';
 import Protected from "../components/Protected";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { Toaster } from 'react-hot-toast';
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -66,6 +67,7 @@ export default function MyApp(props) {
                         width: "100%",
                       }}>
                         <AdminNav />
+                        <Toaster />
                         <Component {...pageProps} />
                       </main>
 
@@ -83,7 +85,7 @@ export default function MyApp(props) {
     }
 
     else {
-      return Component.getLayout(
+      return (
         <QueryClientProvider client={queryClient}>
           <CacheProvider value={emotionCache}>
             <ThemeProvider>

@@ -191,9 +191,9 @@ const AdminSide = () => {
     if (isMobile) {
         return <>
             <MuiDrawer
-                variant="persistent" open={open}
+                open={open}
                 anchor="left"
-                onClose={() => setClose(false)}
+                onClose={() => setOpen(false)}
                 sx={{
                     '& .MuiDrawer-paper': {
                         background: colors.primary[400],

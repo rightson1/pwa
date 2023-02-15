@@ -1,152 +1,227 @@
-import React, { useEffect } from "react";
-import Image from "next/image";
-import { motion } from "framer-motion";
+import { Grid, Box, Paper, Typography, Button, Divider, CircularProgress } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import GoogleIcon from '@mui/icons-material/Google';
 import { useRouter } from "next/router";
-import { auth, db } from "../firebase"
-import { createUserWithEmailAndPassword } from "firebase/auth"
-import HomeNav from "../components/HomeNav";
-import { useGlobalProvider } from "../context/themeContext";
-import { setDoc, doc } from "firebase/firestore";
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { collection, getDocs, query, where, doc, setDoc } from "firebase/firestore";
 import Info from "../components/Info";
-import axios from "axios"
-import CopyRight from "../components/CopyRight";
-
+import { Toaster, toast } from "react-hot-toast";
+import { auth, db } from "../firebase"
+import { FcGoogle } from "react-icons/fc";
+import { useGlobalProvider } from "../context/themeContext";
+import axios from "axios";
 const Home = () => {
     const router = useRouter()
-    const { baseUrl } = useGlobalProvider()
-    const [open, setOpen] = React.useState(false);
-    const [loading, setLoading] = React.useState(false)
-    const [visible, setVisible] = React.useState(false)
-    const [email, setEmail] = React.useState();
-    const [password, setPassword] = React.useState();
-    const [reg, setReg] = React.useState()
-    const [message, setMessage] = React.useState("")
+    const { colors, baseUrl } = useGlobalProvider();
+    const [reg, setReg] = useState(null);
 
     const submit = async (e) => {
-        e.preventDefault()
-        const email = e.target.email.value.trim()
-        const password = e.target.password.value.trim()
-        const reg = e.target.reg.value.trim()
+        if (!reg) {
+            toast.error("Please enter a registration number")
+            return
+        }
+        toast.loading("Creating Voter...")
         const sreg = String(reg.slice(0, 4))
-        setLoading(true)
 
         if ((sreg === "DLAW") || (sreg === "BLAW") || (sreg === "blaw") || (sreg === "dlaw")) {
-            const exists = await axios.get(`${baseUrl}/voters?reg=${reg}`)
-            if (exists.data > 0) {
-                setLoading(false)
-                setMessage("Voter already exists")
-                setOpen(true)
+            const exists = await axios.get(`${baseUrl}/voters?reg=${reg}`).catch((e) => {
+                toast.dismiss()
+                toast.error("Something went wrong")
+                console.log(e)
+                return;
+            })
+            if (!exists) {
+                toast.dismiss()
+                toast.error("Something went wrong")
+                return;
+            }
+            if (exists?.data > 0) {
+                toast.dismiss()
+                toast.error("Voter already exists")
                 return
             }
-            createUserWithEmailAndPassword(auth, email, password).then(() => {
-                axios.post(`${baseUrl}/voters`, { reg, email, password }).then((res) => {
-                    const adminRef = doc(db, "voters", res.data._id);
-                    setDoc(adminRef, {
-                        reg,
-                        email,
-                        isDeleted: false,
-                        password
-                    }).then(() => {
-                        setLoading(false)
-                        router.push("/voter")
-                        setMessage("Voter Created Successfully")
+            const provider = new GoogleAuthProvider();
+            signInWithPopup(auth, provider)
+                .then(({ user }) => {
+                    const { email, displayName: name, photoURL: photo } = user;
+                    axios.post(`${baseUrl}/voters`, { reg, email, name }).then((res) => {
+                        const adminRef = doc(db, "voters", res.data._id);
+                        setDoc(adminRef, {
+                            reg,
+                            email,
+                            isDeleted: false,
+                            name
+                        }).then((e) => {
+                            toast.dismiss()
+                            toast.success("Voter Created Successfully")
+                            router.push("/voter")
 
-                    }).catch(() => {
-                        setLoading(false)
+
+                        }).catch((e) => {
+                            toast.dismiss()
+                            toast.error("Something went wrong")
+                            console.log(e)
+                        })
+
+                    }).catch((e) => {
+                        toast.dismiss()
+                        console.log(e)
+                        toast.error("Something went wrong")
                     })
+                }).catch((error) => {
+                    toast.dismiss()
+                    console.log(error)
+                    toast.error("Something went wrong")
+
 
                 }).catch(() => {
-                    setLoading(false)
+                    toast.dismiss()
+                    toast.error("Something went wrong")
                 })
-            }).catch((error) => {
-                setLoading(false)
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                setMessage(errorCode)
-                setOpen(true)
-
-
-            })
 
         } else {
-            setLoading(false)
-            setMessage("Kindly enter a valid registration number")
-            setOpen(true)
+            toast.dismiss()
+            toast.error("Please enter a valid registration number")
         }
-
-
 
     }
 
-    return <div className="w-screen h-screen overflow-hidden bg-[rgb(150,150,150)] -md md:p-8 ">
-        <div className="w-full h-full bg-[rgb(200,200,200)] rounded p-4 overflow-y-auto overflow-x-hidden md:p-8">
-            <HomeNav />
-            <div className="flex  flex-col relative py-8 text-black">
+    return <Grid container
+        sx={{
+            zIndex: 5,
+        }}
+    >
+        <Grid item
+            xs={12}
+            md={6}
+            sx={{
+                position: 'relative',
+                backgroundImage: 'url(/register.svg)',
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'contain',
+                backgroundPosition: 'right bottom',
+                width: "100%",
+                p: 2,
+                height: {
+                    xs: "60vh",
+                    md: "100vh"
+                },
+            }}
+        >
 
-                <form className="flex " onSubmit={submit}>
-                    <div className="flex-1 flex px-7 flex-col gap-4">
-                        <div className="flex h-[80px]  gap-2">
-                            <div className="h-full w-[20px] bg-black"></div>
-                            <div className="flex flex-col text-black">
-                                <h1 className="text-xl font-bold"> THE </h1>
-                                <h1 className="text-xl font-bold"> MKU</h1>
-                                <p className="text-[15px] font-thin">Parklands</p>
+            <Typography
+                variant="h2" fontFamily="Atomic Age" color={colors.primary[500]}
+            >MKU VOTING</Typography>
+        </Grid>
+        <Grid item
+            xs={12}
+            component={Paper}
+            md={6}
+            sx={{
+                width: "100%",
+                gap: 1,
+                p: 2,
+                bgcolor: colors.primary[600],
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                minHeight: '40vh',
 
-                            </div>
+            }}
+        >
 
-                        </div>
-                        <div className="flex flex-col mt-[10px]">
-                            <h1 className="text-2xl font-bold">Register</h1>
-                            <p>Hey There,Register To Continue</p>
-
-                        </div>
-                        <div className="w-[50px] h-[10px] bg-black"></div>
-                        <div className="grid grid-cols-1 md:grid-cols-2    w-full mt-7  gap-4  z-[5]" >
-
-                            <div className="flex flex-col text-black items-start w-full">
-                                <label htmlFor="">Registration Number</label>
-                                <input type="text" placeholder="Enter Reg" className="py-4 placeholder:text-[10px] border-b border-black w-full  px-2   outline-none" required name="reg" />
-                            </div>
-
-                            <div className="flex flex-col text-black items-start w-full">
-                                <label htmlFor="">Email</label>
-                                <input type="email" placeholder="Enter email" className="py-4 placeholder:text-[10px] border-b border-black w-full  px-2   outline-none" required name="email" />
-                            </div>
-                            <div className="flex flex-col text-black items-start full">
-                                <label htmlFor="">Enter Password</label>
-                                <input type={visible ? 'text' : "Password"} placeholder="Enter Password(no-spaces)" className="py-4 placeholder:text-[10px] border-b border-black w-full   px-2  outline-none" required name="password" />
-                            </div>
-
-                        </div>
-                        <div className="flex flex-col     w-full mt-7  gap-4  z-[5] items-start justify-start" >
-
-
-                            <div className="flex   text-black items-center gap-4 w-1/2 tl:w-full ">
-                                <input type="checkbox" className="p-3 cursor-pointer" onChange={() => setVisible(!visible)} />
-                                <label htmlFor="" className="text-[14px] font-thin">View Password</label>
-                            </div>
-
-                            <button className="bg-black py-3 px-4 text-white rounded-md max-w-[300px] flex justify-center items-center gap-2 w-3/4" type="submit">{loading ? "Please Wait..." : "Register"} </button>
-
-                        </div>
-                        <p>Already have an Account? <button className="text-green cursor-pointer" type="button" onClick={() => router.push("/")}>Login</button></p>
+            <Box
 
 
-                    </div>
-                    <div className="absolute top-10 right-0 w-[80%] h-[400px] z-[1] opacity-10">
-                        <img src="/mku.png" alt="" className="h-full w-full object-cover " />
-                    </div>
+                sx={{
+                    display: 'flex',
+                    gap: 2,
+                    flexDirection: 'column',
+                    width: {
+                        xs: '80vw',
+                        sm: '70vw',
+                        md: '400px'
+                    },
+                }}>
+                <Typography
+                    variant="h3"
+                    sx={{
+                        alignSelf: 'flex-start',
+                        opacity: 0.8,
+                        fontWeight: 700,
 
-                    <CopyRight />
+                    }}
+                >Register As Voter</Typography>
+                <Typography
+                    variant="body2"
+                    sx={{
+                        color: colors.primary[200],
+                    }}
 
-                </form>
+                >Already Have An Account ? <Typography component="button"
+                    color={colors.teal[500]}
+                    onClick={() => router.push('/')}
+                >Login</Typography>
+                </Typography>
+                <Box
+                    className="flex flex-col gap-2 items-center "
+                >
+                    <Typography
+                        sx={{
+                            alignSelf: 'flex-start',
+                        }}
+                    >Reg  Number</Typography>
+                    <Box
+                        component="input"
+                        required
+                        onChange={(e) => setReg(e.target.value)}
 
-            </div>
+                        sx={{
+                            width: "100%",
+                            outline: colors.teal[100],
+                            bgcolor: 'transparent',
+                            border: `1px solid ${colors.black[400]}`,
+                            '$:focus': {
+                                outline: colors.teal[100],
+                            }
+                        }}
+                        className="resize-none rounded-md p-4 focus:border-teal-500 focus:border-2  w-full"
 
-        </div>
-        <Info message={message} open={open} setOpen={setOpen} error={true} />
-    </div>;
+                    />
+                </Box>
 
+
+                <Button
+
+                    className="flex gap-2 items-center"
+                    onClick={() => submit()}
+                    sx={{
+                        bgcolor: 'transparent',
+                        width: "100%",
+
+                        border: `2px solid ${colors.black[300]}`,
+
+                    }}
+                >  <FcGoogle className="text-2xl" />
+
+
+                    <Typography
+                        sx={{
+                            color: colors.black[300],
+                            fontWeight: 700,
+                        }}
+                    >
+                        Google
+                    </Typography>
+                </Button>
+
+                <Toaster />
+            </Box>
+
+
+        </Grid>
+    </Grid>;
 
 };
 
