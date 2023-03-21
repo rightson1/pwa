@@ -23,66 +23,66 @@ const Home = () => {
         toast.loading("Creating Voter...")
         const sreg = String(reg.slice(0, 4))
 
-        if ((sreg === "DLAW") || (sreg === "BLAW") || (sreg === "blaw") || (sreg === "dlaw")) {
-            const exists = await axios.get(`${baseUrl}/voters?reg=${reg}`).catch((e) => {
-                toast.dismiss()
-                toast.error("Something went wrong")
-                console.log(e)
-                return;
-            })
-            if (!exists) {
-                toast.dismiss()
-                toast.error("Something went wrong")
-                return;
-            }
-            if (exists?.data > 0) {
-                toast.dismiss()
-                toast.error("Voter already exists")
-                return
-            }
-            const provider = new GoogleAuthProvider();
-            signInWithPopup(auth, provider)
-                .then(({ user }) => {
-                    const { email, displayName: name, photoURL: photo } = user;
-                    axios.post(`${baseUrl}/voters`, { reg, email, name }).then((res) => {
-                        const adminRef = doc(db, "voters", res.data._id);
-                        setDoc(adminRef, {
-                            reg,
-                            email,
-                            isDeleted: false,
-                            name
-                        }).then((e) => {
-                            toast.dismiss()
-                            toast.success("Voter Created Successfully")
-                            router.push("/voter")
+        // if ((sreg === "DLAW") || (sreg === "BLAW") || (sreg === "blaw") || (sreg === "dlaw")) {
+        const exists = await axios.get(`${baseUrl}/voters?reg=${reg}`).catch((e) => {
+            toast.dismiss()
+            toast.error("Something went wrong")
+            console.log(e)
+            return;
+        })
+        if (!exists) {
+            toast.dismiss()
+            toast.error("Something went wrong")
+            return;
+        }
+        if (exists?.data > 0) {
+            toast.dismiss()
+            toast.error("Voter already exists")
+            return
+        }
+        const provider = new GoogleAuthProvider();
+        signInWithPopup(auth, provider)
+            .then(({ user }) => {
+                const { email, displayName: name, photoURL: photo } = user;
+                axios.post(`${baseUrl}/voters`, { reg, email, name }).then((res) => {
+                    const adminRef = doc(db, "voters", res.data._id);
+                    setDoc(adminRef, {
+                        reg,
+                        email,
+                        isDeleted: false,
+                        name
+                    }).then((e) => {
+                        toast.dismiss()
+                        toast.success("Voter Created Successfully")
+                        router.push("/voter")
 
-
-                        }).catch((e) => {
-                            toast.dismiss()
-                            toast.error("Something went wrong")
-                            console.log(e)
-                        })
 
                     }).catch((e) => {
                         toast.dismiss()
-                        console.log(e)
                         toast.error("Something went wrong")
+                        console.log(e)
                     })
-                }).catch((error) => {
-                    toast.dismiss()
-                    console.log(error)
-                    toast.error("Something went wrong")
 
-
-                }).catch(() => {
+                }).catch((e) => {
                     toast.dismiss()
+                    console.log(e)
                     toast.error("Something went wrong")
                 })
+            }).catch((error) => {
+                toast.dismiss()
+                console.log(error)
+                toast.error("Something went wrong")
 
-        } else {
-            toast.dismiss()
-            toast.error("Please enter a valid registration number")
-        }
+
+            }).catch(() => {
+                toast.dismiss()
+                toast.error("Something went wrong")
+            })
+
+        // } else {
+        //     toast.dismiss()
+        //     toast.error("Please enter a valid registration number")
+        // }
 
     }
 
