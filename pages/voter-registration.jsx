@@ -111,7 +111,7 @@ const Home = () => {
 
             <Typography
                 variant="h2" fontFamily="Atomic Age" color={colors.primary[500]}
-            >MKU VOTING</Typography>
+            >RIARA VOTING</Typography>
         </Grid>
         <Grid item
             xs={12}

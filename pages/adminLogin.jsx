@@ -160,7 +160,7 @@ const AdminLogin = () => {
                         fontWeight: 700,
 
                     }}
-                >Login MKU Voting</Typography>
+                >Login Voting</Typography>
 
 
 
