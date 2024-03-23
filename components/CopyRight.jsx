@@ -9,13 +9,13 @@ const CopyRight = ({ dashboard }) => {
             fontSize: dashboard ? '9px' : '12px',
             fontWeight: "thin",
             color: dashboard ? "#fff" : "#000"
-        }}>   {!isMobile && <> Copyright © 2023 Rightson Tole, All rights reserved. </>} https://rightson1.github.io/portfolio </Typography>
+        }}>   {!isMobile && <> , All rights reserved. </>} https://rightson1.github.io/portfolio </Typography>
             :
             <Typography sx={{
                 fontSize: dashboard ? '9px' : '12px',
                 fontWeight: "thin",
                 color: dashboard ? "#fff" : "#000"
-            }}>    Copyright © 2023 Rightson Tole, All rights reserved</Typography>
+            }}>    All rights reserved</Typography>
 
         }
     </div>
