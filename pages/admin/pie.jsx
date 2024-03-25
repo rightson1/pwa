@@ -29,7 +29,7 @@ const Pie = () => {
     }, [positions])
     useEffect(() => {
         if (!position) return
-        axios.get(`${baseUrl}/votes?position=${position}`).then((res) => {
+        axios.get(`${baseUrl}/votes?position=${position} `).then((res) => {
             setVotes(res.data)
         }).catch((err) => {
             console.log(err)
