@@ -70,9 +70,8 @@ const Pie = () => {
                     <Typography>Please Select Category</Typography>
                     :
 
-                    votes.length > 0 ? <PieChart votes={votes} /> :
-                        <Skeleton variant="rectangular" width="100%" height="100%" />
-                }
+                    votes && <PieChart votes={votes} />}
+
             </Box>
         </Box>
     );
